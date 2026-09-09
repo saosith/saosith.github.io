@@ -1,0 +1,12 @@
+{
+  "name": "Sao Aphisith Sithisack",
+  "shortName": "Sao Sithisack",
+  "role": "Analog & mixed-signal IC design",
+  "tagline": "Junior EE student at the University of Oklahoma working on analog/mixed-signal IC design and silicon photonics.",
+  "email": "saosithisak@gmail.com",
+  "github": "https://github.com/saosith",
+  "linkedin": "https://www.linkedin.com/in/saoaphisithsithisack/",
+  "university": "University of Oklahoma",
+  "homeIntro": "Every project is written as a datasheet rather than a gallery: a parameter table with targets beside results, the test conditions those results were taken under, and the raw dataset behind each plot available for download. Where a number comes from a hand model rather than a simulator or from silicon, the page says so at the top.",
+  "aboutIntro": "I care about the part of the job that happens after the first working simulation: corners, mismatch, what the measurement setup was, and whether a number survives contact with a spec table."
+}

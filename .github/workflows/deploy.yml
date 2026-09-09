@@ -20,6 +20,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+      # Switches this repo's Pages source to "GitHub Actions" if it is still set
+      # to deploy from a branch (the old Jekyll setup), so the deploy job below
+      # does not fail on a settings toggle.
+      - uses: actions/configure-pages@v5
+        with:
+          enablement: true
       - uses: actions/setup-node@v4
         with:
           node-version: 22

@@ -1,7 +1,9 @@
 ---
 import Base from '../layouts/Base.astro';
 import { SITE } from '../lib/site';
-import { TIMELINE, SKILLS } from '../lib/about';
+import { TIMELINE, skillGroups } from '../lib/about';
+
+const SKILLS = skillGroups();
 ---
 
 <Base
@@ -22,11 +24,7 @@ import { TIMELINE, SKILLS } from '../lib/about';
         which means I can publish the schematics, netlists and layouts in full
         rather than describing them from a distance.
       </p>
-      <p>
-        I care about the part of the job that happens after the first working
-        simulation: corners, mismatch, what the measurement setup was, and
-        whether a number survives contact with a spec table.
-      </p>
+      <p>{SITE.aboutIntro}</p>
       <p>
         The fastest way to reach me is <a href={`mailto:${SITE.email}`}>{SITE.email}</a>.
       </p>
@@ -50,9 +48,11 @@ import { TIMELINE, SKILLS } from '../lib/about';
               </div>
               {t.org && <div class="tl-org">{t.org}</div>}
               {t.body && <p class="tl-body">{t.body}</p>}
-              {t.evidence && t.evidence.length > 0 && (
+              {t.evidenceLabel && (
                 <div class="tl-evidence">
-                  {t.evidence.map((e) => <a href={e.href}>{e.label}</a>)}
+                  {t.evidenceHref
+                    ? <a href={t.evidenceHref}>{t.evidenceLabel}</a>
+                    : <span class="muted">{t.evidenceLabel} — add the link</span>}
                 </div>
               )}
             </div>
@@ -76,8 +76,8 @@ import { TIMELINE, SKILLS } from '../lib/about';
               {g.items.map((i) => (
                 <li>
                   <span>{i.skill}</span>
-                  {i.where
-                    ? <span class="where"><a href={i.where.href}>{i.where.label}</a></span>
+                  {i.whereLabel && i.whereHref
+                    ? <span class="where"><a href={i.whereHref}>{i.whereLabel}</a></span>
                     : <span class="no-link">coursework</span>}
                 </li>
               ))}

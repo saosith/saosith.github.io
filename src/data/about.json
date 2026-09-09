@@ -1,0 +1,52 @@
+{
+  "timeline": [
+    {
+      "date": "2024 — present",
+      "title": "B.S. Electrical Engineering",
+      "org": "University of Oklahoma",
+      "body": "Coursework in analog electronics, semiconductor devices, signals and systems, and electromagnetics. Self-directed work in analog IC design on the sky130 open PDK alongside it.",
+      "evidenceLabel": "",
+      "evidenceHref": "",
+      "placeholder": false
+    },
+    {
+      "date": "Add a date",
+      "title": "Add a research or lab position",
+      "org": "Group or lab name",
+      "body": "One or two sentences on what you actually built or measured — the instrument, the circuit, the result. Not the topic area.",
+      "evidenceLabel": "Poster / report (PDF)",
+      "evidenceHref": "",
+      "placeholder": true
+    },
+    {
+      "date": "Add a date",
+      "title": "Add a tapeout, award, or competition result",
+      "org": "Shuttle, sponsor, or competition",
+      "body": "If you have taped out, name the shuttle and the date — for example \"sky130 via the Efabless MPW shuttle\". A die photo or GDS render on the home page is the strongest single signal an IC portfolio can carry.",
+      "evidenceLabel": "GDS / die photo",
+      "evidenceHref": "",
+      "placeholder": true
+    }
+  ],
+  "skills": [
+    { "group": "Schematic & simulation", "skill": "Xschem", "whereLabel": "op-amp", "whereHref": "/projects/two-stage-opamp/" },
+    { "group": "Schematic & simulation", "skill": "ngspice", "whereLabel": "op-amp", "whereHref": "/projects/two-stage-opamp/" },
+    { "group": "Schematic & simulation", "skill": "Corner & Monte Carlo analysis", "whereLabel": "op-amp", "whereHref": "/projects/two-stage-opamp/" },
+    { "group": "Schematic & simulation", "skill": "Cadence Virtuoso / Spectre", "whereLabel": "", "whereHref": "" },
+    { "group": "Schematic & simulation", "skill": "LTspice", "whereLabel": "", "whereHref": "" },
+
+    { "group": "Layout & verification", "skill": "Magic VLSI", "whereLabel": "bandgap", "whereHref": "/projects/bandgap-reference/" },
+    { "group": "Layout & verification", "skill": "DRC / LVS (netgen)", "whereLabel": "bandgap", "whereHref": "/projects/bandgap-reference/" },
+    { "group": "Layout & verification", "skill": "Parasitic extraction", "whereLabel": "bandgap", "whereHref": "/projects/bandgap-reference/" },
+    { "group": "Layout & verification", "skill": "KLayout", "whereLabel": "", "whereHref": "" },
+
+    { "group": "Process & devices", "skill": "SkyWater sky130 open PDK", "whereLabel": "op-amp", "whereHref": "/projects/two-stage-opamp/" },
+    { "group": "Process & devices", "skill": "Device characterisation (gm/ID)", "whereLabel": "gm/ID note", "whereHref": "/notes/gm-id-sizing/" },
+    { "group": "Process & devices", "skill": "Silicon photonics", "whereLabel": "", "whereHref": "" },
+
+    { "group": "Tooling", "skill": "Python (NumPy, Matplotlib)", "whereLabel": "data pipeline", "whereHref": "/notes/plotting-ngspice/" },
+    { "group": "Tooling", "skill": "MATLAB", "whereLabel": "", "whereHref": "" },
+    { "group": "Tooling", "skill": "Git", "whereLabel": "", "whereHref": "" },
+    { "group": "Tooling", "skill": "Linux / shell", "whereLabel": "", "whereHref": "" }
+  ]
+}

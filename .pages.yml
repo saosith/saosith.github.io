@@ -1,0 +1,211 @@
+# Pages CMS configuration — https://pagescms.org
+#
+# Sign in at app.pagescms.org with GitHub, pick this repository, and this file
+# describes the editing forms. Saving commits to `main`, which triggers the
+# deploy workflow, so the public site updates a minute or two later.
+#
+# Body fields are plain `text`, not `rich-text`, on purpose. Project bodies are
+# MDX containing component calls such as <BodeFigure … />, and notes contain
+# fenced SPICE and shell blocks; a rich-text editor would re-serialise both and
+# could mangle them. Frontmatter is where this config earns its keep — spec
+# tables, headline numbers, tags and the provenance badge become real forms.
+
+media:
+  input: public/figures
+  output: /figures
+
+content:
+  # ---------------------------------------------------------------- projects
+  - name: projects
+    label: Projects
+    type: collection
+    path: src/content/projects
+    filename: '{primary}.mdx'
+    format: yaml-frontmatter
+    view:
+      primary: title
+      sort: [order, date, title]
+      order: asc
+      fields: [title, date, dataStatus, featured, draft]
+    fields:
+      - { name: title, label: Title, type: string, required: true }
+      - name: summary
+        label: Summary
+        type: text
+        required: true
+        description: One or two sentences. Shows on the projects index and as the page lede.
+      - { name: date, label: Date, type: date, required: true }
+      - { name: updated, label: Last updated, type: date }
+      - name: order
+        label: Sort order
+        type: number
+        default: 100
+        description: Lower sorts first on the projects index.
+      - { name: featured, label: Show on the home page, type: boolean, default: false }
+      - name: draft
+        label: Draft
+        type: boolean
+        default: true
+        description: Draft projects are left out of the build entirely.
+
+      - name: dataStatus
+        label: Where the numbers come from
+        type: select
+        default: model
+        required: true
+        description: Renders a visible badge at the top of the page. Keep this honest.
+        options:
+          - { value: model, label: Hand model — not simulated }
+          - { value: simulated, label: Simulated (ngspice) }
+          - { value: measured, label: Measured silicon }
+
+      - name: conditions
+        label: Test conditions
+        type: string
+        description: 'e.g. VDD = 1.8 V, T = 27 °C, CL = 2 pF. Shown under every table and plot.'
+      - { name: process, label: Process, type: string }
+      - name: ip
+        label: IP status
+        type: text
+        description: State plainly whether anything here is restricted.
+
+      - name: tags
+        label: Tags
+        type: string
+        list: true
+        description: Drives the filter chips on the projects index.
+      - { name: tools, label: Tools used, type: string, list: true }
+
+      - name: headline
+        label: Key parameters
+        type: object
+        list: true
+        description: Three or four numbers. Shown on the index card and in the sidebar.
+        fields:
+          - { name: label, label: Parameter, type: string, required: true }
+          - { name: value, label: Value, type: string, required: true }
+          - { name: unit, label: Unit, type: string }
+
+      - name: specs
+        label: Electrical characteristics
+        type: object
+        list: true
+        description: The datasheet table. Leave "Measured" empty until there is silicon — the column disappears.
+        fields:
+          - { name: param, label: Parameter, type: string, required: true }
+          - { name: symbol, label: Symbol, type: string }
+          - { name: target, label: Target, type: string }
+          - { name: sim, label: Simulated, type: string }
+          - { name: measured, label: Measured, type: string }
+          - { name: unit, label: Unit, type: string }
+          - name: status
+            label: vs. target
+            type: select
+            default: na
+            options:
+              - { value: pass, label: Meets }
+              - { value: marginal, label: Marginal }
+              - { value: fail, label: Misses }
+              - { value: na, label: Not assessed }
+          - { name: note, label: Footnote ref, type: string }
+
+      - name: footnotes
+        label: Footnotes
+        type: object
+        list: true
+        fields:
+          - { name: ref, label: Ref, type: string, required: true }
+          - { name: text, label: Text, type: text, required: true }
+
+      - name: links
+        label: Files and links
+        type: object
+        list: true
+        fields:
+          - { name: label, label: Label, type: string, required: true }
+          - { name: href, label: URL or path, type: string, required: true }
+
+      - name: body
+        label: Write-up (MDX)
+        type: text
+        description: Plain text on purpose — leave the import lines and the <Figure /> tags intact.
+
+  # ------------------------------------------------------------------- notes
+  - name: notes
+    label: Notes
+    type: collection
+    path: src/content/notes
+    filename: '{primary}.md'
+    format: yaml-frontmatter
+    view:
+      primary: title
+      sort: [date, title]
+      order: desc
+      fields: [title, date, draft]
+    fields:
+      - { name: title, label: Title, type: string, required: true }
+      - { name: summary, label: Summary, type: text, required: true }
+      - { name: date, label: Date, type: date, required: true }
+      - { name: tags, label: Tags, type: string, list: true }
+      - { name: draft, label: Draft, type: boolean, default: false }
+      - name: body
+        label: Note
+        type: text
+        description: Markdown. Plain text so fenced code blocks survive editing untouched.
+
+  # ------------------------------------------------------------------- about
+  - name: about
+    label: About page
+    type: file
+    path: src/data/about.json
+    format: json
+    fields:
+      - name: timeline
+        label: Timeline
+        type: object
+        list: true
+        description: Every entry needs a date and something a reader can open. Do not list anything you cannot evidence.
+        fields:
+          - { name: date, label: Date, type: string, required: true }
+          - { name: title, label: Title, type: string, required: true }
+          - { name: org, label: Organisation, type: string }
+          - { name: body, label: What you did, type: text }
+          - { name: evidenceLabel, label: Evidence — label, type: string }
+          - { name: evidenceHref, label: Evidence — link, type: string }
+          - name: placeholder
+            label: Still a placeholder
+            type: boolean
+            default: false
+            description: While ticked, this entry renders with a visible "replace this entry" chip.
+
+      - name: skills
+        label: Tools
+        type: object
+        list: true
+        description: One row per tool. Rows sharing a group name are shown together, in the order they first appear. A row with no project link renders as "coursework".
+        fields:
+          - { name: group, label: Group, type: string, required: true }
+          - { name: skill, label: Tool, type: string, required: true }
+          - { name: whereLabel, label: Used on — label, type: string }
+          - { name: whereHref, label: Used on — link, type: string }
+
+  # -------------------------------------------------------- site-wide values
+  - name: site
+    label: Site details
+    type: file
+    path: src/data/site.json
+    format: json
+    fields:
+      - { name: name, label: Full name, type: string, required: true }
+      - { name: shortName, label: Short name, type: string, required: true }
+      - { name: role, label: Role, type: string }
+      - name: tagline
+        label: Tagline
+        type: text
+        description: Shown under your name on the home page and used as the search-result description.
+      - { name: email, label: Email, type: string }
+      - { name: github, label: GitHub URL, type: string }
+      - { name: linkedin, label: LinkedIn URL, type: string }
+      - { name: university, label: University, type: string }
+      - { name: homeIntro, label: Home page — "How these pages are put together", type: text }
+      - { name: aboutIntro, label: About page — second paragraph, type: text }

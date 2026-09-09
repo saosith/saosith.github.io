@@ -1,14 +1,14 @@
-/** Single source of truth for identity and links. Edit here, not in components. */
+import data from '../data/site.json';
+
+/**
+ * Identity and links.
+ *
+ * The editable values live in `src/data/site.json` so Pages CMS can present them
+ * as a form. Structural values that should not be edited from a CMS — the
+ * canonical URL and the social-card path — stay here in code.
+ */
 export const SITE = {
-  name: 'Sao Aphisith Sithisack',
-  shortName: 'Sao Sithisack',
-  role: 'Analog & mixed-signal IC design',
-  tagline: 'Junior EE student at the University of Oklahoma working on analog/mixed-signal IC design and silicon photonics.',
+  ...data,
   url: 'https://saosith.github.io',
-  email: 'saosithisak@gmail.com',
-  github: 'https://github.com/saosith',
-  linkedin: 'https://www.linkedin.com/in/saoaphisithsithisack/',
-  university: 'University of Oklahoma',
-  /** Used for the default social-share card. */
   ogImage: '/og.png',
 } as const;

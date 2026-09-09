@@ -89,13 +89,7 @@ const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month:
       <h2>How these pages are put together</h2>
     </div>
     <div class="prose">
-      <p>
-        Every project is written as a datasheet rather than a gallery: a parameter
-        table with targets beside results, the test conditions those results were
-        taken under, and the raw dataset behind each plot available for download.
-        Where a number comes from a hand model rather than a simulator or from
-        silicon, the page says so at the top.
-      </p>
+      <p>{SITE.homeIntro}</p>
       <p>
         All of it targets the SkyWater sky130 open PDK, so the schematics,
         netlists and layouts can be published in full without touching a foundry
