@@ -1,0 +1,71 @@
+---
+import StatusChip from './StatusChip.astro';
+
+interface SpecRow {
+  param: string;
+  symbol?: string;
+  target?: string;
+  sim?: string;
+  measured?: string;
+  unit?: string;
+  status: 'pass' | 'marginal' | 'fail' | 'na';
+  note?: string;
+}
+
+interface Props {
+  caption?: string;
+  rows: SpecRow[];
+  conditions?: string;
+  footnotes?: { ref: string; text: string }[];
+}
+
+const { caption = 'Electrical characteristics', rows, conditions, footnotes = [] } = Astro.props;
+
+// Drop the measured column entirely until there is silicon; an empty column
+// full of dashes reads as a gap rather than as "not taped out yet".
+const hasMeasured = rows.some((r) => r.measured);
+---
+
+<div class="spec-table-wrap">
+  <table class="spec-table">
+    <caption>{caption}</caption>
+    <thead>
+      <tr>
+        <th scope="col">Parameter</th>
+        <th scope="col">Sym.</th>
+        <th scope="col">Target</th>
+        <th scope="col">Simulated</th>
+        {hasMeasured && <th scope="col">Measured</th>}
+        <th scope="col">Unit</th>
+        <th scope="col">vs. target</th>
+      </tr>
+    </thead>
+    <tbody>
+      {rows.map((r) => (
+        <tr>
+          <th scope="row">
+            {r.param}
+            {r.note && <sup class="sym">{r.note}</sup>}
+          </th>
+          <td class="sym">{r.symbol ?? ''}</td>
+          <td class="v">{r.target ?? '—'}</td>
+          <td class="v">{r.sim ?? '—'}</td>
+          {hasMeasured && <td class="v">{r.measured ?? '—'}</td>}
+          <td class="sym">{r.unit ?? ''}</td>
+          <td><StatusChip status={r.status} /></td>
+        </tr>
+      ))}
+    </tbody>
+  </table>
+
+  {(conditions || footnotes.length > 0) && (
+    <div class="spec-foot">
+      {conditions && (
+        <div class="fn"><span>Conditions</span><span>{conditions}</span></div>
+      )}
+      {footnotes.map((f) => (
+        <div class="fn"><span>{f.ref}</span><span>{f.text}</span></div>
+      ))}
+    </div>
+  )}
+</div>

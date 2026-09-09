@@ -1,0 +1,73 @@
+---
+# Copy this file, rename it, and set draft: false when it is ready to publish.
+# The filename becomes the URL: projects/<filename>/
+title: Project title, one line
+summary: One or two sentences — what it is and what it is for. This shows on the projects index and as the page lede.
+date: 2026-01-01
+# updated: 2026-06-01
+order: 50           # lower sorts first on the index
+featured: false     # true puts it on the home page
+draft: true         # REMOVE or set false to publish
+
+process: SkyWater sky130 (open PDK)
+conditions: VDD = 1.8 V, T = 27 °C, CL = 2 pF
+ip: Say plainly whether anything here is restricted. Recruiters at analog companies notice.
+
+# Provenance of every number below. One of: model | simulated | measured.
+# This renders a visible badge at the top of the page — keep it honest.
+dataStatus: model
+
+tags: [analog, sky130]
+tools: [Xschem, ngspice, Magic]
+
+# Three or four numbers. These appear on the index card and in the sidebar.
+headline:
+  - { label: 'Parameter', value: '0', unit: 'unit' }
+
+# The datasheet table. status: pass | marginal | fail | na
+# Leave `measured` off every row until there is silicon — the column disappears.
+specs:
+  - { param: 'Parameter name', symbol: 'SYM', target: '≥ 0', sim: '0', unit: 'unit', status: pass, note: '1' }
+
+footnotes:
+  - { ref: '1', text: 'Conditions or caveats for the row above.' }
+
+links:
+  - { label: 'Schematic (Xschem)', href: 'https://github.com/saosith' }
+---
+
+{/* Import only the figures this project needs. */}
+import AnnotatedSchematic from '../../components/AnnotatedSchematic.astro';
+import BodeFigure from '../../components/BodeFigure.astro';
+import MonteCarloFigure from '../../components/MonteCarloFigure.astro';
+import BandgapFigure from '../../components/BandgapFigure.astro';
+import DesignExplorer from '../../components/DesignExplorer.astro';
+
+## What it is for
+
+One paragraph on the application and the constraint that made this design
+necessary. Write the specification before the circuit.
+
+## Topology
+
+Why this topology and not the obvious alternative.
+
+<AnnotatedSchematic figNo="Fig. 1" caption="Signal path." />
+
+## Results
+
+<BodeFigure figNo="Fig. 2" caption="Describe what the reader should notice, not what the axes say." />
+
+## What went wrong
+
+A bug you hit, how you found it, and what you changed. Interviewers ask about
+this section more than any other.
+
+## Limitations and next steps
+
+- What is not simulated or not measured yet.
+- Which specification is closest to missing.
+
+## Reproducing this
+
+The commands. A result nobody can re-run is an assertion.

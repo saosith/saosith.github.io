@@ -1,0 +1,71 @@
+---
+import { loadData } from '../lib/loadData';
+import type { McData } from '../lib/charts';
+
+interface Props {
+  figNo: string;
+  caption: string;
+  file?: string;
+}
+
+const { figNo, caption, file = 'opamp-mc.json' } = Astro.props;
+const d = loadData<McData>(file);
+const sigma3 = (3 * d.stats.sigmaMv).toFixed(2);
+---
+
+<figure class="figure chart-figure">
+  <div class="chart-frame">
+    <div class="chart-head">
+      <h3>{d.meta.title}</h3>
+      <span class="cond">{d.meta.conditions}</span>
+    </div>
+
+    <div data-mc data-file={`/data/${file}`}>
+      <noscript><p class="small muted">The histogram needs JavaScript; the statistics below carry the result.</p></noscript>
+    </div>
+
+    <dl class="stat-row">
+      <div class="stat">
+        <dt>Samples</dt>
+        <dd>{d.n}</dd>
+      </div>
+      <div class="stat">
+        <dt>Mean offset</dt>
+        <dd>{d.stats.meanMv.toFixed(2)} <span class="unit">mV</span></dd>
+      </div>
+      <div class="stat">
+        <dt>Std. deviation</dt>
+        <dd>{d.stats.sigmaMv.toFixed(2)} <span class="unit">mV</span></dd>
+      </div>
+      <div class="stat">
+        <dt>3σ spread</dt>
+        <dd>±{sigma3} <span class="unit">mV</span></dd>
+      </div>
+      <div class="stat">
+        <dt>Inside ±{d.specLimitMv} mV</dt>
+        <dd>{d.stats.yieldPct.toFixed(1)} <span class="unit">%</span></dd>
+      </div>
+    </dl>
+
+    <p class="small muted" style="margin-top:0.7rem">
+      {d.stats.passing} of {d.n} samples meet the offset specification.
+      Hover a bar for its bin count, or <a href={`/data/${file}`}>download the sample set</a>.
+    </p>
+  </div>
+
+  <figcaption>
+    <span class="fig-no">{figNo}</span>
+    <span>{caption}</span>
+  </figcaption>
+</figure>
+
+<script>
+  import { mountHistogram, type McData } from '../lib/charts';
+
+  for (const el of document.querySelectorAll<HTMLElement>('[data-mc]')) {
+    fetch(el.dataset.file!)
+      .then((r) => r.json())
+      .then((data: McData) => mountHistogram(el, data))
+      .catch(() => { el.innerHTML = '<p class="small muted">Could not load the Monte Carlo data.</p>'; });
+  }
+</script>

@@ -1,0 +1,36 @@
+---
+interface Props {
+  status: 'model' | 'simulated' | 'measured';
+  conditions?: string;
+}
+const { status, conditions } = Astro.props;
+
+const COPY = {
+  model: {
+    label: 'Hand-model data',
+    body: 'The numbers and curves on this page come from an analytical pole–zero model, not from a simulator or from silicon. Replace them before presenting this work.',
+  },
+  simulated: {
+    label: 'Simulated',
+    body: 'Curves are ngspice output against the sky130 PDK. No measured silicon results yet.',
+  },
+  measured: {
+    label: 'Measured silicon',
+    body: 'Curves are bench measurements on fabricated parts. Instruments and fixture are named in the method section.',
+  },
+} as const;
+
+const c = COPY[status];
+---
+
+<p class={`data-badge data-badge-${status}`}>
+  <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+    <circle cx="8" cy="8" r="7" stroke="currentColor" stroke-width="1.6" />
+    <path d="M8 4.6v4.2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" />
+    <circle cx="8" cy="11.4" r="0.95" fill="currentColor" />
+  </svg>
+  <span>
+    <strong>{c.label}.</strong> {c.body}
+    {conditions && <><br /><span class="mono small" style="color:var(--ink-3)">{conditions}</span></>}
+  </span>
+</p>

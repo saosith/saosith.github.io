@@ -1,0 +1,67 @@
+---
+import { loadData } from '../lib/loadData';
+import type { LineData } from '../lib/charts';
+
+interface Props {
+  figNo: string;
+  caption: string;
+  file?: string;
+}
+
+const { figNo, caption, file = 'bandgap-tc.json' } = Astro.props;
+const d = loadData<LineData & { metrics: Record<string, { vrefMeanV: number; spreadMv: number; tcPpmPerC: number }> }>(file);
+const names = Object.keys(d.corners);
+---
+
+<figure class="figure chart-figure">
+  <div class="chart-frame">
+    <div class="chart-head">
+      <h3>{d.meta.title}</h3>
+      <span class="cond">{d.meta.conditions}</span>
+    </div>
+
+    <div data-line data-file={`/data/${file}`}>
+      <noscript><p class="small muted">The plot needs JavaScript; the corner table below carries the result.</p></noscript>
+    </div>
+
+    <div class="scroll-x" style="margin-top:1rem;border-top:1px solid var(--rule-strong)">
+    <table class="spec-table">
+      <caption class="visually-hidden">Temperature coefficient by corner</caption>
+      <thead>
+        <tr>
+          <th scope="col">Corner</th>
+          <th scope="col">V(ref), mid</th>
+          <th scope="col">Spread, −40 to 125 °C</th>
+          <th scope="col">Temperature coefficient</th>
+        </tr>
+      </thead>
+      <tbody>
+        {names.map((n) => (
+          <tr>
+            <th scope="row" class="sym" style="color:var(--ink)">{n}</th>
+            <td class="v">{d.metrics[n].vrefMeanV.toFixed(4)} <span class="unit">V</span></td>
+            <td class="v">{d.metrics[n].spreadMv.toFixed(2)} <span class="unit">mV</span></td>
+            <td class="v">{d.metrics[n].tcPpmPerC.toFixed(1)} <span class="unit">ppm/°C</span></td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <figcaption>
+    <span class="fig-no">{figNo}</span>
+    <span>{caption}</span>
+  </figcaption>
+</figure>
+
+<script>
+  import { mountLine, type LineData } from '../lib/charts';
+
+  for (const el of document.querySelectorAll<HTMLElement>('[data-line]')) {
+    fetch(el.dataset.file!)
+      .then((r) => r.json())
+      .then((data: LineData) => mountLine(el, data))
+      .catch(() => { el.innerHTML = '<p class="small muted">Could not load the sweep data.</p>'; });
+  }
+</script>

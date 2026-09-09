@@ -1,0 +1,179 @@
+---
+title: Two-stage Miller op-amp on sky130
+summary: A 110 dB, 25 MHz general-purpose amplifier for on-chip biasing and buffering, characterised across five process corners and a 500-point mismatch run.
+date: 2026-02-10
+updated: 2026-08-24
+order: 1
+featured: true
+dataStatus: model
+process: SkyWater sky130 (open PDK)
+conditions: VDD = 1.8 V, T = 27 °C, CL = 2 pF, CC = 1.6 pF, IBIAS = 20 µA
+ip: SkyWater sky130 is an open PDK. Every schematic, netlist and layout on this page can be published in full — no foundry NDA applies.
+tags: [analog, sky130, simulation, compensation]
+tools: [Xschem, ngspice, Magic, netgen, Python]
+headline:
+  - { label: 'Open-loop gain', value: '110', unit: 'dB' }
+  - { label: 'Gain–bandwidth', value: '25.0', unit: 'MHz' }
+  - { label: 'Phase margin', value: '68', unit: '°' }
+  - { label: 'Static power', value: '297', unit: 'µW' }
+specs:
+  - { param: 'Open-loop DC gain', symbol: 'A_VOL', target: '≥ 100', sim: '110.0', unit: 'dB', status: pass }
+  - { param: 'Gain–bandwidth product', symbol: 'GBW', target: '≥ 20', sim: '25.0', unit: 'MHz', status: pass }
+  - { param: 'Phase margin', symbol: 'φ_M', target: '≥ 60', sim: '68.0', unit: '°', status: pass, note: '1' }
+  - { param: 'Phase margin, worst corner (SS)', symbol: 'φ_M,min', target: '≥ 60', sim: '64.6', unit: '°', status: pass, note: '2' }
+  - { param: 'Input-referred offset, 3σ', symbol: 'V_OS', target: '≤ ±5', sim: '±6.7', unit: 'mV', status: fail, note: '3' }
+  - { param: 'Slew rate', symbol: 'SR', target: '≥ 10', sim: '12.5', unit: 'V/µs', status: pass }
+  - { param: 'Static power', symbol: 'P_Q', target: '≤ 350', sim: '297', unit: 'µW', status: pass, note: '4' }
+  - { param: 'Output swing', symbol: 'V_OUT', target: '0.2 to 1.6', sim: '0.18 to 1.63', unit: 'V', status: pass }
+footnotes:
+  - { ref: '1', text: 'Typical corner, into the stated load. Phase margin is quoted at the unity-gain crossover of the open-loop response.' }
+  - { ref: '2', text: 'Slow-slow corner at 27 °C. Temperature corners are not yet swept — see Limitations.' }
+  - { ref: '3', text: 'Mismatch-only Monte Carlo, 500 samples. This is the one parameter that misses its target; the fix is discussed below.' }
+  - { ref: '4', text: 'Second-stage current is seven times the tail current, which is what buys the output pole its distance from the crossover. Most of the budget is spent there.' }
+links:
+  - { label: 'Schematic (Xschem)', href: 'https://github.com/saosith' }
+  - { label: 'Testbench netlist', href: 'https://github.com/saosith' }
+  - { label: 'AC dataset (JSON)', href: '/data/opamp-ac.json' }
+  - { label: 'Monte Carlo dataset (JSON)', href: '/data/opamp-mc.json' }
+---
+
+import AnnotatedSchematic from '../../components/AnnotatedSchematic.astro';
+import BodeFigure from '../../components/BodeFigure.astro';
+import MonteCarloFigure from '../../components/MonteCarloFigure.astro';
+import DesignExplorer from '../../components/DesignExplorer.astro';
+
+## What it is for
+
+On-chip references, sensor front-ends and switched-capacitor stages all need a
+general-purpose amplifier that is unconditionally stable into a small capacitive
+load and cheap enough to instantiate several times. That is the brief here: a
+two-stage Miller-compensated op-amp with enough loop gain to keep a unity-gain
+buffer's error below one LSB of a 12-bit converter, driving 2 pF, on a 20 µA
+bias.
+
+The specification above is written before the circuit, not after it. That
+ordering is the point — a design either meets a number it committed to, or it
+does not.
+
+## Topology
+
+Two stages, because one cannot supply 100 dB at this bias in a 180 nm-class
+process without cascoding away the output swing. A differential pair with a PMOS
+active load provides the first stage, a common-source stage provides the second,
+and a Miller capacitor with a nulling resistor makes the pair of them stable.
+
+<AnnotatedSchematic
+  figNo="Fig. 1"
+  caption="Signal path and the reason each block is sized the way it is. Select a block to see the governing equation."
+/>
+
+## Sizing
+
+Sizing this topology is not a search; it is four decisions taken in order.
+Transconductance of the input pair falls out of the bandwidth target, the Miller
+capacitor out of the phase-margin target, the second-stage current out of where
+the non-dominant pole has to land, and device areas out of the offset budget.
+
+The explorer below runs the hand model those decisions are made with. Move the
+tail current and watch bandwidth and power move together; move the Miller
+capacitor and watch phase margin trade against slew rate.
+
+<DesignExplorer
+  figNo="Fig. 2"
+  caption="Design-space explorer. Sliders drive a first-order square-law model; the plot is the model's own open-loop response, redrawn on every change."
+/>
+
+The shipped sizing sits at 20 µA tail, (W/L)₁ = 26, CC = 1.6 pF, and a second
+stage running seven times the tail current. Raising the tail current buys
+bandwidth and slew rate as √I while power rises linearly, and it *costs* DC
+gain — output resistance falls as 1/I, faster than transconductance rises.
+
+Phase margin barely moves with tail current, which surprises people: the second
+stage is scaled to the first, so the crossover and the output pole shift
+together. Phase margin is set by the Miller capacitor and the load, not by the
+bias. Drag CC down and watch it collapse.
+
+## Frequency response across corners
+
+Five corners, one plot. The reference trace is the typical corner; the corner
+that matters is the slow one, because that is where the second pole is lowest
+and phase margin is thinnest.
+
+<BodeFigure
+  figNo="Fig. 3"
+  caption="Open-loop gain and phase against frequency, five process corners. The marker is the unity-gain crossover of the typical corner; the vertical bar on the phase panel is its phase margin. Use the legend to isolate a corner."
+/>
+
+Gain and bandwidth move in opposite directions across the corners, which is what
+should happen: the slow corner has higher output resistance and therefore more DC
+gain, but less transconductance and therefore less bandwidth. Worst-case phase
+margin is 64.6° at SS, comfortably inside the 60° target, and the spread in
+crossover frequency is 22.1 to 27.4 MHz — about ±11 % around typical.
+
+## Mismatch
+
+Corners cover process shift; they say nothing about two nominally identical
+devices on the same die being different. That is a separate 500-point run with
+process fixed and only mismatch enabled.
+
+<MonteCarloFigure
+  figNo="Fig. 4"
+  caption="Input-referred offset over 500 mismatch samples. Bars outside the ±5 mV specification window are drawn in red; the vertical rule marks the sample mean."
+/>
+
+This is the parameter that misses. Standard deviation is 2.23 mV, so a 3σ
+part sits at ±6.7 mV against a ±5 mV budget, and 3.4 % of samples fall outside
+the window. Offset is dominated by threshold mismatch in the input pair, which
+scales as 1/√(WL) — closing the gap means roughly doubling the input-pair area,
+which costs input capacitance and a little bandwidth. That trade is the next
+revision, not a tuning exercise.
+
+## What went wrong
+
+The first version of this amplifier simulated at 71° of phase margin and rang
+badly in transient. The AC response was not lying; it was answering a different
+question. Phase margin had been read off the *open-loop* plot while the ringing
+was a *closed-loop* step response into a load the AC testbench did not have —
+the testbench drove a 2 pF capacitor, the transient testbench drove 2 pF plus
+the scope-probe model, about 4 pF total.
+
+Two lessons stuck. Load capacitance belongs in the conditions line of every
+result, not in the testbench file where nobody reads it; that is why every table
+on this site carries one. And the non-dominant pole moves with total load, so a
+phase margin quoted without its load is not a specification. Re-running the AC
+sweep at the true 4 pF gave 61°, which matched the transient overshoot.
+
+## Limitations and next steps
+
+- **Temperature is not swept.** Every result here is at 27 °C. Phase margin at
+  the slow corner will get worse hot, and that is the corner with the least
+  headroom.
+- **No extracted parasitics.** These are schematic-level results. Layout
+  parasitics on the compensation node will move the zero.
+- **Offset misses its target** by about 1.7 mV at 3σ, as above.
+- **No PSRR or CMRR data yet.** The tail cascode was chosen with CMRR in mind but
+  the number has not been taken.
+
+## Reproducing this
+
+The netlists and the testbench are in the repository linked in the sidebar. The
+plots on this page are generated from the raw simulator output rather than
+redrawn by hand:
+
+```bash
+# AC sweep, one rawfile per corner
+ngspice -b -r sim/ac_TT.raw sim/opamp_ac.spice
+
+# convert the rawfiles into the JSON these charts read
+node scripts/raw-to-json.mjs \
+  --out public/data/opamp-ac.json \
+  --node "v(out)" \
+  --source simulated \
+  --conditions "VDD = 1.8 V, T = 27 °C, CL = 2 pF" \
+  TT=sim/ac_TT.raw FF=sim/ac_FF.raw SS=sim/ac_SS.raw \
+  FS=sim/ac_FS.raw SF=sim/ac_SF.raw
+```
+
+The converter derives DC gain, the unity-gain crossover and phase margin from
+the curve itself, so the summary table under each plot cannot drift away from
+the trace above it.

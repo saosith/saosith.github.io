@@ -1,0 +1,130 @@
+---
+interface Props {
+  figNo: string;
+  caption: string;
+}
+const { figNo, caption } = Astro.props;
+
+const BLOCKS = [
+  {
+    id: 'bias', x: 16, y: 168, w: 96, h: 46, label: 'Bias', sub: 'constant-gm',
+    title: 'Constant-gm bias',
+    body: 'A self-biased constant-gm loop makes the input-pair transconductance track 1/R rather than the supply or the threshold voltage, so gain–bandwidth moves far less across corners than a resistor-to-VDD bias would.',
+    eq: 'gm1 = 2 / (R_B · (1 − 1/√K))',
+  },
+  {
+    id: 'tail', x: 144, y: 168, w: 136, h: 46, label: 'M5 tail source', sub: 'cascoded',
+    title: 'Tail current source',
+    body: 'Cascoding the tail keeps its output resistance high. That resistance is what common-mode signals see, so a cheap tail is the usual reason a good-looking differential gain still measures poor CMRR.',
+    eq: 'CMRR ≈ 2 · gm1 · r_tail · (r_o2 ∥ r_o4)',
+  },
+  {
+    id: 'pair', x: 144, y: 78, w: 136, h: 52, label: 'M1 / M2', sub: 'input pair',
+    title: 'Input differential pair',
+    body: 'Sized for transconductance efficiency rather than raw size: gm1 sets the gain–bandwidth product directly, and the pair dominates both input-referred noise and offset. Widening it cuts mismatch as 1/√(WL) but loads the driving stage with more input capacitance.',
+    eq: 'GBW = gm1 / (2π·C_C),   σ_VT ∝ A_VT / √(W·L)',
+  },
+  {
+    id: 'load', x: 312, y: 78, w: 136, h: 52, label: 'M3 / M4', sub: 'active load',
+    title: 'PMOS active load',
+    body: 'Converts the differential current into a single-ended one and sets the first stage’s output resistance. Its length is chosen for output resistance, not for matching alone — short devices here quietly cost 10–15 dB of DC gain.',
+    eq: 'A_v1 = gm1 · (r_o2 ∥ r_o4)',
+  },
+  {
+    id: 'miller', x: 480, y: 14, w: 136, h: 44, label: 'C_C + R_Z', sub: 'compensation',
+    title: 'Miller compensation with a nulling resistor',
+    body: 'C_C splits the poles: the first-stage output pole moves down, the output pole moves up. Left alone, C_C also creates a right-half-plane zero that subtracts phase exactly where it hurts. R_Z cancels it.',
+    eq: 'f_z(RHP) = gm6 / (2π·C_C)  →  R_Z = 1/gm6 moves it to infinity',
+  },
+  {
+    id: 'stage2', x: 480, y: 78, w: 136, h: 52, label: 'M6', sub: 'common source',
+    title: 'Second gain stage',
+    body: 'A common-source stage supplies the remaining gain and drives the load. Its transconductance sets the non-dominant pole, so phase margin is bought by biasing M6 harder — the direct trade against static power.',
+    eq: 'f_p2 ≈ gm6 / (2π·C_L),   A_v2 = gm6 · (r_o6 ∥ r_o7)',
+  },
+  {
+    id: 'load-c', x: 664, y: 78, w: 104, h: 52, label: 'C_L', sub: '2 pF',
+    title: 'Specified load',
+    body: 'Every number on this page is quoted into this load. A stated bandwidth without a stated load is not a specification, which is why C_L appears in the conditions line of each table.',
+    eq: '',
+  },
+];
+---
+
+<figure class="figure chart-figure">
+  <div class="chart-frame">
+    <div class="chart-head">
+      <h3>Signal path</h3>
+      <span class="cond">select a block for the sizing rationale</span>
+    </div>
+
+    <div class="schematic">
+      <div class="schematic-svg">
+        <svg viewBox="0 0 790 236" role="group" aria-label="Two-stage operational amplifier block diagram" style="width:100%;height:auto">
+          <defs>
+            <marker id="arw" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+              <path d="M0 1L9 5L0 9z" fill="var(--rule-strong)" />
+            </marker>
+          </defs>
+
+          <g stroke="var(--rule-strong)" stroke-width="1.6" fill="none" marker-end="url(#arw)">
+            <path d="M96 104H140" />
+            <path d="M280 104H308" />
+            <path d="M448 104H476" />
+            <path d="M616 104H660" />
+            <path d="M112 191H140" />
+          </g>
+          <g stroke="var(--rule-strong)" stroke-width="1.6" fill="none">
+            <path d="M212 168V130" />
+            <path d="M636 104V36H620" />
+            <path d="M480 36H464V104" />
+          </g>
+
+          <text x="20" y="98" font-size="11.5" fill="var(--ink-2)" font-family="var(--mono)">V_IN+</text>
+          <text x="20" y="116" font-size="11.5" fill="var(--ink-2)" font-family="var(--mono)">V_IN−</text>
+          <text x="640" y="94" font-size="11.5" fill="var(--ink-2)" text-anchor="middle" font-family="var(--mono)">V_OUT</text>
+          <text x="458" y="150" font-size="10.5" fill="var(--ink-3)" text-anchor="end" font-family="var(--mono)">node A</text>
+
+          {BLOCKS.map((b) => (
+            <g class="blk" data-block={b.id} role="button" tabindex="0" aria-pressed="false"
+               aria-label={`${b.label}: ${b.title}`}>
+              <rect x={b.x} y={b.y} width={b.w} height={b.h} rx="2" />
+              <text x={b.x + b.w / 2} y={b.y + b.h / 2 - 2} text-anchor="middle" font-weight="600">{b.label}</text>
+              <text x={b.x + b.w / 2} y={b.y + b.h / 2 + 14} text-anchor="middle" font-size="10.5" fill="var(--ink-3)">{b.sub}</text>
+            </g>
+          ))}
+        </svg>
+      </div>
+
+      <div class="schematic-note" data-note aria-live="polite">
+        <h4>Two-stage Miller amplifier</h4>
+        <p>Select any block to see why it is sized the way it is. Each note names the equation that drives the choice.</p>
+      </div>
+    </div>
+  </div>
+
+  <figcaption>
+    <span class="fig-no">{figNo}</span>
+    <span>{caption}</span>
+  </figcaption>
+</figure>
+
+<script define:vars={{ BLOCKS }}>
+  const note = document.querySelector('[data-note]');
+  const blocks = document.querySelectorAll('[data-block]');
+
+  function select(id) {
+    const b = BLOCKS.find((x) => x.id === id);
+    if (!b || !note) return;
+    for (const el of blocks) el.setAttribute('aria-pressed', String(el.dataset.block === id));
+    note.innerHTML =
+      `<h4>${b.title}</h4><p>${b.body}</p>` + (b.eq ? `<p class="eq">${b.eq}</p>` : '');
+  }
+
+  for (const el of blocks) {
+    el.addEventListener('click', () => select(el.dataset.block));
+    el.addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); select(el.dataset.block); }
+    });
+  }
+</script>

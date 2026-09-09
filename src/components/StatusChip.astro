@@ -1,0 +1,26 @@
+---
+interface Props {
+  status: 'pass' | 'marginal' | 'fail' | 'na';
+}
+const { status } = Astro.props;
+
+const MAP = {
+  pass:     { cls: 'chip-good',     label: 'meets' },
+  marginal: { cls: 'chip-warning',  label: 'marginal' },
+  fail:     { cls: 'chip-critical', label: 'misses' },
+  na:       { cls: 'chip-neutral',  label: '—' },
+} as const;
+const m = MAP[status];
+---
+
+{status !== 'na' && (
+  <span class={`chip ${m.cls}`}>
+    <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+      {status === 'pass' && <path d="M3 8.4l3.4 3.3L13 4.9" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round" />}
+      {status === 'marginal' && <path d="M8 2.4l6.1 11H1.9L8 2.4Zm0 4.1v3.2M8 11.6v.05" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />}
+      {status === 'fail' && <path d="M4 4l8 8M12 4l-8 8" stroke="currentColor" stroke-width="2.1" stroke-linecap="round" />}
+    </svg>
+    {m.label}
+  </span>
+)}
+{status === 'na' && <span class="chip chip-neutral">—</span>}

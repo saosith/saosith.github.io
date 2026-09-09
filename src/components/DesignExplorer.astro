@@ -1,0 +1,141 @@
+---
+interface Props {
+  figNo: string;
+  caption: string;
+}
+const { figNo, caption } = Astro.props;
+
+const KNOBS = [
+  { key: 'ibiasUa', label: 'Tail current', unit: 'µA', min: 4, max: 60, step: 1, value: 20,
+    hint: 'Sets gm of the input pair — and most of the power budget.' },
+  { key: 'wl1', label: 'Input pair W/L', unit: '', min: 4, max: 120, step: 2, value: 26,
+    hint: 'Larger devices raise gm and cut offset, at the cost of area and input capacitance.' },
+  { key: 'ccPf', label: 'Miller capacitor', unit: 'pF', min: 0.4, max: 6, step: 0.1, value: 1.6,
+    hint: 'Splits the poles. Buys phase margin, spends bandwidth and slew rate.' },
+  { key: 'clPf', label: 'Load capacitance', unit: 'pF', min: 0.5, max: 12, step: 0.5, value: 2,
+    hint: 'Set by what the amplifier drives; pushes the output pole down.' },
+  { key: 'stage2Ratio', label: 'Second-stage current', unit: '× tail', min: 1, max: 12, step: 0.5, value: 7,
+    hint: 'Pushes the output pole away from the crossover, buying phase margin with current.' },
+];
+---
+
+<figure class="figure chart-figure">
+  <div class="chart-frame">
+    <div class="chart-head">
+      <h3>Design-space explorer</h3>
+      <span class="cond">first-order hand model, not a simulator</span>
+    </div>
+
+    <div class="explorer" data-explorer>
+      <form class="knobs" data-knobs>
+        {KNOBS.map((k) => (
+          <div class="knob">
+            <label for={`k-${k.key}`}>
+              <span>{k.label}</span>
+              <span class="val" data-out={k.key}>{k.value}{k.unit && ` ${k.unit}`}</span>
+            </label>
+            <input
+              type="range" id={`k-${k.key}`} name={k.key}
+              min={k.min} max={k.max} step={k.step} value={k.value}
+              data-unit={k.unit}
+            />
+            <p class="hint">{k.hint}</p>
+          </div>
+        ))}
+        <button type="reset" class="btn" style="justify-self:start">Reset to the shipped sizing</button>
+      </form>
+
+      <div>
+        <dl class="readouts" data-readouts aria-live="polite">
+          <!-- filled in on mount; server render keeps the box from jumping -->
+        </dl>
+        <div data-explorer-plot style="margin-top:1rem"></div>
+      </div>
+    </div>
+
+    <p class="small muted" style="margin-top:0.8rem">
+      Square-law drain current, a lumped output pole, and a nulling resistor
+      sized at 1/gm6 so the right-half-plane zero drops out. It shows which way
+      each knob moves the trade-off and roughly how far — it is not a substitute
+      for the corner simulations above.
+    </p>
+  </div>
+
+  <figcaption>
+    <span class="fig-no">{figNo}</span>
+    <span>{caption}</span>
+  </figcaption>
+</figure>
+
+<script>
+  import { solveDesign, modelResponse, TARGETS, meets, type DesignInputs, type TargetKey } from '../lib/opamp-model';
+  import { mountBode, type BodeData } from '../lib/charts';
+
+  const root = document.querySelector<HTMLElement>('[data-explorer]');
+  if (root) {
+    const form = root.querySelector<HTMLFormElement>('[data-knobs]')!;
+    const readouts = root.querySelector<HTMLElement>('[data-readouts]')!;
+    const plot = root.querySelector<HTMLElement>('[data-explorer-plot]')!;
+
+    const read = (): DesignInputs => {
+      const fd = new FormData(form);
+      return {
+        ibiasUa: Number(fd.get('ibiasUa')),
+        wl1: Number(fd.get('wl1')),
+        ccPf: Number(fd.get('ccPf')),
+        clPf: Number(fd.get('clPf')),
+        stage2Ratio: Number(fd.get('stage2Ratio')),
+      };
+    };
+
+    const ORDER: TargetKey[] = ['dcGainDb', 'gbwMhz', 'phaseMarginDeg', 'slewRateVus', 'powerUw', 'secondPoleMhz'];
+
+    function render() {
+      const inputs = read();
+      const out = solveDesign(inputs);
+
+      // slider value labels
+      for (const input of form.querySelectorAll<HTMLInputElement>('input[type=range]')) {
+        const label = form.querySelector<HTMLElement>(`[data-out="${input.name}"]`);
+        if (label) {
+          const u = input.dataset.unit;
+          label.textContent = input.value + (u ? ` ${u}` : '');
+        }
+      }
+
+      readouts.innerHTML = ORDER.map((key) => {
+        const t = TARGETS[key] as { min?: number; max?: number; label: string; unit: string; digits: number };
+        const v = out[key];
+        const ok = meets(key, v);
+        const target =
+          t.min !== undefined ? `target ≥ ${t.min} ${t.unit}`
+          : t.max !== undefined ? `target ≤ ${t.max} ${t.unit}`
+          : 'no target — shown for context';
+        return (
+          `<div class="readout" data-meets="${ok}">` +
+          `<dt>${t.label}` +
+          (ok ? '' : ' <span class="chip chip-critical">misses</span>') +
+          `</dt>` +
+          `<dd>${v.toFixed(t.digits)} <span class="unit">${t.unit}</span></dd>` +
+          `<div class="target">${target}</div>` +
+          `</div>`
+        );
+      }).join('');
+
+      const data = modelResponse(inputs) as unknown as BodeData;
+      plot.replaceChildren();
+      mountBode(plot, data, { reference: 'Design', compact: true });
+    }
+
+    let queued = false;
+    const schedule = () => {
+      if (queued) return;
+      queued = true;
+      requestAnimationFrame(() => { queued = false; render(); });
+    };
+
+    form.addEventListener('input', schedule);
+    form.addEventListener('reset', () => requestAnimationFrame(render));
+    render();
+  }
+</script>
