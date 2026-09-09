@@ -15,7 +15,7 @@ interface Props {
 }
 
 const { title, description, bareTitle = false } = Astro.props;
-const fullTitle = bareTitle ? title : `${title} — ${SITE.shortName}`;
+const fullTitle = bareTitle ? title : `${title} — ${SITE.siteTitle}`;
 const canonical = new URL(Astro.url.pathname, Astro.site ?? SITE.url).href;
 
 // Only emit the social-card tag once the image actually exists, so the preview
@@ -35,7 +35,7 @@ const ogImage = existsSync(ogPath) ? new URL('/og.png', SITE.url).href : null;
     <link rel="sitemap" href="/sitemap-index.xml" />
 
     <meta property="og:type" content="website" />
-    <meta property="og:site_name" content={SITE.name} />
+    <meta property="og:site_name" content={SITE.siteTitle} />
     <meta property="og:title" content={fullTitle} />
     <meta property="og:description" content={description} />
     <meta property="og:url" content={canonical} />

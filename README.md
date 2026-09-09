@@ -15,7 +15,7 @@ silicon, and a download link to the dataset behind every plot.
 The site ships with worked examples so every component is visible and working.
 **Most of it describes designs that are not yet real.** Work through this list:
 
-- [ ] **Site details → Résumé** — upload your CV in the CMS. The nav, the footer
+- [ ] **Site details → Resume** — upload your CV in the CMS. The nav, the footer
       and the home-page button all read the path from `src/data/site.json`, so
       one upload updates every link. Until then they point at the placeholder
       `public/resume.pdf`.

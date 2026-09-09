@@ -199,8 +199,16 @@ content:
     path: src/data/site.json
     format: json
     fields:
-      - { name: name, label: Full name, type: string, required: true }
-      - { name: shortName, label: Short name, type: string, required: true }
+      - name: siteTitle
+        label: Site title
+        type: string
+        required: true
+        description: The name of the site itself. Shown in the header, as the big heading on the home page, and in the browser tab.
+      - name: name
+        label: Your name
+        type: string
+        required: true
+        description: Your own name, as a person. Used for the photo caption, the copyright line, and the About page. Keep this separate from the site title above.
       - { name: role, label: Role, type: string }
       - name: tagline
         label: Tagline
@@ -211,7 +219,7 @@ content:
         type: image
         description: Shown on the home page. A plain headshot against a clean background works best; roughly 4:5 portrait crops nicest.
       - name: resume
-        label: Résumé (PDF)
+        label: Resume (PDF)
         type: file
         description: Upload your CV here. The nav, the footer and the home-page button all follow this, so replacing it updates every link at once.
       - { name: email, label: Email, type: string }
