@@ -1,0 +1,41 @@
+---
+import { SITE } from '../lib/site';
+
+/**
+ * Home-page portrait. Falls back to an explicit placeholder rather than a
+ * generic avatar, so an empty slot reads as "not filled in yet" instead of a
+ * deliberate design choice.
+ *
+ * Upload in Pages CMS -> Site details -> Photo.
+ */
+const photo = SITE.photo?.trim();
+---
+
+<figure class="portrait">
+  {photo ? (
+    <img
+      class="portrait-img"
+      src={photo}
+      alt={`${SITE.name}, ${SITE.role}`}
+      width="480"
+      height="600"
+      loading="eager"
+      decoding="async"
+    />
+  ) : (
+    <div class="portrait-empty">
+      <svg viewBox="0 0 48 48" fill="none" aria-hidden="true">
+        <circle cx="24" cy="17" r="8" stroke="currentColor" stroke-width="2" />
+        <path d="M8 42c0-8.8 7.2-14 16-14s16 5.2 16 14"
+              stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+      </svg>
+      <p>
+        Add a photo in the CMS under <span class="mono">Site details → Photo</span>.
+        A plain headshot against a clean background works best.
+      </p>
+    </div>
+  )}
+  <figcaption>
+    {SITE.name} — {SITE.role}
+  </figcaption>
+</figure>

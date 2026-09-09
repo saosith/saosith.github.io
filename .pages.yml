@@ -11,8 +11,11 @@
 # tables, headline numbers, tags and the provenance badge become real forms.
 
 media:
-  input: public/figures
-  output: /figures
+  input: public/uploads
+  output: /uploads
+  # Without `categories` the picker rejects anything that is not an image,
+  # which is what blocked uploading a resume.
+  categories: [image, document]
 
 content:
   # ---------------------------------------------------------------- projects
@@ -203,6 +206,14 @@ content:
         label: Tagline
         type: text
         description: Shown under your name on the home page and used as the search-result description.
+      - name: photo
+        label: Photo
+        type: image
+        description: Shown on the home page. A plain headshot against a clean background works best; roughly 4:5 portrait crops nicest.
+      - name: resume
+        label: Résumé (PDF)
+        type: file
+        description: Upload your CV here. The nav, the footer and the home-page button all follow this, so replacing it updates every link at once.
       - { name: email, label: Email, type: string }
       - { name: github, label: GitHub URL, type: string }
       - { name: linkedin, label: LinkedIn URL, type: string }

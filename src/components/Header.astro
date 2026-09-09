@@ -1,4 +1,6 @@
 ---
+import { SITE } from '../lib/site';
+
 const { pathname } = Astro.url;
 const isCurrent = (href: string) =>
   href === '/' ? pathname === '/' : pathname.startsWith(href);
@@ -7,7 +9,7 @@ const links = [
   { href: '/projects/', label: 'Projects' },
   { href: '/notes/', label: 'Notes' },
   { href: '/about/', label: 'About' },
-  { href: '/resume.pdf', label: 'Résumé', external: true },
+  { href: SITE.resume, label: 'Résumé', external: true },
 ];
 ---
 

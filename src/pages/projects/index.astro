@@ -20,6 +20,7 @@ const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month:
       <p class="note">Each page carries its spec table, its conditions, and the data behind every plot.</p>
     </div>
 
+    {projects.length > 0 && (
     <div class="filter-bar no-print" data-filter>
       <label class="visually-hidden" for="q">Search projects</label>
       <input class="filter-search" id="q" type="search" placeholder="Search title, tag, or tool" data-q />
@@ -29,7 +30,27 @@ const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month:
       <button class="filter-chip" type="button" data-clear hidden>Clear</button>
       <span class="count" data-count>{projects.length} of {projects.length}</span>
     </div>
+    )}
 
+    {projects.length === 0 ? (
+      <div class="panel panel-pad" style="max-width:60ch">
+        <h2 style="font-size:var(--t-md)">No projects published yet</h2>
+        <p class="muted" style="margin-top:0.6rem">
+          The repository ships worked examples, kept as drafts so the page
+          structure stays visible. Open one in the CMS, replace the numbers and
+          the write-up with your own, then untick <span class="mono">Draft</span>
+          to publish it.
+        </p>
+        <p class="muted" style="margin-top:0.8rem">
+          To start from scratch instead, add a new project — every field carries
+          a description explaining what belongs in it.
+        </p>
+        <div class="btn-row" style="margin-top:1.2rem">
+          <a class="btn btn-primary" href="https://app.pagescms.org" target="_blank" rel="noopener">Open the CMS</a>
+          <a class="btn" href="/notes/">Read the notes instead</a>
+        </div>
+      </div>
+    ) : (
     <ul class="project-list" data-list>
       {projects.map((p) => (
         <li
@@ -60,6 +81,7 @@ const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month:
         </li>
       ))}
     </ul>
+    )}
 
     <p class="empty-state" data-empty hidden>
       No project matches that filter. <button class="btn" type="button" data-clear-2>Show all projects</button>
@@ -75,7 +97,7 @@ const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month:
     const clear = bar.querySelector<HTMLButtonElement>('[data-clear]')!;
     const count = bar.querySelector<HTMLElement>('[data-count]')!;
     const items = [...document.querySelectorAll<HTMLElement>('[data-item]')];
-    const empty = document.querySelector<HTMLElement>('[data-empty]')!;
+    const empty = document.querySelector<HTMLElement>('[data-empty]');
     const active = new Set<string>();
 
     function apply() {
@@ -90,7 +112,7 @@ const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month:
         if (show) shown++;
       }
       count.textContent = `${shown} of ${items.length}`;
-      empty.hidden = shown !== 0;
+      if (empty) empty.hidden = shown !== 0;
       clear.hidden = active.size === 0 && !term;
       // Keep the filter state in the URL so a filtered view can be shared.
       const params = new URLSearchParams();

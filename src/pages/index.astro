@@ -1,7 +1,7 @@
 ---
 import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
-import HeroPlot from '../components/HeroPlot.astro';
+import Portrait from '../components/Portrait.astro';
 import { SITE } from '../lib/site';
 
 const projects = (await getCollection('projects', ({ data }) => !data.draft))
@@ -40,17 +40,18 @@ const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month:
 
         <div class="btn-row">
           <a class="btn btn-primary" href="/projects/">See the projects</a>
-          <a class="btn" href="/resume.pdf">Résumé (PDF)</a>
+          <a class="btn" href={SITE.resume}>Résumé (PDF)</a>
           <a class="btn" href={SITE.linkedin} target="_blank" rel="noopener">LinkedIn</a>
         </div>
       </div>
 
-      <div class="hero-plot">
-        <HeroPlot />
+      <div class="hero-portrait">
+        <Portrait />
       </div>
     </div>
   </section>
 
+  {featured.length > 0 && (
   <section class="wrap section-tight rule-top">
     <div class="section-head">
       <span class="idx">01</span>
@@ -82,10 +83,11 @@ const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month:
       ))}
     </ul>
   </section>
+  )}
 
-  <section class="wrap section-tight">
+  <section class="wrap section-tight rule-top">
     <div class="section-head">
-      <span class="idx">02</span>
+      <span class="idx">{featured.length > 0 ? '02' : '01'}</span>
       <h2>How these pages are put together</h2>
     </div>
     <div class="prose">
@@ -95,13 +97,20 @@ const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month:
         netlists and layouts can be published in full without touching a foundry
         NDA.
       </p>
+      {projects.length === 0 && (
+        <p class="muted">
+          No projects are published yet. The worked examples in the repository are
+          kept as drafts so the page structure stays visible while you replace
+          them with your own.
+        </p>
+      )}
     </div>
   </section>
 
   {notes.length > 0 && (
     <section class="wrap section-tight">
       <div class="section-head">
-        <span class="idx">03</span>
+        <span class="idx">{featured.length > 0 ? '03' : '02'}</span>
         <h2>Notes</h2>
         <p class="note"><a href="/notes/">All notes</a></p>
       </div>

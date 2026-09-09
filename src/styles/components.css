@@ -58,24 +58,34 @@
   /* Explicit minmax(0,…) base: a grid item's default min-width:auto lets a wide
      child (a plot, a nowrap table cell) push the column past the viewport. */
   grid-template-columns: minmax(0, 1fr); }
-@media (min-width: 60rem) { .hero-grid { grid-template-columns: minmax(0, 27rem) minmax(0, 1fr); } }
+@media (min-width: 60rem) {
+  .hero-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 18rem); align-items: center; }
+}
 
 .hero h1 {
   font-size: var(--t-2xl); font-weight: 600; letter-spacing: -0.032em;
   line-height: 1.02; margin-bottom: 0.9rem;
 }
-.hero-lede { font-size: var(--t-md); color: var(--ink-2); max-width: 34ch; margin-bottom: 1.6rem; }
-.hero-plot { min-width: 0; }
-.hero-plot-frame {
-  background: var(--panel); border: 1px solid var(--rule); border-radius: 3px;
-  padding: 0.9rem 1rem 0.6rem;
+.hero-lede { font-size: var(--t-md); color: var(--ink-2); max-width: 46ch; margin-bottom: 1.6rem; }
+.hero-portrait { min-width: 0; }
+
+.portrait { margin: 0; display: grid; gap: 0.6rem; }
+.portrait-img {
+  width: 100%; aspect-ratio: 4 / 5; object-fit: cover;
+  background: var(--panel-sunk);
+  border: 1px solid var(--rule); border-radius: 3px;
 }
-.hero-plot-head {
-  display: flex; align-items: baseline; gap: 0.7rem; flex-wrap: wrap;
-  padding-bottom: 0.6rem; margin-bottom: 0.4rem; border-bottom: 1px solid var(--rule);
+.portrait-empty {
+  aspect-ratio: 4 / 5;
+  display: grid; place-content: center; justify-items: center; gap: 0.9rem;
+  padding: 1.25rem;
+  background: var(--panel);
+  border: 1px dashed var(--rule-strong); border-radius: 3px;
+  color: var(--ink-3);
 }
-.hero-plot-head h2 { font-size: var(--t-cap); font-weight: 600; letter-spacing: 0; }
-.hero-plot-head .cond { font-family: var(--mono); font-size: var(--t-xs); color: var(--ink-3); margin-left: auto; }
+.portrait-empty svg { width: 3rem; height: 3rem; }
+.portrait-empty p { font-size: var(--t-xs); color: var(--ink-2); text-align: center; max-width: 26ch; line-height: 1.5; }
+.portrait figcaption { font-size: var(--t-xs); color: var(--ink-3); font-family: var(--mono); }
 
 /* headline parameters, set as a datasheet's key-specs block */
 .keyspecs { display: grid; gap: 0; border-top: 1px solid var(--rule-strong); margin-bottom: 1.6rem; }

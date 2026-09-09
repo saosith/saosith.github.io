@@ -1,9 +1,23 @@
 ---
+import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import { SITE } from '../lib/site';
 import { TIMELINE, skillGroups } from '../lib/about';
 
 const SKILLS = skillGroups();
+
+/**
+ * A skill's "used on" link is only rendered if it points at a page that is
+ * actually published. Draft a project and its claims quietly fall back to
+ * "coursework" rather than becoming dead links — so the evidence rule holds
+ * itself up without anyone maintaining it by hand.
+ */
+const published = new Set([
+  ...(await getCollection('projects', ({ data }) => !data.draft)).map((p) => `/projects/${p.id}/`),
+  ...(await getCollection('notes', ({ data }) => !data.draft)).map((n) => `/notes/${n.id}/`),
+]);
+const isLive = (href?: string) =>
+  !!href && (published.has(href) || /^https?:\/\//.test(href));
 ---
 
 <Base
@@ -50,7 +64,7 @@ const SKILLS = skillGroups();
               {t.body && <p class="tl-body">{t.body}</p>}
               {t.evidenceLabel && (
                 <div class="tl-evidence">
-                  {t.evidenceHref
+                  {isLive(t.evidenceHref)
                     ? <a href={t.evidenceHref}>{t.evidenceLabel}</a>
                     : <span class="muted">{t.evidenceLabel} — add the link</span>}
                 </div>
@@ -76,7 +90,7 @@ const SKILLS = skillGroups();
               {g.items.map((i) => (
                 <li>
                   <span>{i.skill}</span>
-                  {i.whereLabel && i.whereHref
+                  {i.whereLabel && isLive(i.whereHref)
                     ? <span class="where"><a href={i.whereHref}>{i.whereLabel}</a></span>
                     : <span class="no-link">coursework</span>}
                 </li>
