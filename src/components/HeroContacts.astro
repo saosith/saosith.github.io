@@ -1,7 +1,19 @@
 ---
 import { SITE } from '../lib/site';
 
-/** Quick links under the tagline. Anything left blank in the CMS is skipped. */
+/**
+ * Quick links under the tagline. Anything left blank in the CMS is skipped.
+ *
+ * GitHub and LinkedIn use their official marks — GitHub's Octicon `mark-github`
+ * and LinkedIn's "in" bug — rendered monochrome in the surrounding text colour.
+ * Both brands permit the monochrome form when it is a link to a profile, and it
+ * is the only version that survives the dark theme, where GitHub's black mark
+ * would disappear into the background.
+ *
+ * Email has no brand mark. It is a protocol, not a product, so it gets an
+ * envelope. Using Gmail's logo would brand a personal address with Google's
+ * identity and imply an association that isn't there.
+ */
 const items = [
   SITE.email && { href: `mailto:${SITE.email}`, label: SITE.email, icon: 'mail', ext: false },
   SITE.phone && { href: `tel:${SITE.phone.replace(/[^\d+]/g, '')}`, label: SITE.phone, icon: 'phone', ext: false },
@@ -14,29 +26,28 @@ const items = [
   {items.map((i) => (
     <li>
       <a href={i.href} {...(i.ext ? { target: '_blank', rel: 'me noopener' } : {})}>
-        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
-          {i.icon === 'mail' && (
-            <>
-              <rect x="2.5" y="4.5" width="19" height="15" rx="2" stroke="currentColor" stroke-width="1.7" />
-              <path d="M3 6.5l9 6 9-6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
-            </>
-          )}
-          {i.icon === 'phone' && (
-            <path d="M6.5 3.5h3l1.5 4-2 1.5a12 12 0 006 6l1.5-2 4 1.5v3a2 2 0 01-2.2 2A17 17 0 014.5 5.7 2 2 0 016.5 3.5z"
-                  stroke="currentColor" stroke-width="1.7" stroke-linejoin="round" />
-          )}
-          {i.icon === 'linkedin' && (
-            <>
-              <rect x="3" y="3" width="18" height="18" rx="2" stroke="currentColor" stroke-width="1.7" />
-              <path d="M7 10.5V17M7 7.5v.01M11 17v-3.6c0-1.2.8-2.1 2-2.1s2 .9 2 2.1V17"
-                    stroke="currentColor" stroke-width="1.7" stroke-linecap="round" />
-            </>
-          )}
-          {i.icon === 'github' && (
-            <path d="M9 19c-4 1.2-4-2.2-5.5-2.8M15 21v-3.3c0-.9.1-1.3-.4-1.8 2.3-.3 4.4-1.2 4.4-5a3.9 3.9 0 00-1-2.7 3.6 3.6 0 00-.1-2.7s-.9-.3-2.9 1.1a10 10 0 00-5 0C7.9 4.4 7 4.7 7 4.7a3.6 3.6 0 00-.1 2.7 3.9 3.9 0 00-1 2.7c0 3.8 2.1 4.7 4.4 5-.4.4-.4.9-.4 1.5V21"
-                  stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" />
-          )}
+        {i.icon === 'mail' && (
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M3 5h18a1 1 0 0 1 1 1v.2l-9.47 5.92a1 1 0 0 1-1.06 0L2 6.2V6a1 1 0 0 1 1-1Zm19 3.55V18a1 1 0 0 1-1 1H3a1 1 0 0 1-1-1V8.55l9.47 5.92a1 1 0 0 0 1.06 0L22 8.55Z" />
+          </svg>
+        )}
+        {i.icon === 'phone' && (
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M6.6 2h2.9a1 1 0 0 1 .96.73l1.05 3.7a1 1 0 0 1-.4 1.09l-1.9 1.33a13.5 13.5 0 0 0 5.94 5.94l1.33-1.9a1 1 0 0 1 1.09-.4l3.7 1.05a1 1 0 0 1 .73.96v2.9A2.6 2.6 0 0 1 19.4 20 17.4 17.4 0 0 1 4 4.6 2.6 2.6 0 0 1 6.6 2Z" />
+          </svg>
+        )}
+        {/* LinkedIn "in" bug — official mark */}
+        {i.icon === 'linkedin' && (
+          <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z" />
+          </svg>
+        )}
+        {/* GitHub Octicon mark-github — official mark */}
+        {i.icon === 'github' && (
+          <svg viewBox="0 0 16 16" fill="currentColor" aria-hidden="true">
+            <path d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82a7.6 7.6 0 0 1 2-.27c.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.01 8.01 0 0 0 16 8c0-4.42-3.58-8-8-8Z" />
         </svg>
+        )}
         <span>{i.label}</span>
       </a>
     </li>
