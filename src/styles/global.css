@@ -211,6 +211,38 @@ body > main > section,
   margin-left: auto; text-align: right;
 }
 
+/* Collapsible sections. The heading becomes a button (see SectionToggles.astro);
+   collapsing hides every sibling of the head, so no section needs a wrapper. */
+.section-toggle {
+  font: inherit; color: inherit; letter-spacing: inherit;
+  background: none; border: 0; padding: 0; margin: 0;
+  display: inline-flex; align-items: center; gap: 0.5rem;
+  cursor: pointer; text-align: left;
+}
+.section-toggle:hover { color: var(--ink-2); }
+.section-toggle .chev { flex: none; color: var(--ink-3); transition: transform 0.15s ease; }
+.section-toggle[aria-expanded='false'] .chev { transform: rotate(-90deg); }
+/* The slide: a one-row grid animated between 1fr and 0fr, which needs no height
+   measurement and so keeps working when the content reflows. */
+.section-panel { display: grid; grid-template-rows: 1fr; }
+.section-body { min-height: 0; overflow: hidden; }
+.section.is-collapsed > .section-panel { grid-template-rows: 0fr; }
+.section.is-collapsed > .section-head { margin-bottom: 0; }
+.sections-animate .section-panel { transition: grid-template-rows 0.28s cubic-bezier(0.4, 0, 0.2, 1); }
+.sections-animate .section-body { transition: opacity 0.2s ease, visibility 0.28s; }
+.sections-animate .is-collapsed .section-body { opacity: 0; visibility: hidden; }
+
+@media (prefers-reduced-motion: reduce) {
+  .section-toggle .chev,
+  .sections-animate .section-panel,
+  .sections-animate .section-body { transition: none; }
+}
+/* Nothing may be hidden on paper. */
+@media print {
+  .section.is-collapsed > .section-panel { grid-template-rows: 1fr; }
+  .section.is-collapsed .section-body { opacity: 1; visibility: visible; }
+}
+
 /* ---------------- panels ---------------- */
 .panel { background: var(--panel); border: 1px solid var(--rule); border-radius: 3px; }
 .panel-pad { padding: var(--unit); }

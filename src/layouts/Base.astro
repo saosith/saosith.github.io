@@ -4,6 +4,7 @@ import { fileURLToPath } from 'node:url';
 import { SITE } from '../lib/site';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
+import SectionToggles from '../components/SectionToggles.astro';
 import '../styles/global.css';
 import '../styles/components.css';
 
@@ -62,5 +63,6 @@ const ogImage = existsSync(ogPath) ? new URL('/og.png', SITE.url).href : null;
       <slot />
     </main>
     <Footer />
+    <SectionToggles />
   </body>
 </html>

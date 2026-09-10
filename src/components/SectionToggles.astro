@@ -1,0 +1,96 @@
+---
+/**
+ * Makes every section heading on the page a collapse/expand control.
+ *
+ * Progressive enhancement on purpose: the markup ships fully expanded, and this
+ * script turns each `<h2>` into a button afterwards. With JavaScript off, or in
+ * print, every section stays open — nothing on the page can become unreachable
+ * because a toggle failed to load.
+ *
+ * State is per tab (sessionStorage), so collapsing a long section while reading
+ * survives a click into a project page and back, but a fresh visit always opens
+ * on the full page.
+ *
+ * The slide comes from wrapping the body in a one-row grid and animating
+ * `grid-template-rows` between `1fr` and `0fr`. That transitions to the
+ * content's real height without measuring it in JavaScript, so a section that
+ * reflows — a filtered project list, a rotated phone — still slides correctly.
+ */
+---
+
+<script is:inline>
+  (() => {
+    const KEY = (id) => 'section-collapsed:' + id;
+
+    const CHEVRON =
+      '<svg class="chev" viewBox="0 0 12 12" width="12" height="12" aria-hidden="true">' +
+      '<path d="M2 4.5 6 8.5 10 4.5" fill="none" stroke="currentColor" stroke-width="1.6" ' +
+      'stroke-linecap="round" stroke-linejoin="round"/></svg>';
+
+    const sections = document.querySelectorAll('main section.section > .section-head > h2');
+    if (!sections.length) return;
+
+    const setState = (section, btn, collapsed, remember) => {
+      section.classList.toggle('is-collapsed', collapsed);
+      btn.setAttribute('aria-expanded', String(!collapsed));
+      if (!remember || !section.id) return;
+      try {
+        if (collapsed) sessionStorage.setItem(KEY(section.id), '1');
+        else sessionStorage.removeItem(KEY(section.id));
+      } catch (e) {}
+    };
+
+    const registry = new Map();
+
+    for (const h2 of sections) {
+      const section = h2.closest('section.section');
+
+      // Everything after the heading moves into the sliding wrapper. Building it
+      // here rather than in the markup keeps all eight sections untouched, and
+      // leaves the no-JS page as plain, unwrapped content.
+      const head = h2.closest('.section-head');
+      const panel = document.createElement('div');
+      panel.className = 'section-panel';
+      const body = document.createElement('div');
+      body.className = 'section-body';
+      body.append(...[...section.children].filter((el) => el !== head));
+      panel.append(body);
+      section.append(panel);
+
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.className = 'section-toggle';
+      btn.innerHTML = h2.innerHTML + CHEVRON;
+      h2.replaceChildren(btn);
+
+      let collapsed = false;
+      try {
+        collapsed = section.id ? sessionStorage.getItem(KEY(section.id)) === '1' : false;
+      } catch (e) {}
+      setState(section, btn, collapsed, false);
+
+      btn.addEventListener('click', () => {
+        setState(section, btn, !section.classList.contains('is-collapsed'), true);
+      });
+
+      if (section.id) registry.set(section.id, { section, btn });
+    }
+
+    // A link to #experience has to land on an open section, however it was left.
+    const openFromHash = () => {
+      const entry = registry.get(decodeURIComponent(location.hash.slice(1)));
+      if (entry) setState(entry.section, entry.btn, false, true);
+    };
+    openFromHash();
+    addEventListener('hashchange', openFromHash);
+
+    // Transitions are switched on only after the restored state has painted, so
+    // a section that starts collapsed does not slide shut in front of the reader.
+    // The timer is a fallback: a page opened in a background tab has its frame
+    // callbacks throttled, and the toggles would sit un-animated until it is
+    // brought forward.
+    const enable = () => document.documentElement.classList.add('sections-animate');
+    requestAnimationFrame(() => requestAnimationFrame(enable));
+    setTimeout(enable, 100);
+  })();
+</script>
