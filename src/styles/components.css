@@ -557,3 +557,16 @@ a.data-dl:hover { border-color: var(--ink); background: var(--panel-sunk); }
 /* Keep the CMS path on one line — breaking it after the arrow reads as two
    separate instructions. */
 .about-photo-empty .mono { white-space: nowrap; }
+
+/* ---------------- subsection inside a section ----------------
+   Matches the skills-column subheads: a rule under the label rather than a
+   heavier band, so it reads as a level below the section head without adding a
+   second horizontal line to the section. 48 + 24 + 24 = four grid rows. */
+.subsection { margin-top: calc(var(--unit) * 2); }
+.subsection > h3 {
+  font-size: var(--t-cap);
+  line-height: var(--unit);
+  margin: 0 0 var(--unit);
+  padding-bottom: 0;
+  box-shadow: inset 0 -1px 0 var(--rule-strong);
+}

@@ -30,7 +30,8 @@ Every item is a form in the CMS — the sidebar entry is named in bold.
       credentials.**
 - [ ] **04 · Awards** — one placeholder entry. Fill it in, or delete it and the
       section renders empty.
-- [ ] **07 · Courses** — one placeholder entry, same deal.
+- [ ] **06 · Education → Coursework** — one placeholder entry, same deal.
+      Delete every row and the subsection disappears from the page.
 - [ ] **03 · Projects** — all three worked examples ship as `draft: true`, so
       **nothing is published yet**, and their numbers are invented. Open one,
       replace the numbers and the write-up, then untick Draft. Until something
@@ -76,7 +77,7 @@ section it edits.
 | 04 · Awards | `src/data/awards.json` | Same shape as Experience |
 | 05 · Skills | `src/data/skills.json` | One row per skill. Rows sharing a group name become one column, in the order the groups first appear |
 | 06 · Education | `src/data/education.json` | Same shape as Experience |
-| 07 · Courses | `src/data/courses.json` | Code, title, term, note |
+| 06 · Education → Coursework | `src/data/courses.json` | Code, title, term, note. Renders as a subsection of Education, not a section of its own |
 | Notes | `src/content/notes/*.md` | Title, summary, date, tags, body (the collection exists, but nothing links to it — both examples are drafts) |
 | Resume | `src/data/resume.json` | The CV file and the nav button's label |
 | Footer | `src/data/footer.json` | The paragraph under "Use" in the footer |
@@ -141,7 +142,7 @@ choices under `options.values`.
 ## Site shape
 
 The site is one scrolling page. `src/pages/index.astro` stacks the sections —
-hero, About, Experience, Projects, Awards, Skills, Education, Courses, Data —
+hero, About, Experience, Projects, Awards, Skills, Education, Data —
 and the header nav is anchors into them, with the current section highlighted as
 you scroll. Contact details live in the hero and the footer rather than in a
 section of their own.
@@ -156,6 +157,13 @@ Every section can be collapsed by clicking its heading. The markup ships
 expanded and JavaScript upgrades the `<h2>` into a button, so the content is
 there with scripting off. State is per-tab (`sessionStorage`), and a link to
 `#skills` opens that section if it was closed.
+
+Coursework is a **subsection** of Education rather than a section of its own: a
+course list is supporting evidence for a degree, not a peer of it, and giving it
+a nav item and a full section rule around a handful of course codes read as
+padding. Subsections use `.subsection` with an `<h3>`, styled to match the
+skills-column subheads. The `#courses` id lives on that heading, so older links
+still land in the right place.
 
 Vertical rhythm is a 24px grid (`--unit`), drawn as a faint graticule behind the
 page. Section heights are multiples of it, which is why fixed sizes in the CSS
@@ -255,7 +263,7 @@ src/
   layouts/        page shell, meta tags, theme handling
   data/           CMS-editable content, one file per sidebar entry:
                   now, about, experience, awards, skills, education,
-                  courses, resume, footer, site
+                  courses (rendered inside education), resume, footer, site
   lib/
     charts.ts       hand-rolled SVG charts (no charting dependency)
     opamp-model.ts  the first-order model behind the explorer

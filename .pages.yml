@@ -292,9 +292,11 @@ content:
           - { name: evidenceHref, label: Evidence — link, type: string }
           - { name: placeholder, label: Still a placeholder, type: boolean, default: false }
 
-  # ---------------------------------------------------------- 07  courses
+  # ------------------------------------------ 06b  coursework (in education)
+  # Its own file and its own form, but it renders as a subsection of Education
+  # rather than a section of its own — see EducationSection.astro.
   - name: courses
-    label: 07 · Courses
+    label: 06 · Education → Coursework
     type: file
     path: src/data/courses.json
     format: json
@@ -303,7 +305,7 @@ content:
         label: Courses
         type: object
         list: true
-        description: Coursework that backs up the work. Code and term are optional.
+        description: Coursework that backs up the work, shown under Education. Code and term are optional. Delete every row and the subsection disappears.
         fields:
           - { name: code, label: Course code, type: string }
           - { name: title, label: Title, type: string, required: true }

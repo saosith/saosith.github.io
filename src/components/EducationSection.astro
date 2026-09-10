@@ -1,8 +1,16 @@
 ---
-import { education } from '../lib/about';
+import { education, COURSES } from '../lib/about';
 import { livePredicate } from '../lib/published';
 import TimelineList from './TimelineList.astro';
 
+/**
+ * Education, with coursework as a subsection rather than a section of its own.
+ *
+ * A course list is supporting evidence for a degree, not a peer of it. Giving
+ * it top-level billing put a nav item and a full section rule around a handful
+ * of course codes, which read as padding. The `#courses` id stays on the
+ * subheading so older links still land in the right place.
+ */
 const isLive = await livePredicate();
 ---
 
@@ -12,4 +20,22 @@ const isLive = await livePredicate();
   </div>
 
   <TimelineList entries={education()} isLive={isLive} emptyText="Nothing listed yet." />
+
+  {COURSES.length > 0 && (
+    <div class="subsection">
+      <h3 id="courses">Coursework</h3>
+      <ul class="course-list">
+        {COURSES.map((c) => (
+          <li class="course-item">
+            <div class="course-main">
+              {c.code && <span class="course-code">{c.code}</span>}
+              <span class="course-title">{c.title}</span>
+            </div>
+            {c.term && <div class="course-term">{c.term}</div>}
+            {c.note && <p class="course-note">{c.note}</p>}
+          </li>
+        ))}
+      </ul>
+    </div>
+  )}
 </section>
