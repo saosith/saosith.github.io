@@ -542,7 +542,10 @@ a.data-dl:hover { border-color: var(--ink); background: var(--panel-sunk); }
   .about-photo { justify-self: center; }
 }
 
-.about-photo { min-width: 0; }
+/* The column is centred with justify-self, which makes this box shrink-to-fit.
+   A child sized `width: 100%` would then resolve against a width that depends on
+   the child — the image collapses to nothing. Size the box itself instead. */
+.about-photo { min-width: 0; width: calc(var(--unit) * 9); max-width: 100%; }
 .about-photo-img,
 .about-photo-empty {
   width: 100%;
