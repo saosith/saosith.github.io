@@ -175,13 +175,13 @@ h4 { font-size: var(--t-base); }
 .wrap { width: min(100% - var(--gutter) * 2, var(--max)); margin-inline: auto; }
 .wrap-wide { width: min(100% - var(--gutter) * 2, var(--max-wide)); margin-inline: auto; }
 .prose-col { max-width: var(--measure); }
-.section { padding-block: clamp(3rem, 7vw, 5.5rem); }
-.section-tight { padding-block: clamp(2rem, 4vw, 3rem); }
+.section { padding-block: clamp(2rem, 3.6vw, 3.1rem); }
+.section-tight { padding-block: clamp(1.5rem, 2.6vw, 2.2rem); }
 .rule-top { border-top: 1px solid var(--rule); }
 
 .section-head {
   display: flex; align-items: baseline; gap: 0.9rem; flex-wrap: wrap;
-  padding-bottom: 0.7rem; margin-bottom: 1.8rem;
+  padding-bottom: 0.6rem; margin-bottom: 1.3rem;
   border-bottom: 1px solid var(--rule-strong);
 }
 .section-head .idx {

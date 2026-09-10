@@ -38,21 +38,15 @@
   "skills": [
     {
       "group": "Schematic & simulation",
-      "skill": "Xschem",
-      "whereLabel": "op-amp",
-      "whereHref": "/projects/two-stage-opamp/"
+      "skill": "Xschem"
     },
     {
       "group": "Schematic & simulation",
-      "skill": "ngspice",
-      "whereLabel": "op-amp",
-      "whereHref": "/projects/two-stage-opamp/"
+      "skill": "ngspice"
     },
     {
       "group": "Schematic & simulation",
-      "skill": "Corner & Monte Carlo analysis",
-      "whereLabel": "op-amp",
-      "whereHref": "/projects/two-stage-opamp/"
+      "skill": "Corner & Monte Carlo analysis"
     },
     {
       "group": "Schematic & simulation",
@@ -64,21 +58,15 @@
     },
     {
       "group": "Layout & verification",
-      "skill": "Magic VLSI",
-      "whereLabel": "bandgap",
-      "whereHref": "/projects/bandgap-reference/"
+      "skill": "Magic VLSI"
     },
     {
       "group": "Layout & verification",
-      "skill": "DRC / LVS (netgen)",
-      "whereLabel": "bandgap",
-      "whereHref": "/projects/bandgap-reference/"
+      "skill": "DRC / LVS (netgen)"
     },
     {
       "group": "Layout & verification",
-      "skill": "Parasitic extraction",
-      "whereLabel": "bandgap",
-      "whereHref": "/projects/bandgap-reference/"
+      "skill": "Parasitic extraction"
     },
     {
       "group": "Layout & verification",
@@ -86,15 +74,11 @@
     },
     {
       "group": "Process & devices",
-      "skill": "SkyWater sky130 open PDK",
-      "whereLabel": "op-amp",
-      "whereHref": "/projects/two-stage-opamp/"
+      "skill": "SkyWater sky130 open PDK"
     },
     {
       "group": "Process & devices",
-      "skill": "Device characterisation (gm/ID)",
-      "whereLabel": "gm/ID note",
-      "whereHref": "/notes/gm-id-sizing/"
+      "skill": "Device characterisation (gm/ID)"
     },
     {
       "group": "Process & devices",
@@ -102,9 +86,7 @@
     },
     {
       "group": "Tooling",
-      "skill": "Python (NumPy, Matplotlib)",
-      "whereLabel": "data pipeline",
-      "whereHref": "/notes/plotting-ngspice/"
+      "skill": "Python (NumPy, Matplotlib)"
     },
     {
       "group": "Tooling",

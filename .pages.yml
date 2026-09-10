@@ -206,12 +206,14 @@ content:
         label: Tools
         type: object
         list: true
-        description: One row per tool. Rows sharing a group name are shown together, in the order they first appear. A row with no project link renders as "coursework".
+        description: One row per skill. Rows sharing a group name are shown together, in the order the groups first appear.
         fields:
-          - { name: group, label: Group, type: string, required: true }
-          - { name: skill, label: Tool, type: string, required: true }
-          - { name: whereLabel, label: Used on — label, type: string }
-          - { name: whereHref, label: Used on — link, type: string }
+          - name: group
+            label: Group
+            type: string
+            required: true
+            description: e.g. "Schematic & simulation". Reuse the same wording to put skills in the same column.
+          - { name: skill, label: Skill, type: string, required: true }
 
   # -------------------------------------------------------- site-wide values
   - name: site

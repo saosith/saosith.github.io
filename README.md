@@ -69,7 +69,7 @@ effectively private without any extra auth.
 |---|---|
 | Projects | Every frontmatter field as a proper form — spec table rows, headline numbers, tags, footnotes, links, the provenance badge, draft/featured toggles |
 | Notes | Title, summary, date, tags, body (the collection still exists, but nothing links to it — both examples are drafts) |
-| About page | Timeline entries (each tagged Experience, Education or Award), courses, and the tools list (`src/data/about.json`) |
+| About page | Timeline entries (each tagged Experience, Education or Award), courses, and the skills list (`src/data/about.json`) |
 | Site details | Name, tagline, email, profile links (`src/data/site.json`) |
 | Media | Upload images and PDFs to `public/uploads/`, referenced as `/uploads/<name>` |
 

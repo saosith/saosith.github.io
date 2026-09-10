@@ -43,17 +43,17 @@
 
 /* ---------------- footer ---------------- */
 .site-footer {
-  border-top: 1px solid var(--rule); margin-top: 4rem;
-  padding-block: 2.5rem 3rem; font-size: var(--t-cap); color: var(--ink-2);
+  border-top: 1px solid var(--rule); margin-top: 2rem;
+  padding-block: 1.75rem 2.25rem; font-size: var(--t-cap); color: var(--ink-2);
 }
-.site-footer-grid { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); }
+.site-footer-grid { display: flex; flex-wrap: wrap; gap: 1.5rem clamp(2.5rem, 6vw, 5rem); }
 .site-footer h3 { font-size: var(--t-xs); font-family: var(--mono); color: var(--ink-3); font-weight: 500; margin-bottom: 0.5rem; }
 .site-footer ul { list-style: none; padding: 0; display: grid; gap: 0.3rem; }
 .site-footer a { color: var(--ink-2); text-decoration: none; }
 .site-footer a:hover { color: var(--ink); text-decoration: underline; }
 
 /* ---------------- hero ---------------- */
-.hero { padding-block: clamp(2.5rem, 6vw, 4.5rem) clamp(2rem, 4vw, 3rem); }
+.hero { padding-block: clamp(2rem, 4vw, 3rem) clamp(1.5rem, 3vw, 2.4rem); }
 .hero-grid { display: grid; gap: clamp(1.75rem, 4vw, 3rem); align-items: start;
   /* Explicit minmax(0,…) base: a grid item's default min-width:auto lets a wide
      child (a plot, a nowrap table cell) push the column past the viewport. */
@@ -304,11 +304,7 @@ details.data-table thead th { color: var(--ink-3); font-family: var(--mono); fon
 .skills { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); }
 .skill-group h3 { font-size: var(--t-cap); padding-bottom: 0.4rem; border-bottom: 1px solid var(--rule-strong); margin-bottom: 0.6rem; }
 .skill-group ul { list-style: none; padding: 0; display: grid; gap: 0.45rem; }
-.skill-group li { font-size: var(--t-cap); display: flex; justify-content: space-between; gap: 0.8rem; align-items: baseline; }
-.skill-group .where { font-size: var(--t-xs); }
-.skill-group .where a { color: var(--ink-3); text-decoration: none; border-bottom: 1px dotted var(--rule-strong); }
-.skill-group .where a:hover { color: var(--signal-deep); }
-.skill-group .no-link { color: var(--ink-3); font-size: var(--t-xs); font-family: var(--mono); }
+.skill-group li { font-size: var(--t-cap); }
 
 /* ---------------- notes list ---------------- */
 .note-list { list-style: none; padding: 0; border-top: 1px solid var(--rule-strong); }

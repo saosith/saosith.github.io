@@ -33,8 +33,6 @@ export interface TimelineEntry {
 export interface SkillRow {
   group: string;
   skill: string;
-  whereLabel?: string;
-  whereHref?: string;
 }
 
 export const TIMELINE: TimelineEntry[] = data.timeline as TimelineEntry[];
@@ -53,9 +51,9 @@ export interface Course {
 export const COURSES: Course[] = (data as { courses?: Course[] }).courses ?? [];
 
 /**
- * The CMS edits a flat list (one row per skill, carrying its group name) because
- * a list nested inside a list is awkward to edit. Grouping happens here, at
- * build time, preserving first-seen group order.
+ * The CMS edits a flat list, one row per skill carrying its group name, because
+ * a list nested inside a list is awkward to edit. Grouping happens here at build
+ * time, preserving the order groups first appear in.
  */
 export function skillGroups(): { name: string; items: SkillRow[] }[] {
   const groups: { name: string; items: SkillRow[] }[] = [];

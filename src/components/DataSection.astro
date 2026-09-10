@@ -3,18 +3,21 @@ import { readdirSync, statSync, readFileSync } from 'node:fs';
 import { fileURLToPath } from 'node:url';
 
 /**
- * Lists everything in public/data so the section maintains itself: drop a new
- * dataset in and it appears here, with its title and conditions read out of the
- * file's own `meta` block rather than retyped.
+ * Lists the datasets in public/data, reading each file's own `meta` block so
+ * titles and conditions are never retyped.
+ *
+ * Files marked `"source": "model"` are the placeholder datasets that ship with
+ * the repo — analytical output, not simulation or silicon — so they are left
+ * out. Convert real ngspice results with scripts/raw-to-json.mjs (which writes
+ * `"source": "simulated"`) and they appear here on the next build.
  */
 const dir = fileURLToPath(new URL('../../public/data', import.meta.url));
 
-let files: {
-  file: string; size: number; title: string; conditions: string; source: string;
-}[] = [];
+type Dataset = { file: string; size: number; title: string; conditions: string; source: string };
+let all: Dataset[] = [];
 
 try {
-  files = readdirSync(dir)
+  all = readdirSync(dir)
     .filter((f) => f.endsWith('.json'))
     .sort()
     .map((f) => {
@@ -30,14 +33,12 @@ try {
         source: meta.source ?? '',
       };
     });
-} catch { files = []; }
+} catch { all = []; }
+
+const files = all.filter((f) => f.source !== 'model');
 
 const kb = (n: number) => `${(n / 1024).toFixed(0)} kB`;
-const SOURCE_LABEL: Record<string, string> = {
-  model: 'hand model',
-  simulated: 'simulated',
-  measured: 'measured',
-};
+const SOURCE_LABEL: Record<string, string> = { simulated: 'simulated', measured: 'measured' };
 ---
 
 <section id="data" class="wrap section rule-top">
@@ -48,39 +49,53 @@ const SOURCE_LABEL: Record<string, string> = {
   </div>
 
   {files.length === 0 ? (
-    <p class="muted">No datasets published yet.</p>
-  ) : (
-    <div class="scroll-x">
-      <table class="spec-table">
-        <caption>Downloadable datasets</caption>
-        <thead>
-          <tr>
-            <th scope="col">Dataset</th>
-            <th scope="col">Source</th>
-            <th scope="col">Size</th>
-            <th scope="col">File</th>
-          </tr>
-        </thead>
-        <tbody>
-          {files.map((f) => (
-            <tr>
-              <th scope="row">
-                {f.title}
-                {f.conditions && <span class="data-cond">{f.conditions}</span>}
-              </th>
-              <td class="sym">{SOURCE_LABEL[f.source] ?? '—'}</td>
-              <td class="v">{kb(f.size)}</td>
-              <td><a class="data-dl" href={`/data/${f.file}`} download>{f.file}</a></td>
-            </tr>
-          ))}
-        </tbody>
-      </table>
+    <div class="panel panel-pad" style="max-width:62ch">
+      <h3>No datasets published yet</h3>
+      <p class="muted" style="margin-top:0.6rem">
+        Once a project has real simulation or measurement results, the file
+        behind every plot is listed here as a direct download, with the
+        conditions it was taken under.
+      </p>
+      <p class="muted" style="margin-top:0.7rem">
+        Convert an ngspice run with
+        <span class="mono">scripts/raw-to-json.mjs</span> and it appears on the
+        next build. Nothing to configure.
+      </p>
     </div>
-  )}
+  ) : (
+    <>
+      <div class="scroll-x">
+        <table class="spec-table">
+          <caption>Downloadable datasets</caption>
+          <thead>
+            <tr>
+              <th scope="col">Dataset</th>
+              <th scope="col">Source</th>
+              <th scope="col">Size</th>
+              <th scope="col">File</th>
+            </tr>
+          </thead>
+          <tbody>
+            {files.map((f) => (
+              <tr>
+                <th scope="row">
+                  {f.title}
+                  {f.conditions && <span class="data-cond">{f.conditions}</span>}
+                </th>
+                <td class="sym">{SOURCE_LABEL[f.source] ?? '—'}</td>
+                <td class="v">{kb(f.size)}</td>
+                <td><a class="data-dl" href={`/data/${f.file}`} download>{f.file}</a></td>
+              </tr>
+            ))}
+          </tbody>
+        </table>
+      </div>
 
-  <p class="small muted" style="margin-top:0.9rem">
-    Plain JSON. Each file carries a <span class="mono">meta</span> block naming the
-    conditions it was taken under, so a number is never separated from the setup
-    that produced it.
-  </p>
+      <p class="small muted" style="margin-top:0.9rem">
+        Plain JSON. Each file carries a <span class="mono">meta</span> block naming
+        the conditions it was taken under, so a number is never separated from the
+        setup that produced it.
+      </p>
+    </>
+  )}
 </section>
