@@ -1,10 +1,7 @@
 {
   "courses": [
     {
-      "code": "",
-      "title": "Add a course",
-      "term": "",
-      "note": "Replace with the courses that back your claims — electronics, devices, signals, fields. Code and term are optional."
+      "title": "Introduction to Electronics | Digital Design | Digital Signal Processing & Filtering | Circuits Lab | Microcontroller Systems | Electricity & Magnetism"
     }
   ]
 }
