@@ -24,7 +24,15 @@
       "body": "If you have taped out, name the shuttle and the date — for example \"sky130 via the Efabless MPW shuttle\". A die photo or GDS render on the home page is the strongest single signal an IC portfolio can carry.",
       "evidenceLabel": "GDS / die photo",
       "placeholder": true,
-      "kind": "experience"
+      "kind": "award"
+    }
+  ],
+  "courses": [
+    {
+      "code": "",
+      "title": "Add a course",
+      "term": "",
+      "note": "Replace with the courses that back your claims — electronics, devices, signals, fields. Code and term are optional."
     }
   ],
   "skills": [

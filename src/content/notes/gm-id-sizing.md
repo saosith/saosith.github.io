@@ -3,6 +3,7 @@ title: Sizing with gm/ID instead of square-law
 summary: Why the hand equations stop working below about 200 mV of overdrive, and what to use once they do.
 date: 2026-03-08
 tags: [analog, sky130, methodology]
+draft: true
 ---
 
 The square-law model taught in a first electronics course says drain current

@@ -1,0 +1,86 @@
+---
+import { readdirSync, statSync, readFileSync } from 'node:fs';
+import { fileURLToPath } from 'node:url';
+
+/**
+ * Lists everything in public/data so the section maintains itself: drop a new
+ * dataset in and it appears here, with its title and conditions read out of the
+ * file's own `meta` block rather than retyped.
+ */
+const dir = fileURLToPath(new URL('../../public/data', import.meta.url));
+
+let files: {
+  file: string; size: number; title: string; conditions: string; source: string;
+}[] = [];
+
+try {
+  files = readdirSync(dir)
+    .filter((f) => f.endsWith('.json'))
+    .sort()
+    .map((f) => {
+      const meta = (() => {
+        try { return JSON.parse(readFileSync(`${dir}/${f}`, 'utf8')).meta ?? {}; }
+        catch { return {}; }
+      })();
+      return {
+        file: f,
+        size: statSync(`${dir}/${f}`).size,
+        title: meta.title ?? f,
+        conditions: meta.conditions ?? '',
+        source: meta.source ?? '',
+      };
+    });
+} catch { files = []; }
+
+const kb = (n: number) => `${(n / 1024).toFixed(0)} kB`;
+const SOURCE_LABEL: Record<string, string> = {
+  model: 'hand model',
+  simulated: 'simulated',
+  measured: 'measured',
+};
+---
+
+<section id="data" class="wrap section rule-top">
+  <div class="section-head">
+    <span class="idx">08</span>
+    <h2>Data</h2>
+    <p class="note">Every number plotted on this site, in the file it came from.</p>
+  </div>
+
+  {files.length === 0 ? (
+    <p class="muted">No datasets published yet.</p>
+  ) : (
+    <div class="scroll-x">
+      <table class="spec-table">
+        <caption>Downloadable datasets</caption>
+        <thead>
+          <tr>
+            <th scope="col">Dataset</th>
+            <th scope="col">Source</th>
+            <th scope="col">Size</th>
+            <th scope="col">File</th>
+          </tr>
+        </thead>
+        <tbody>
+          {files.map((f) => (
+            <tr>
+              <th scope="row">
+                {f.title}
+                {f.conditions && <span class="data-cond">{f.conditions}</span>}
+              </th>
+              <td class="sym">{SOURCE_LABEL[f.source] ?? '—'}</td>
+              <td class="v">{kb(f.size)}</td>
+              <td><a class="data-dl" href={`/data/${f.file}`} download>{f.file}</a></td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+  )}
+
+  <p class="small muted" style="margin-top:0.9rem">
+    Plain JSON. Each file carries a <span class="mono">meta</span> block naming the
+    conditions it was taken under, so a number is never separated from the setup
+    that produced it.
+  </p>
+</section>

@@ -3,6 +3,7 @@ title: Getting ngspice results onto this site without redrawing them
 summary: A rawfile-to-JSON step that keeps every published plot traceable to the simulation that produced it.
 date: 2026-05-21
 tags: [tooling, ngspice, methodology]
+draft: true
 ---
 
 Screenshotting a simulator window is the fastest way to publish a result and the

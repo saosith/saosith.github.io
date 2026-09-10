@@ -1,6 +1,5 @@
 ---
 import { SITE } from '../lib/site';
-const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer no-print">
@@ -14,20 +13,12 @@ const year = new Date().getFullYear();
       </ul>
     </div>
     <div>
-      <h3>Data</h3>
-      <ul>
-        <li><a href="/data/opamp-ac.json">opamp-ac.json</a></li>
-        <li><a href="/data/opamp-mc.json">opamp-mc.json</a></li>
-        <li><a href="/data/bandgap-tc.json">bandgap-tc.json</a></li>
-      </ul>
-    </div>
-    <div>
       <h3>Use</h3>
       <p style="max-width:34ch">
         Every design here targets the SkyWater sky130 open PDK. Nothing on this
         site is covered by a foundry NDA.
       </p>
-      <p style="margin-top:0.6rem">© {year} {SITE.name}</p>
+      <p style="margin-top:0.6rem">© {SITE.name}</p>
     </div>
   </div>
 </footer>

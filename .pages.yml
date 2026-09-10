@@ -164,7 +164,7 @@ content:
     format: json
     fields:
       - name: timeline
-        label: Timeline (Experience & Education)
+        label: Timeline (Experience, Education, Awards)
         type: object
         list: true
         description: Every entry needs a date and something a reader can open. Do not list anything you cannot evidence.
@@ -178,6 +178,7 @@ content:
             options:
               - { value: experience, label: Experience }
               - { value: education, label: Education }
+              - { value: award, label: Award }
           - { name: date, label: Date, type: string, required: true }
           - { name: title, label: Title, type: string, required: true }
           - { name: org, label: Organisation, type: string }
@@ -189,6 +190,17 @@ content:
             type: boolean
             default: false
             description: While ticked, this entry renders with a visible "replace this entry" chip.
+
+      - name: courses
+        label: Courses
+        type: object
+        list: true
+        description: Coursework that backs up the work. Code and term are optional.
+        fields:
+          - { name: code, label: Course code, type: string }
+          - { name: title, label: Title, type: string, required: true }
+          - { name: term, label: Term, type: string }
+          - { name: note, label: Note, type: text }
 
       - name: skills
         label: Tools
