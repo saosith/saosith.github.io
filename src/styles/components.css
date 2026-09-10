@@ -229,8 +229,9 @@ details.data-table thead th { color: var(--ink-3); font-family: var(--mono); fon
   background: var(--panel); font-size: var(--t-cap); min-width: 12rem;
 }
 
-.project-list { display: grid; gap: 0; box-shadow: inset 0 1px 0 var(--rule-strong); list-style: none; padding: 0; }
+.project-list { display: grid; gap: 0; list-style: none; padding: 0; }
 .project-row { box-shadow: inset 0 -1px 0 var(--rule); }
+.project-row:last-child { box-shadow: none; }
 .project-row[hidden] { display: none; }
 .project-link {
   display: grid; gap: 0.35rem 1.5rem; padding: 1.35rem 0.2rem;
@@ -291,11 +292,13 @@ details.data-table thead th { color: var(--ink-3); font-family: var(--mono); fon
 .blk[aria-pressed='true'] rect { fill: var(--signal-wash); stroke: var(--signal); stroke-width: 2; }
 
 /* ---------------- timeline ---------------- */
-.timeline { list-style: none; padding: 0; margin: 0; box-shadow: inset 0 1px 0 var(--rule-strong); }
+.timeline { list-style: none; padding: 0; margin: 0; }
 /* Logo, then text. Narrow screens put the date on its own row above both so the
    mark stays beside the entry it belongs to rather than dropping below it. */
 .tl-item { display: grid; gap: 0 1rem; grid-template-columns: 3rem minmax(0, 1fr); padding: var(--unit) 0; box-shadow: inset 0 -1px 0 var(--rule); }
-.tl-date { grid-column: 1 / -1; font-family: var(--mono); font-size: var(--t-sm); color: var(--ink-3); padding-top: 0.15rem; }
+/* The date is set exactly like an entry title — same family, size and weight —
+   so the two columns read as one line rather than as label and value. */
+.tl-date { grid-column: 1 / -1; font-weight: 600; }
 @media (min-width: 44rem) {
   .tl-item { grid-template-columns: 10.5rem 3rem minmax(0, 1fr); gap: 0 1.25rem; }
   .tl-date { grid-column: auto; }
@@ -309,6 +312,11 @@ details.data-table thead th { color: var(--ink-3); font-family: var(--mono); fon
 .tl-body { color: var(--ink-2); font-size: var(--t-cap); max-width: 62ch; }
 .tl-evidence { display: flex; flex-wrap: wrap; gap: 0.6rem; font-size: var(--t-cap); }
 
+/* The last row in a list draws no rule of its own: the section boundary already
+   draws one directly under it, and two lines a band apart read as a mistake. */
+.tl-item:last-child, .course-item:last-child { box-shadow: none; }
+.note-item:last-child { border-bottom: 0; }
+
 /* ---------------- skills matrix ---------------- */
 .skills { display: grid; gap: var(--unit); grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); }
 .skill-group h3 { font-size: var(--t-cap); padding-bottom: 0; box-shadow: inset 0 -1px 0 var(--rule-strong); margin-bottom: 0; }
@@ -316,7 +324,7 @@ details.data-table thead th { color: var(--ink-3); font-family: var(--mono); fon
 .skill-group li { font-size: var(--t-cap); }
 
 /* ---------------- notes list ---------------- */
-.note-list { list-style: none; padding: 0; border-top: 1px solid var(--rule-strong); }
+.note-list { list-style: none; padding: 0; }
 .note-item { border-bottom: 1px solid var(--rule); }
 .note-item a { display: grid; gap: 0.15rem 1.5rem; padding: 1rem 0.2rem; text-decoration: none; color: inherit; }
 @media (min-width: 44rem) { .note-item a { grid-template-columns: 7.5rem minmax(0, 1fr); align-items: baseline; } }
@@ -401,10 +409,8 @@ section[id] { scroll-margin-top: 74px; }
 .site-nav a.nav-resume svg { width: 0.95em; height: 0.95em; }
 
 /* ---------------- courses ---------------- */
-.course-list {
-  list-style: none; padding: 0; margin: 0;
-  box-shadow: inset 0 1px 0 var(--rule-strong);
-}
+/* No top rule: the section heading already draws the line above the first row. */
+.course-list { list-style: none; padding: 0; margin: 0; }
 .course-item {
   display: grid; gap: 0 1.5rem; align-items: baseline;
   padding: var(--unit) 0; box-shadow: inset 0 -1px 0 var(--rule);

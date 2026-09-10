@@ -193,24 +193,27 @@ body > main > section,
 .wrap { width: min(100% - var(--gutter) * 2, var(--max)); margin-inline: auto; }
 .wrap-wide { width: min(100% - var(--gutter) * 2, var(--max-wide)); margin-inline: auto; }
 .prose-col { max-width: var(--measure); }
-.section { padding-block: calc(var(--unit) * 2); }
+/* One grid unit of air above the first line of a section. The bottom is left to
+   the next section's rule, which carries its own unit below the last line. */
+.section { padding-block: var(--unit) 0; }
 .section-tight { padding-block: var(--unit); }
-.rule-top { box-shadow: inset 0 1px 0 var(--rule); }
+
+/* The boundary rule is drawn ON the graticule, not at the box edge: it sits at
+   --grid-offset inside the section, which is exactly where that section's first
+   background line falls. Because every section is a whole number of 24px bands,
+   each rule then lands on the page grid, one band below the last line of the
+   section above and one band above the first line of the section below. */
+.rule-top { position: relative; }
+.rule-top::before {
+  content: ''; position: absolute; left: 0; right: 0;
+  top: var(--grid-offset); height: 1px; background: var(--rule);
+}
 
 .section-head {
   display: flex; align-items: baseline; gap: 0.9rem; flex-wrap: wrap;
   padding-bottom: 0; margin-bottom: var(--unit);
   box-shadow: inset 0 -1px 0 var(--rule-strong);
 }
-.section-head .idx {
-  font-family: var(--mono); font-size: var(--t-sm);
-  color: var(--ink-3); flex: none;
-}
-.section-head .note {
-  color: var(--ink-2); font-size: var(--t-cap);
-  margin-left: auto; text-align: right;
-}
-
 /* Collapsible sections. The heading becomes a button (see SectionToggles.astro);
    collapsing hides every sibling of the head, so no section needs a wrapper. */
 .section-toggle {
@@ -304,6 +307,9 @@ body > main > section,
 .prose > h2 { margin-block: calc(var(--unit) * 2) var(--unit); padding-bottom: 0; border-bottom: 1px solid var(--rule); }
 .prose > h3 { margin-block: calc(var(--unit) * 2) var(--unit); }
 .prose > p, .prose > ul, .prose > ol { margin-block-end: var(--unit); }
+/* The trailing margin would push the boundary rule a whole band further down;
+   the section's own spacing already supplies the gap. */
+.section .prose > :last-child { margin-block-end: 0; }
 .prose ul, .prose ol { padding-inline-start: 1.3em; }
 .prose li { margin-block-end: 0; }
 .prose li::marker { color: var(--ink-3); }

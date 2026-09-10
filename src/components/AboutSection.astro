@@ -1,21 +1,13 @@
 ---
-import { SITE } from '../lib/site';
+import { ABOUT } from '../lib/about';
 ---
 
-<section id="about" class="wrap section rule-top">
+<section id="about" class="wrap section">
   <div class="section-head">
-    <span class="idx">01</span>
     <h2>About</h2>
   </div>
 
   <div class="prose">
-    <p>
-      I am an electrical engineering student at the {SITE.university}, working
-      on analog and mixed-signal integrated circuit design and silicon
-      photonics. Most of what I build lives on the SkyWater sky130 open PDK,
-      which means I can publish the schematics, netlists and layouts in full
-      rather than describing them from a distance.
-    </p>
-    <p>{SITE.homeIntro}</p>
+    {ABOUT.map((p) => <p>{p}</p>)}
   </div>
 </section>

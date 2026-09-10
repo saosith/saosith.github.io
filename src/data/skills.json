@@ -1,0 +1,68 @@
+{
+  "skills": [
+    {
+      "group": "Schematic & simulation",
+      "skill": "Xschem"
+    },
+    {
+      "group": "Schematic & simulation",
+      "skill": "ngspice"
+    },
+    {
+      "group": "Schematic & simulation",
+      "skill": "Corner & Monte Carlo analysis"
+    },
+    {
+      "group": "Schematic & simulation",
+      "skill": "Cadence Virtuoso / Spectre"
+    },
+    {
+      "group": "Schematic & simulation",
+      "skill": "LTspice"
+    },
+    {
+      "group": "Layout & verification",
+      "skill": "Magic VLSI"
+    },
+    {
+      "group": "Layout & verification",
+      "skill": "DRC / LVS (netgen)"
+    },
+    {
+      "group": "Layout & verification",
+      "skill": "Parasitic extraction"
+    },
+    {
+      "group": "Layout & verification",
+      "skill": "KLayout"
+    },
+    {
+      "group": "Process & devices",
+      "skill": "SkyWater sky130 open PDK"
+    },
+    {
+      "group": "Process & devices",
+      "skill": "Device characterisation (gm/ID)"
+    },
+    {
+      "group": "Process & devices",
+      "skill": "Silicon photonics"
+    },
+    {
+      "group": "Tooling",
+      "skill": "Python (NumPy, Matplotlib)"
+    },
+    {
+      "group": "Tooling",
+      "skill": "MATLAB"
+    },
+    {
+      "group": "Tooling",
+      "skill": "Git"
+    },
+    {
+      "group": "Tooling",
+      "skill": "Linux / shell"
+    }
+  ]
+}

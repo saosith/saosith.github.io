@@ -4,11 +4,19 @@
 # describes the editing forms. Saving commits to `main`, which triggers the
 # deploy workflow, so the public site updates a minute or two later.
 #
+# The home page is one long scroll, so each of its sections gets its own file
+# under src/data and its own entry in the sidebar below, listed in the order the
+# sections appear on the page. Editing Experience therefore cannot rewrite
+# Education, and no single form is longer than the section it edits.
+#
 # Body fields are plain `text`, not `rich-text`, on purpose. Project bodies are
 # MDX containing component calls such as <BodeFigure … />, and notes contain
 # fenced SPICE and shell blocks; a rich-text editor would re-serialise both and
 # could mangle them. Frontmatter is where this config earns its keep — spec
 # tables, headline numbers, tags and the provenance badge become real forms.
+#
+# Note for `select` fields: Pages CMS expects the choices under `options.values`.
+# A bare list directly under `options` silently yields "No options found".
 
 media:
   input: public/uploads
@@ -18,9 +26,51 @@ media:
   categories: [image, document]
 
 content:
-  # ---------------------------------------------------------------- projects
+  # ------------------------------------------------------------ 01  about
+  - name: about
+    label: 01 · About
+    type: file
+    path: src/data/about.json
+    format: json
+    fields:
+      - name: paragraphs
+        label: Paragraphs
+        type: string
+        list: true
+        description: One entry per paragraph, in the order they should read.
+
+  # ------------------------------------------------------- 02  experience
+  - name: experience
+    label: 02 · Experience
+    type: file
+    path: src/data/experience.json
+    format: json
+    fields:
+      - name: entries
+        label: Roles
+        type: object
+        list: true
+        description: Newest first. Every entry needs a date and something a reader can open.
+        fields:
+          - { name: date, label: Date, type: string, required: true }
+          - { name: title, label: Role, type: string, required: true }
+          - { name: org, label: Organisation, type: string }
+          - name: logo
+            label: Organisation logo
+            type: image
+            description: Square mark shown beside the entry. Leave it empty and the entry falls back to initials.
+          - { name: body, label: What you did, type: text }
+          - { name: evidenceLabel, label: Evidence — label, type: string }
+          - { name: evidenceHref, label: Evidence — link, type: string }
+          - name: placeholder
+            label: Still a placeholder
+            type: boolean
+            default: false
+            description: While ticked, this entry renders with a visible "replace this entry" chip.
+
+  # --------------------------------------------------------- 03  projects
   - name: projects
-    label: Projects
+    label: 03 · Projects
     type: collection
     path: src/content/projects
     filename: '{primary}.mdx'
@@ -58,9 +108,10 @@ content:
         required: true
         description: Renders a visible badge at the top of the page. Keep this honest.
         options:
-          - { value: model, label: Hand model — not simulated }
-          - { value: simulated, label: Simulated (ngspice) }
-          - { value: measured, label: Measured silicon }
+          values:
+            - { value: model, label: Hand model — not simulated }
+            - { value: simulated, label: Simulated (ngspice) }
+            - { value: measured, label: Measured silicon }
 
       - name: conditions
         label: Test conditions
@@ -106,10 +157,11 @@ content:
             type: select
             default: na
             options:
-              - { value: pass, label: Meets }
-              - { value: marginal, label: Marginal }
-              - { value: fail, label: Misses }
-              - { value: na, label: Not assessed }
+              values:
+                - { value: pass, label: Meets }
+                - { value: marginal, label: Marginal }
+                - { value: fail, label: Misses }
+                - { value: na, label: Not assessed }
           - { name: note, label: Footnote ref, type: string }
 
       - name: footnotes
@@ -133,7 +185,93 @@ content:
         type: text
         description: Plain text on purpose — leave the import lines and the <Figure /> tags intact.
 
-  # ------------------------------------------------------------------- notes
+  # ----------------------------------------------------------- 04  awards
+  - name: awards
+    label: 04 · Awards
+    type: file
+    path: src/data/awards.json
+    format: json
+    fields:
+      - name: entries
+        label: Awards, competitions and tapeouts
+        type: object
+        list: true
+        fields:
+          - { name: date, label: Date, type: string, required: true }
+          - { name: title, label: Award, type: string, required: true }
+          - { name: org, label: Awarded by, type: string }
+          - name: logo
+            label: Logo
+            type: image
+            description: Square mark shown beside the entry. Leave it empty and the entry falls back to initials.
+          - { name: body, label: What it was for, type: text }
+          - { name: evidenceLabel, label: Evidence — label, type: string }
+          - { name: evidenceHref, label: Evidence — link, type: string }
+          - { name: placeholder, label: Still a placeholder, type: boolean, default: false }
+
+  # ----------------------------------------------------------- 05  skills
+  - name: skills
+    label: 05 · Skills
+    type: file
+    path: src/data/skills.json
+    format: json
+    fields:
+      - name: skills
+        label: Tools
+        type: object
+        list: true
+        description: One row per skill. Rows sharing a group name are shown together, in the order the groups first appear.
+        fields:
+          - name: group
+            label: Group
+            type: string
+            required: true
+            description: e.g. "Schematic & simulation". Reuse the same wording to put skills in the same column.
+          - { name: skill, label: Skill, type: string, required: true }
+
+  # -------------------------------------------------------- 06  education
+  - name: education
+    label: 06 · Education
+    type: file
+    path: src/data/education.json
+    format: json
+    fields:
+      - name: entries
+        label: Degrees and diplomas
+        type: object
+        list: true
+        fields:
+          - { name: date, label: Date, type: string, required: true }
+          - { name: title, label: Qualification, type: string, required: true }
+          - { name: org, label: Institution, type: string }
+          - name: logo
+            label: Institution logo
+            type: image
+            description: Square mark shown beside the entry. Leave it empty and the entry falls back to initials.
+          - { name: body, label: Detail, type: text }
+          - { name: evidenceLabel, label: Evidence — label, type: string }
+          - { name: evidenceHref, label: Evidence — link, type: string }
+          - { name: placeholder, label: Still a placeholder, type: boolean, default: false }
+
+  # ---------------------------------------------------------- 07  courses
+  - name: courses
+    label: 07 · Courses
+    type: file
+    path: src/data/courses.json
+    format: json
+    fields:
+      - name: courses
+        label: Courses
+        type: object
+        list: true
+        description: Coursework that backs up the work. Code and term are optional.
+        fields:
+          - { name: code, label: Course code, type: string }
+          - { name: title, label: Title, type: string, required: true }
+          - { name: term, label: Term, type: string }
+          - { name: note, label: Note, type: text }
+
+  # ------------------------------------------------- notes (their own pages)
   - name: notes
     label: Notes
     type: collection
@@ -156,70 +294,35 @@ content:
         type: text
         description: Markdown. Plain text so fenced code blocks survive editing untouched.
 
-  # ------------------------------------------------------------------- about
-  - name: about
-    label: About page
+  # ---------------------------------------------------------------- resume
+  - name: resume
+    label: Resume
     type: file
-    path: src/data/about.json
+    path: src/data/resume.json
     format: json
     fields:
-      - name: timeline
-        label: Timeline (Experience, Education, Awards)
-        type: object
-        list: true
-        description: Every entry needs a date and something a reader can open. Do not list anything you cannot evidence.
-        fields:
-          - name: kind
-            label: Section
-            type: select
-            default: experience
-            required: true
-            description: Which section this entry appears under.
-            options:
-              - { value: experience, label: Experience }
-              - { value: education, label: Education }
-              - { value: award, label: Award }
-          - { name: date, label: Date, type: string, required: true }
-          - { name: title, label: Title, type: string, required: true }
-          - { name: org, label: Organisation, type: string }
-          - name: logo
-            label: Organisation logo
-            type: image
-            description: Square mark shown beside the entry. Leave empty and the entry falls back to initials.
-          - { name: body, label: What you did, type: text }
-          - { name: evidenceLabel, label: Evidence — label, type: string }
-          - { name: evidenceHref, label: Evidence — link, type: string }
-          - name: placeholder
-            label: Still a placeholder
-            type: boolean
-            default: false
-            description: While ticked, this entry renders with a visible "replace this entry" chip.
+      - name: file
+        label: Resume (PDF)
+        type: file
+        description: The nav button and every other link to your CV follow this one value, so replacing it updates them all at once.
+      - name: label
+        label: Button label
+        type: string
+        description: Text on the nav button. Leave blank for "Resume".
 
-      - name: courses
-        label: Courses
-        type: object
-        list: true
-        description: Coursework that backs up the work. Code and term are optional.
-        fields:
-          - { name: code, label: Course code, type: string }
-          - { name: title, label: Title, type: string, required: true }
-          - { name: term, label: Term, type: string }
-          - { name: note, label: Note, type: text }
+  # ---------------------------------------------------------------- footer
+  - name: footer
+    label: Footer
+    type: file
+    path: src/data/footer.json
+    format: json
+    fields:
+      - name: note
+        label: Footer note
+        type: text
+        description: The paragraph under "Use" in the footer. Say plainly what is and is not covered by an NDA.
 
-      - name: skills
-        label: Tools
-        type: object
-        list: true
-        description: One row per skill. Rows sharing a group name are shown together, in the order the groups first appear.
-        fields:
-          - name: group
-            label: Group
-            type: string
-            required: true
-            description: e.g. "Schematic & simulation". Reuse the same wording to put skills in the same column.
-          - { name: skill, label: Skill, type: string, required: true }
-
-  # -------------------------------------------------------- site-wide values
+  # ----------------------------------------------------- site-wide values
   - name: site
     label: Site details
     type: file
@@ -256,10 +359,6 @@ content:
         label: Photo caption
         type: text
         description: The line under the photo. Say what it shows, where, and when.
-      - name: resume
-        label: Resume (PDF)
-        type: file
-        description: Upload your CV here. The nav, the footer and the home-page button all follow this, so replacing it updates every link at once.
       - { name: email, label: Email, type: string }
       - name: phone
         label: Phone
@@ -268,7 +367,3 @@ content:
       - { name: github, label: GitHub URL, type: string }
       - { name: linkedin, label: LinkedIn URL, type: string }
       - { name: university, label: University, type: string }
-      - name: homeIntro
-        label: About — intro paragraph
-        type: text
-        description: The paragraph under the About heading.

@@ -1,0 +1,37 @@
+{
+  "entries": [
+    {
+      "date": "Jan 2026 — present",
+      "title": "Undergraduate Research Assistant — Pulsed Laser Template Engineering (PLATEN)",
+      "org": "Center for Quantum Research and Technology (CQRT), University of Oklahoma",
+      "logo": "/uploads/logo-cqrt.png",
+      "body": "Cleanroom semiconductor nanofabrication: photolithography, reactive ion etching and pulsed laser deposition to build and evaluate high-aspect-ratio micro- and nanostructures. Tune anisotropic plasma etch parameters — gas chemistry, RF power, chamber pressure — for vertical sidewalls and controlled feature depth, and support process development from resist patterning through etch selectivity to post-process inspection.",
+      "placeholder": false
+    },
+    {
+      "date": "Jan 2026 — present",
+      "title": "Electrical Systems Member",
+      "org": "Sooner Competitive Robotics",
+      "logo": "/uploads/logo-sooner-competitive-robotics.png",
+      "body": "Developed CAD layouts in Onshape for electrical component placement, wire routing and electromechanical integration, balancing signal integrity against thermal and mechanical constraints, and designed the robot’s power distribution architecture.",
+      "placeholder": false
+    },
+    {
+      "date": "Aug 2025 — Dec 2025",
+      "title": "Research Apprentice — Light–Matter Interaction (Dr. Tischler)",
+      "org": "Center for Quantum Research and Technology (CQRT), University of Oklahoma",
+      "logo": "/uploads/logo-cqrt.png",
+      "body": "Conducted systematic literature reviews of quantum optical phenomena in silicon carbide and wide-bandgap semiconductor nanocrystals, building a materials-level foundation for next-generation photonics, and worked alongside the optical spectroscopy systems used to characterise them.",
+      "placeholder": false
+    },
+    {
+      "date": "Jan 2025 — May 2025",
+      "title": "Research Apprentice — Cloud Microphysics (Dr. McFarquhar)",
+      "org": "National Weather Center, University of Oklahoma",
+      "logo": "/uploads/logo-national-weather-center.png",
+      "body": "Analysed high-resolution aircraft datasets to characterise cloud microphysical properties, running end-to-end data processing, atmospheric profile modelling and visualisation in Python (NumPy, Pandas, Matplotlib).",
+      "evidenceLabel": "Research poster (PDF)",
+      "placeholder": false
+    }
+  ]
+}

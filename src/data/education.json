@@ -1,0 +1,19 @@
+{
+  "entries": [
+    {
+      "date": "Aug 2024 — May 2028",
+      "title": "B.S. Electrical & Computer Engineering (Honors)",
+      "org": "University of Oklahoma",
+      "logo": "/uploads/logo-university-of-oklahoma.png",
+      "body": "Minor in Mathematics and Computer Science. GPA 4.0. Coursework in analog electronics, semiconductor devices, signals and systems, and electromagnetics, with self-directed work in analog IC design on the sky130 open PDK alongside it.",
+      "placeholder": false
+    },
+    {
+      "date": "2022 — 2024",
+      "title": "International Baccalaureate",
+      "org": "Li Po Chun United World College of Hong Kong",
+      "logo": "/uploads/logo-uwc-li-po-chun.webp",
+      "placeholder": false
+    }
+  ]
+}
