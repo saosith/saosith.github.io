@@ -593,3 +593,63 @@ a.data-dl:hover { border-color: var(--ink); background: var(--panel-sunk); }
 .image-figure-link { display: block; line-height: 0; }
 .image-figure-link img { width: 100%; height: auto; border-radius: 2px; }
 .image-figure-link:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }
+
+/* ---------------- lightbox ----------------
+   Fills the viewport rather than sizing to the file: a schematic wants every
+   pixel it can get, and a fixed frame would waste them. */
+.lightbox { position: fixed; inset: 0; z-index: 100; }
+.lb-backdrop { position: absolute; inset: 0; background: rgb(6 12 16 / 0.97); }
+/* Pinned to the viewport rather than sized by a grid row: an `auto` row grows
+   to fit a large image, which is exactly the overflow this needs to prevent. */
+.lb-panel {
+  position: absolute; inset: 0;
+  display: grid; grid-template-rows: auto minmax(0, 1fr) auto;
+  padding: 0.75rem; gap: 0.5rem;
+}
+.lb-bar {
+  display: flex; align-items: center; gap: 0.75rem; flex-wrap: wrap;
+  color: #e8eeed; font-size: var(--t-cap);
+}
+.lb-name { font-family: var(--mono); font-size: var(--t-xs); opacity: 0.75;
+  overflow: hidden; text-overflow: ellipsis; white-space: nowrap; max-width: 46ch; }
+.lb-zoom { display: flex; align-items: center; gap: 0.3rem; margin-left: auto; }
+.lb-zoom[hidden] { display: none; }
+.lb-bar button, .lb-open {
+  font: inherit; font-family: var(--mono); font-size: var(--t-xs);
+  color: #e8eeed; background: rgb(255 255 255 / 0.08);
+  border: 1px solid rgb(255 255 255 / 0.22); border-radius: 3px;
+  padding: 0.25rem 0.55rem; cursor: pointer; text-decoration: none;
+}
+.lb-bar button:hover, .lb-open:hover { background: rgb(255 255 255 / 0.18); }
+.lb-bar output { font-family: var(--mono); font-size: var(--t-xs); min-width: 4ch; text-align: center; }
+.lb-close { font-size: 1rem !important; line-height: 1; }
+
+.lb-stage {
+  position: relative; overflow: hidden;
+  background: #fff; border-radius: 3px; touch-action: none;
+  /* A grid item defaults to min-height:auto, which lets a large image push the
+     1fr row past the viewport instead of being scaled down inside it. */
+  min-height: 0; min-width: 0;
+}
+.lb-stage.is-zoomed { cursor: grab; }
+.lb-stage.is-zoomed:active { cursor: grabbing; }
+/* Absolutely positioned, so its size comes from the stage rather than the other
+   way round. Any in-flow sizing here is circular: the stage's own track grows to
+   fit the image, so a percentage height resolves against the image itself and
+   never constrains anything. object-fit does the letterboxing. */
+.lb-stage img,
+.lb-stage iframe {
+  position: absolute; inset: 0; width: 100%; height: 100%;
+}
+.lb-stage img {
+  object-fit: contain; transform-origin: center center;
+  will-change: transform; user-select: none; -webkit-user-drag: none;
+}
+.lb-stage iframe { border: 0; }
+.lb-hint { margin: 0; text-align: center; color: rgb(232 238 237 / 0.55);
+  font-family: var(--mono); font-size: var(--t-xs); }
+
+/* A link that opens the viewer should say so on hover. */
+.image-figure-link { cursor: zoom-in; }
+
+@media print { .lightbox { display: none !important; } }

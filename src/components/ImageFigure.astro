@@ -20,17 +20,21 @@ const { src, alt, figNo, caption, width, height, href } = Astro.props;
  * own background, so tinting the frame to match a dark page would put a light
  * rectangle inside a dark one and look like a mistake.
  */
-const openHref = href ?? src;
+/* The picture itself opens the picture, so the viewer's own zoom and pan apply.
+   The caption link goes to `href` when there is one — usually the source PDF,
+   which is vector and worth having, but which a browser hands to its own PDF
+   reader rather than to our zoom controls. */
+const sourceHref = href ?? src;
 ---
 
 <figure class="figure">
   <div class="figure-body image-figure-body">
-    <a class="image-figure-link" href={openHref} target="_blank" rel="noopener">
+    <a class="image-figure-link" href={src} target="_blank" rel="noopener">
       <img src={src} alt={alt} width={width} height={height} loading="lazy" decoding="async" />
     </a>
   </div>
   <figcaption>
     <span class="fig-no">{figNo}</span>
-    <span>{caption} <a href={openHref} target="_blank" rel="noopener">Open full size</a>.</span>
+    <span>{caption} <a href={sourceHref} target="_blank" rel="noopener">Open the source file</a>.</span>
   </figcaption>
 </figure>

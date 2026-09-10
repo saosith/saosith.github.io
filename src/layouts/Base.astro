@@ -5,6 +5,7 @@ import { SITE } from '../lib/site';
 import Header from '../components/Header.astro';
 import Footer from '../components/Footer.astro';
 import SectionToggles from '../components/SectionToggles.astro';
+import Lightbox from '../components/Lightbox.astro';
 import '../styles/global.css';
 import '../styles/components.css';
 
@@ -64,5 +65,6 @@ const ogImage = existsSync(ogPath) ? new URL('/og.png', SITE.url).href : null;
     </main>
     <Footer />
     <SectionToggles />
+    <Lightbox />
   </body>
 </html>
