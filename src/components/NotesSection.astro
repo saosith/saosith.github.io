@@ -1,0 +1,33 @@
+---
+import { getCollection } from 'astro:content';
+
+const notes = (await getCollection('notes', ({ data }) => !data.draft))
+  .sort((a, b) => +b.data.date - +a.data.date);
+const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' });
+---
+
+<section id="notes" class="wrap section rule-top">
+  <div class="section-head">
+    <span class="idx">03</span>
+    <h2>Notes</h2>
+    <p class="note">Derivations, tool workflows, and things that went wrong.</p>
+  </div>
+
+  {notes.length === 0 ? (
+    <p class="muted">No notes published yet.</p>
+  ) : (
+    <ul class="note-list">
+      {notes.map((n) => (
+        <li class="note-item">
+          <a href={`/notes/${n.id}/`}>
+            <span class="note-date">{fmt(n.data.date)}</span>
+            <span>
+              <span class="note-title">{n.data.title}</span>
+              <span class="note-sub" style="display:block">{n.data.summary}</span>
+            </span>
+          </a>
+        </li>
+      ))}
+    </ul>
+  )}
+</section>

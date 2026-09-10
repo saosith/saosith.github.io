@@ -26,7 +26,7 @@
   padding-block: 0.35rem; border-bottom: 2px solid transparent;
 }
 .site-nav a:hover { color: var(--ink); }
-.site-nav a[aria-current='page'] { color: var(--ink); border-bottom-color: var(--signal); }
+.site-nav a[aria-current] { color: var(--ink); border-bottom-color: var(--signal); }
 
 .theme-toggle {
   display: inline-flex; align-items: center; justify-content: center;
@@ -330,3 +330,26 @@ details.data-table thead th { color: var(--ink-3); font-family: var(--mono); fon
 .chart-frame > *, .schematic-svg, .project-layout > *, .explorer > * { min-width: 0; }
 .spec-table-wrap { max-width: 100%; }
 .chart-holder { max-width: 100%; overflow-x: auto; }
+
+/* ---------------- one-page sections ---------------- */
+/* Anchors must clear the sticky header when jumped to. */
+section[id] { scroll-margin-top: 74px; }
+
+.site-intro {
+  margin-top: clamp(2rem, 4vw, 3rem);
+  font-size: var(--t-md);
+  color: var(--ink-2);
+}
+
+.contact-grid { display: grid; gap: clamp(1.5rem, 4vw, 3rem); align-items: start; }
+@media (min-width: 52rem) {
+  .contact-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 22rem); }
+}
+.contact-list { display: grid; gap: 0; margin: 0; border-top: 1px solid var(--rule-strong); }
+.contact-list > div {
+  display: grid; grid-template-columns: 6rem minmax(0, 1fr);
+  gap: 1rem; align-items: baseline;
+  padding: 0.6rem 0; border-bottom: 1px solid var(--rule);
+}
+.contact-list dt { font-size: var(--t-cap); color: var(--ink-2); }
+.contact-list dd { margin: 0; font-family: var(--mono); font-size: var(--t-cap); word-break: break-word; }

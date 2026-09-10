@@ -1,0 +1,90 @@
+---
+import { getCollection } from 'astro:content';
+import { SITE } from '../lib/site';
+import { TIMELINE, skillGroups } from '../lib/about';
+
+const SKILLS = skillGroups();
+
+/**
+ * A skill's "used on" link is only rendered if it points at a page that is
+ * actually published. Draft a project and its claims quietly fall back to
+ * "coursework" rather than becoming dead links.
+ */
+const published = new Set([
+  ...(await getCollection('projects', ({ data }) => !data.draft)).map((p) => `/projects/${p.id}/`),
+  ...(await getCollection('notes', ({ data }) => !data.draft)).map((n) => `/notes/${n.id}/`),
+]);
+const isLive = (href?: string) =>
+  !!href && (published.has(href) || /^https?:\/\//.test(href));
+---
+
+<section id="about" class="wrap section rule-top">
+  <div class="section-head">
+    <span class="idx">01</span>
+    <h2>About</h2>
+  </div>
+
+  <div class="prose" style="margin-bottom:3rem">
+    <p>
+      I am an electrical engineering student at the {SITE.university}, working
+      on analog and mixed-signal integrated circuit design and silicon
+      photonics. Most of what I build lives on the SkyWater sky130 open PDK,
+      which means I can publish the schematics, netlists and layouts in full
+      rather than describing them from a distance.
+    </p>
+    <p>{SITE.aboutIntro}</p>
+  </div>
+
+  <div class="section-head" style="margin-top:2.5rem">
+    <span class="idx">1.1</span>
+    <h3>Timeline</h3>
+    <p class="note">Each entry names a date and something you can open.</p>
+  </div>
+
+  <ol class="timeline">
+    {TIMELINE.map((t) => (
+      <li class="tl-item">
+        <div class="tl-date">{t.date}</div>
+        <div>
+          <div class="tl-title">
+            {t.title}
+            {t.placeholder && <span class="chip chip-warning" style="margin-left:0.5rem">replace this entry</span>}
+          </div>
+          {t.org && <div class="tl-org">{t.org}</div>}
+          {t.body && <p class="tl-body">{t.body}</p>}
+          {t.evidenceLabel && (
+            <div class="tl-evidence">
+              {isLive(t.evidenceHref)
+                ? <a href={t.evidenceHref}>{t.evidenceLabel}</a>
+                : <span class="muted">{t.evidenceLabel} — add the link</span>}
+            </div>
+          )}
+        </div>
+      </li>
+    ))}
+  </ol>
+
+  <div class="section-head" style="margin-top:3rem">
+    <span class="idx">1.2</span>
+    <h3>Tools</h3>
+    <p class="note">Linked entries point at the project that used them.</p>
+  </div>
+
+  <div class="skills">
+    {SKILLS.map((g) => (
+      <div class="skill-group">
+        <h3>{g.name}</h3>
+        <ul>
+          {g.items.map((i) => (
+            <li>
+              <span>{i.skill}</span>
+              {i.whereLabel && isLive(i.whereHref)
+                ? <span class="where"><a href={i.whereHref}>{i.whereLabel}</a></span>
+                : <span class="no-link">coursework</span>}
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </div>
+</section>

@@ -88,6 +88,20 @@ out of the build until you untick it.
 `_TEMPLATE.mdx` appears in the projects list in the CMS. It is `draft: true`, so
 it never publishes — ignore it, or copy it as a starting point.
 
+## Site shape
+
+The site is one scrolling page. `src/pages/index.astro` stacks the sections —
+hero, About, Projects, Notes, Contact — and the header nav is anchors into
+them, with the current section highlighted as you scroll.
+
+Projects and notes still get their own pages (`/projects/<slug>/`,
+`/notes/<slug>/`), because a full write-up with a spec table, a sidebar and
+several interactive figures is too much to inline. The cards on the home page
+link out to them, and those pages link back to `/#projects`.
+
+Nav links are written `/#about` rather than `#about` so they also work from a
+detail page.
+
 ## Running it
 
 ```bash
@@ -165,6 +179,7 @@ Set `draft: true` to keep a page out of the build.
 ```
 src/
   components/     figures, header, footer, spec table, status chips
+                  *Section.astro are the home page's scrolling sections
   content/
     projects/     one .mdx per project  (_TEMPLATE.mdx to copy)
     notes/        one .md per note
@@ -175,7 +190,7 @@ src/
     opamp-model.ts  the first-order model behind the explorer
     site.ts         types + structural values over data/site.json
     about.ts        types + grouping over data/about.json
-  pages/          routes
+  pages/          routes (index.astro is the whole one-page site)
   styles/         design tokens and component styles
 .pages.yml        Pages CMS editing forms
 scripts/

@@ -1,19 +1,11 @@
 ---
-import { getCollection } from 'astro:content';
 import Base from '../layouts/Base.astro';
 import Portrait from '../components/Portrait.astro';
+import AboutSection from '../components/AboutSection.astro';
+import ProjectsSection from '../components/ProjectsSection.astro';
+import NotesSection from '../components/NotesSection.astro';
+import ContactSection from '../components/ContactSection.astro';
 import { SITE } from '../lib/site';
-
-const projects = (await getCollection('projects', ({ data }) => !data.draft))
-  .sort((a, b) => a.data.order - b.data.order || +b.data.date - +a.data.date);
-
-const featured = projects.filter((p) => p.data.featured).slice(0, 3);
-const notes = (await getCollection('notes', ({ data }) => !data.draft))
-  .sort((a, b) => +b.data.date - +a.data.date)
-  .slice(0, 4);
-
-const flagship = featured[0] ?? projects[0];
-const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
 ---
 
 <Base
@@ -21,25 +13,14 @@ const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month:
   bareTitle
   description={SITE.tagline}
 >
-  <section class="wrap hero">
+  <section id="top" class="wrap hero">
     <div class="hero-grid">
       <div>
         <h1>{SITE.siteTitle}</h1>
         <p class="hero-lede">{SITE.tagline}</p>
 
-        {flagship && flagship.data.headline.length > 0 && (
-          <dl class="keyspecs">
-            {flagship.data.headline.map((h) => (
-              <div class="keyspec">
-                <dt>{h.label}</dt>
-                <dd>{h.value}{h.unit && <span class="unit"> {h.unit}</span>}</dd>
-              </div>
-            ))}
-          </dl>
-        )}
-
         <div class="btn-row">
-          <a class="btn btn-primary" href="/projects/">See the projects</a>
+          <a class="btn btn-primary" href="#projects">See the projects</a>
           <a class="btn" href={SITE.resume}>Resume (PDF)</a>
           <a class="btn" href={SITE.linkedin} target="_blank" rel="noopener">LinkedIn</a>
         </div>
@@ -49,84 +30,12 @@ const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month:
         <Portrait />
       </div>
     </div>
+
+    <p class="site-intro prose">{SITE.homeIntro}</p>
   </section>
 
-  {featured.length > 0 && (
-  <section class="wrap section-tight rule-top">
-    <div class="section-head">
-      <span class="idx">01</span>
-      <h2>Selected work</h2>
-      <p class="note"><a href="/projects/">All projects</a></p>
-    </div>
-
-    <ul class="project-list">
-      {featured.map((p) => (
-        <li class="project-row">
-          <a class="project-link" href={`/projects/${p.id}/`}>
-            <div>
-              <div class="project-title">{p.data.title}</div>
-              <p class="project-sub">{p.data.summary}</p>
-              {p.data.headline.length > 0 && (
-                <div class="project-figures">
-                  {p.data.headline.map((h) => (
-                    <div>{h.label} <b>{h.value}{h.unit ? ` ${h.unit}` : ''}</b></div>
-                  ))}
-                </div>
-              )}
-            </div>
-            <div>
-              <div class="project-meta">{p.data.tags.map((t) => <span class="tag">{t}</span>)}</div>
-              <div class="small muted" style="margin-top:0.4rem">{fmt(p.data.date)}</div>
-            </div>
-          </a>
-        </li>
-      ))}
-    </ul>
-  </section>
-  )}
-
-  <section class="wrap section-tight rule-top">
-    <div class="section-head">
-      <span class="idx">{featured.length > 0 ? '02' : '01'}</span>
-      <h2>How these pages are put together</h2>
-    </div>
-    <div class="prose">
-      <p>{SITE.homeIntro}</p>
-      <p>
-        All of it targets the SkyWater sky130 open PDK, so the schematics,
-        netlists and layouts can be published in full without touching a foundry
-        NDA.
-      </p>
-      {projects.length === 0 && (
-        <p class="muted">
-          No projects are published yet. The worked examples in the repository are
-          kept as drafts so the page structure stays visible while you replace
-          them with your own.
-        </p>
-      )}
-    </div>
-  </section>
-
-  {notes.length > 0 && (
-    <section class="wrap section-tight">
-      <div class="section-head">
-        <span class="idx">{featured.length > 0 ? '03' : '02'}</span>
-        <h2>Notes</h2>
-        <p class="note"><a href="/notes/">All notes</a></p>
-      </div>
-      <ul class="note-list">
-        {notes.map((n) => (
-          <li class="note-item">
-            <a href={`/notes/${n.id}/`}>
-              <span class="note-date">{fmt(n.data.date)}</span>
-              <span>
-                <span class="note-title">{n.data.title}</span>
-                <span class="note-sub" style="display:block">{n.data.summary}</span>
-              </span>
-            </a>
-          </li>
-        ))}
-      </ul>
-    </section>
-  )}
+  <AboutSection />
+  <ProjectsSection />
+  <NotesSection />
+  <ContactSection />
 </Base>

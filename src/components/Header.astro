@@ -1,14 +1,16 @@
 ---
 import { SITE } from '../lib/site';
 
-const { pathname } = Astro.url;
-const isCurrent = (href: string) =>
-  href === '/' ? pathname === '/' : pathname.startsWith(href);
-
+/**
+ * The site is one scrolling page, so nav items are anchors. They are written
+ * absolute (`/#about`, not `#about`) so they also work from a project or note
+ * detail page — the browser goes home first, then jumps to the section.
+ */
 const links = [
-  { href: '/projects/', label: 'Projects' },
-  { href: '/notes/', label: 'Notes' },
-  { href: '/about/', label: 'About' },
+  { href: '/#about', label: 'About', section: 'about' },
+  { href: '/#projects', label: 'Projects', section: 'projects' },
+  { href: '/#notes', label: 'Notes', section: 'notes' },
+  { href: '/#contact', label: 'Contact', section: 'contact' },
   { href: SITE.resume, label: 'Resume', external: true },
 ];
 ---
@@ -28,7 +30,7 @@ const links = [
       {links.map((l) => (
         <a
           href={l.href}
-          aria-current={!l.external && isCurrent(l.href) ? 'page' : undefined}
+          data-section={l.section}
           {...(l.external ? { target: '_blank', rel: 'noopener' } : {})}
         >{l.label}</a>
       ))}
@@ -58,4 +60,42 @@ const links = [
     root.dataset.theme = next;
     try { localStorage.setItem('theme', next); } catch {}
   });
+
+  /**
+   * Highlight whichever section is currently on screen. Only does anything on
+   * the one-page home view; detail pages have no sections to track.
+   */
+  const sections = [...document.querySelectorAll<HTMLElement>('main section[id]')];
+  const navLinks = new Map(
+    [...document.querySelectorAll<HTMLAnchorElement>('.site-nav a[data-section]')]
+      .map((a) => [a.dataset.section!, a]),
+  );
+
+  if (sections.length > 0 && navLinks.size > 0) {
+    let current: string | null = null;
+
+    function update() {
+      // The section whose top has most recently passed under the header.
+      const y = window.scrollY + 90;
+      let active = '';
+      for (const s of sections) if (s.offsetTop <= y) active = s.id;
+      if (active === 'top') active = '';
+      if (active === current) return;
+      current = active;
+      for (const [section, a] of navLinks) {
+        if (section === active) a.setAttribute('aria-current', 'true');
+        else a.removeAttribute('aria-current');
+      }
+    }
+
+    let ticking = false;
+    addEventListener('scroll', () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => { ticking = false; update(); });
+    }, { passive: true });
+
+    addEventListener('resize', update, { passive: true });
+    update();
+  }
 </script>

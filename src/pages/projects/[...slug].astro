@@ -20,7 +20,7 @@ const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month:
 <Base title={data.title} description={data.summary}>
   <div class="wrap project-header">
     <p class="small muted mono" style="margin-bottom:0.6rem">
-      <a href="/projects/" style="color:inherit">Projects</a> / {data.tags[0] ?? 'design'}
+      <a href="/#projects" style="color:inherit">Projects</a> / {data.tags[0] ?? 'design'}
     </p>
     <h1>{data.title}</h1>
     <p class="lede">{data.summary}</p>

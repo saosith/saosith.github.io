@@ -1,0 +1,36 @@
+---
+import { SITE } from '../lib/site';
+---
+
+<section id="contact" class="wrap section rule-top">
+  <div class="section-head">
+    <span class="idx">04</span>
+    <h2>Contact</h2>
+  </div>
+
+  <div class="contact-grid">
+    <p class="prose">
+      The fastest way to reach me is email. I am looking for an analog design
+      internship and happy to talk through any of the work here in detail.
+    </p>
+
+    <dl class="contact-list">
+      <div>
+        <dt>Email</dt>
+        <dd><a href={`mailto:${SITE.email}`}>{SITE.email}</a></dd>
+      </div>
+      <div>
+        <dt>LinkedIn</dt>
+        <dd><a href={SITE.linkedin} rel="me noopener" target="_blank">{SITE.linkedin.replace(/^https:\/\/(www\.)?/, '')}</a></dd>
+      </div>
+      <div>
+        <dt>GitHub</dt>
+        <dd><a href={SITE.github} rel="me noopener" target="_blank">{SITE.github.replace(/^https:\/\/(www\.)?/, '')}</a></dd>
+      </div>
+      <div>
+        <dt>Resume</dt>
+        <dd><a href={SITE.resume}>Download (PDF)</a></dd>
+      </div>
+    </dl>
+  </div>
+</section>
