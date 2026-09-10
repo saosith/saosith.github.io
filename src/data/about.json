@@ -3,5 +3,6 @@
     "I am an electrical engineering student at the University of Oklahoma, working on analog and mixed-signal integrated circuit design and silicon photonics. I came to electrical engineering from physics, so I have a strong physics background. I started in my lab fabricating semiconductor materials with pulsed laser deposition. Starting Fall 2026 I work on the design side instead, on optically bistable ring resonators.",
     "This site documents my electronics and IC design projects. Each one covers the design flow, the specification it had to meet, the results, and what I would do differently. The About page has my skills, coursework, and timeline. The data behind each project is downloadable, and my resume and contact details are at the top."
   ],
-  "photo": "/uploads/WhatsApp Image 2026-09-10 at 2.13.17 PM-1.jpeg"
+  "photo": "/uploads/WhatsApp Image 2026-09-10 at 2.13.17 PM-1.jpeg",
+  "photoAlt": "This is me!"
 }
