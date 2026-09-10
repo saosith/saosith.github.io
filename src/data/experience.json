@@ -29,9 +29,10 @@
       "title": "Research Apprentice — Cloud Microphysics (Dr. McFarquhar)",
       "org": "National Weather Center, University of Oklahoma",
       "logo": "/uploads/logo-national-weather-center.png",
-      "body": "Analysed high-resolution aircraft datasets to characterise cloud microphysical properties, running end-to-end data processing, atmospheric profile modelling and visualisation in Python (NumPy, Pandas, Matplotlib).",
-      "evidenceLabel": "Research poster (PDF)",
-      "placeholder": false
+      "body": "Analysed high-resolution aircraft datasets from the CAESAR campaign — an NSF/NCAR C-130 flying cold-air outbreaks out of Kiruna, Sweden — to characterise how cloud microphysical properties vary with altitude. Compared water content, particle size and condensation-nuclei concentration across several probes over normalised cloud altitude, running end-to-end data processing and visualisation in Python (NumPy, Pandas, Matplotlib).",
+      "evidenceLabel": "Research poster",
+      "placeholder": false,
+      "evidenceHref": "/uploads/poster-caesar-arctic-clouds.jpg"
     }
   ]
 }

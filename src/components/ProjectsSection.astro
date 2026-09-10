@@ -47,7 +47,12 @@ const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month:
         data-tags={p.data.tags.join('|')}
         data-text={`${p.data.title} ${p.data.summary} ${p.data.tags.join(' ')} ${p.data.tools.join(' ')}`.toLowerCase()}
       >
-        <a class="project-link" href={`/projects/${p.id}/`}>
+        <a class={`project-link${p.data.cover ? ' has-thumb' : ''}`} href={`/projects/${p.id}/`}>
+          {p.data.cover && (
+            <div class="project-thumb">
+              <img src={p.data.cover} alt={p.data.coverAlt ?? ''} loading="lazy" decoding="async" />
+            </div>
+          )}
           <div>
             <div class="project-title">{p.data.title}</div>
             <p class="project-sub">{p.data.summary}</p>

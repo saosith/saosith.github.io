@@ -1,0 +1,36 @@
+---
+interface Props {
+  src: string;
+  alt: string;
+  figNo: string;
+  caption: string;
+  width: number;
+  height: number;
+  /** Where "open full size" points. Defaults to the image itself. */
+  href?: string;
+}
+const { src, alt, figNo, caption, width, height, href } = Astro.props;
+
+/**
+ * A plain image as a numbered figure — schematics, layouts, die photos, board
+ * renders. The other figure components draw charts from datasets; this one is
+ * for artwork that already exists as a file.
+ *
+ * The frame is white in both themes. A schematic or a layout export carries its
+ * own background, so tinting the frame to match a dark page would put a light
+ * rectangle inside a dark one and look like a mistake.
+ */
+const openHref = href ?? src;
+---
+
+<figure class="figure">
+  <div class="figure-body image-figure-body">
+    <a class="image-figure-link" href={openHref} target="_blank" rel="noopener">
+      <img src={src} alt={alt} width={width} height={height} loading="lazy" decoding="async" />
+    </a>
+  </div>
+  <figcaption>
+    <span class="fig-no">{figNo}</span>
+    <span>{caption} <a href={openHref} target="_blank" rel="noopener">Open full size</a>.</span>
+  </figcaption>
+</figure>

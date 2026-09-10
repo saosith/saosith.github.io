@@ -27,6 +27,10 @@ const projects = defineCollection({
     featured: z.boolean().default(false),
     draft: z.boolean().default(false),
 
+    /** Thumbnail shown beside the row on the projects list. */
+    cover: z.string().optional(),
+    coverAlt: z.string().optional(),
+
     tags: z.array(z.string()).default([]),
     tools: z.array(z.string()).default([]),
     process: z.string().optional(),
@@ -34,8 +38,10 @@ const projects = defineCollection({
     /**
      * Provenance of every number on the page. Renders a visible badge, so a
      * page can never quietly present hand-model output as measured silicon.
+     * `design` covers work that is captured but not yet built or simulated —
+     * a schematic, a layout, a board — where there are no numbers to defend.
      */
-    dataStatus: z.enum(['model', 'simulated', 'measured']).default('model'),
+    dataStatus: z.enum(['design', 'model', 'simulated', 'measured']).default('model'),
     /** Test conditions footer, e.g. "VDD = 1.8 V, T = 27 °C, CL = 2 pF". */
     conditions: z.string().optional(),
     /** IP position, e.g. "SkyWater sky130 open PDK — publicly shareable". */

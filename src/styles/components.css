@@ -115,6 +115,7 @@
   border-radius: 2px; padding: 0.6rem 0.85rem; background: var(--panel);
 }
 .data-badge svg { width: 1em; height: 1em; margin-top: 0.35em; flex: none; }
+.data-badge-design   { border-left-color: var(--rule-strong); }
 .data-badge-model    { border-left-color: var(--warning); }
 .data-badge-simulated { border-left-color: var(--series-1); }
 .data-badge-measured  { border-left-color: var(--good); }
@@ -234,16 +235,27 @@ details.data-table thead th { color: var(--ink-3); font-family: var(--mono); fon
 .project-row:last-child { box-shadow: none; }
 .project-row[hidden] { display: none; }
 .project-link {
-  display: grid; gap: 0.35rem 1.5rem; padding: 1.35rem 0.2rem;
+  display: grid; gap: 0.35rem var(--unit); padding: 1.35rem 0.2rem;
   text-decoration: none; color: inherit; align-items: baseline;
 }
 @media (min-width: 48rem) {
   .project-link { grid-template-columns: minmax(0, 1fr) 15rem; }
+  .project-link.has-thumb { grid-template-columns: 12rem minmax(0, 1fr) 15rem; }
 }
+/* White behind the thumbnail in both themes, for the same reason as the figure
+   frames: schematic and layout exports carry their own light background. */
+.project-thumb {
+  align-self: start; width: 12rem; aspect-ratio: 2 / 1;
+  background: #fff; border: 1px solid var(--rule); border-radius: 3px;
+  overflow: hidden; display: grid; place-items: center;
+}
+.project-thumb img { width: 100%; height: 100%; object-fit: contain; }
 .project-link:hover { background: var(--panel); }
 .project-link:hover .project-title { color: var(--signal-deep); }
 .project-title { font-size: var(--t-md); font-weight: 600; letter-spacing: -0.01em; }
-.project-sub { color: var(--ink-2); font-size: var(--t-cap); max-width: 56ch; margin-top: 0.2rem; }
+/* No measure cap: the row's own column already limits the line length, and a
+   56ch cap left a ragged hole between the summary and the tag column. */
+.project-sub { color: var(--ink-2); font-size: var(--t-cap); margin-top: 0.2rem; }
 .project-meta { display: flex; flex-wrap: wrap; gap: 0.35rem; align-items: center; }
 .project-figures { display: flex; flex-wrap: wrap; gap: 0.9rem; margin-top: 0.55rem; }
 .project-figures div { font-size: var(--t-xs); color: var(--ink-2); }
@@ -429,7 +441,7 @@ section[id] { scroll-margin-top: 74px; }
   font-family: var(--mono); font-size: var(--t-sm); color: var(--ink-3);
   flex: none; min-width: 5.5rem;
 }
-.course-title { font-weight: 500; }
+.course-title { font-weight: 400; }
 .course-term { font-family: var(--mono); font-size: var(--t-sm); color: var(--ink-3); }
 .course-note {
   grid-column: 1 / -1;
@@ -561,8 +573,8 @@ a.data-dl:hover { border-color: var(--ink); background: var(--panel-sunk); }
 /* ---------------- subsection inside a section ----------------
    Matches the skills-column subheads: a rule under the label rather than a
    heavier band, so it reads as a level below the section head without adding a
-   second horizontal line to the section. 48 + 24 + 24 = four grid rows. */
-.subsection { margin-top: calc(var(--unit) * 2); }
+   second horizontal line to the section. 24 + 24 + 24 = three grid rows. */
+.subsection { margin-top: var(--unit); }
 .subsection > h3 {
   font-size: var(--t-cap);
   line-height: var(--unit);
@@ -570,3 +582,11 @@ a.data-dl:hover { border-color: var(--ink); background: var(--panel-sunk); }
   padding-bottom: 0;
   box-shadow: inset 0 -1px 0 var(--rule-strong);
 }
+
+/* ---------------- image figures ----------------
+   White frame in both themes: schematic and layout exports carry their own
+   light background, so a dark frame would sit around a bright rectangle. */
+.image-figure-body { background: #fff; padding: 0.75rem; }
+.image-figure-link { display: block; line-height: 0; }
+.image-figure-link img { width: 100%; height: auto; border-radius: 2px; }
+.image-figure-link:focus-visible { outline: 2px solid var(--signal); outline-offset: 3px; }

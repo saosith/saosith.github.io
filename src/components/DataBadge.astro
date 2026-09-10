@@ -1,11 +1,15 @@
 ---
 interface Props {
-  status: 'model' | 'simulated' | 'measured';
+  status: 'design' | 'model' | 'simulated' | 'measured';
   conditions?: string;
 }
 const { status, conditions } = Astro.props;
 
 const COPY = {
+  design: {
+    label: 'Design only',
+    body: 'This page documents a design as captured — schematic, layout, part choices. Nothing here has been simulated, built or measured, so no performance claim on it has been verified.',
+  },
   model: {
     label: 'Hand-model data',
     body: 'The numbers and curves on this page come from an analytical pole–zero model, not from a simulator or from silicon. Replace them before presenting this work.',

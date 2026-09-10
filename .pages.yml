@@ -99,8 +99,14 @@ content:
             type: image
             description: Square mark shown beside the entry. Leave it empty and the entry falls back to initials.
           - { name: body, label: What you did, type: text }
-          - { name: evidenceLabel, label: Evidence — label, type: string }
-          - { name: evidenceHref, label: Evidence — link, type: string }
+          - name: evidenceLabel
+            label: Evidence — label
+            type: string
+            description: What the reader is about to open, e.g. "Research poster". Say the real thing — do not call an image a PDF.
+          - name: evidenceHref
+            label: Evidence — link
+            type: string
+            description: An external URL, or a file you uploaded. For an upload, add it under Media first, then paste its path here as /uploads/<filename>. A label with no link renders as "— add the link", so fill both or neither.
           - name: placeholder
             label: Still a placeholder
             type: boolean
@@ -148,6 +154,7 @@ content:
         description: Renders a visible badge at the top of the page. Keep this honest.
         options:
           values:
+            - { value: design, label: Design only — not simulated or built }
             - { value: model, label: Hand model — not simulated }
             - { value: simulated, label: Simulated (ngspice) }
             - { value: measured, label: Measured silicon }
@@ -161,6 +168,15 @@ content:
         label: IP status
         type: text
         description: State plainly whether anything here is restricted.
+
+      - name: cover
+        label: Thumbnail
+        type: image
+        description: Shown beside this project in the list on the home page. A schematic, a layout render or a board photo. Displayed in a 2:1 frame, fitted whole rather than cropped — so trim the whitespace before uploading or the picture reads as blank.
+      - name: coverAlt
+        label: Thumbnail description
+        type: string
+        description: For screen readers. Leave blank if the thumbnail adds nothing the title does not already say.
 
       - name: tags
         label: Tags
@@ -244,8 +260,14 @@ content:
             type: image
             description: Square mark shown beside the entry. Leave it empty and the entry falls back to initials.
           - { name: body, label: What it was for, type: text }
-          - { name: evidenceLabel, label: Evidence — label, type: string }
-          - { name: evidenceHref, label: Evidence — link, type: string }
+          - name: evidenceLabel
+            label: Evidence — label
+            type: string
+            description: What the reader is about to open, e.g. "Research poster". Say the real thing — do not call an image a PDF.
+          - name: evidenceHref
+            label: Evidence — link
+            type: string
+            description: An external URL, or a file you uploaded. For an upload, add it under Media first, then paste its path here as /uploads/<filename>. A label with no link renders as "— add the link", so fill both or neither.
           - { name: placeholder, label: Still a placeholder, type: boolean, default: false }
 
   # ----------------------------------------------------------- 05  skills
@@ -288,8 +310,14 @@ content:
             type: image
             description: Square mark shown beside the entry. Leave it empty and the entry falls back to initials.
           - { name: body, label: Detail, type: text }
-          - { name: evidenceLabel, label: Evidence — label, type: string }
-          - { name: evidenceHref, label: Evidence — link, type: string }
+          - name: evidenceLabel
+            label: Evidence — label
+            type: string
+            description: What the reader is about to open, e.g. "Research poster". Say the real thing — do not call an image a PDF.
+          - name: evidenceHref
+            label: Evidence — link
+            type: string
+            description: An external URL, or a file you uploaded. For an upload, add it under Media first, then paste its path here as /uploads/<filename>. A label with no link renders as "— add the link", so fill both or neither.
           - { name: placeholder, label: Still a placeholder, type: boolean, default: false }
 
   # ------------------------------------------ 06b  coursework (in education)
