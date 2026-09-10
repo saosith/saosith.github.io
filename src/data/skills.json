@@ -1,68 +1,104 @@
 {
   "skills": [
     {
-      "group": "Schematic & simulation",
+      "group": "Tools",
+      "skill": " LTspice"
+    },
+    {
+      "group": "Tools",
+      "skill": "KiCad"
+    },
+    {
+      "group": "Tools",
+      "skill": "Altium"
+    },
+    {
+      "group": "Tools",
       "skill": "Xschem"
     },
     {
-      "group": "Schematic & simulation",
-      "skill": "ngspice"
-    },
-    {
-      "group": "Schematic & simulation",
-      "skill": "Corner & Monte Carlo analysis"
-    },
-    {
-      "group": "Schematic & simulation",
-      "skill": "Cadence Virtuoso / Spectre"
-    },
-    {
-      "group": "Schematic & simulation",
-      "skill": "LTspice"
-    },
-    {
-      "group": "Layout & verification",
-      "skill": "Magic VLSI"
-    },
-    {
-      "group": "Layout & verification",
-      "skill": "DRC / LVS (netgen)"
-    },
-    {
-      "group": "Layout & verification",
-      "skill": "Parasitic extraction"
-    },
-    {
-      "group": "Layout & verification",
+      "group": "Tools",
       "skill": "KLayout"
     },
     {
-      "group": "Process & devices",
-      "skill": "SkyWater sky130 open PDK"
+      "group": "Tools",
+      "skill": "Matlab"
     },
     {
-      "group": "Process & devices",
-      "skill": "Device characterisation (gm/ID)"
+      "group": "Tools",
+      "skill": "Arduino IDE"
     },
     {
-      "group": "Process & devices",
-      "skill": "Silicon photonics"
+      "group": "Simulation & Analysis",
+      "skill": "DC Sweep & Operating Point Analysis"
     },
     {
-      "group": "Tooling",
-      "skill": "Python (NumPy, Matplotlib)"
+      "group": "Simulation & Analysis ",
+      "skill": "AC Frequency Response & Stability Analysis"
     },
     {
-      "group": "Tooling",
-      "skill": "MATLAB"
+      "group": "Simulation & Analysis",
+      "skill": "Transient Analysis & Settling Time"
     },
     {
-      "group": "Tooling",
+      "group": "Simulation & Analysis",
+      "skill": "Periodic Steady-State (PSS) & Periodic AC (PAC) Analysis"
+    },
+    {
+      "group": "Simulation & Analysis",
+      "skill": "Noise Analysis (Thermal, Flicker, Integrated Noise, NF)"
+    },
+    {
+      "group": "Simulation & Analysis",
+      "skill": "Distortion Analysis"
+    },
+    {
+      "group": "Simulation & Analysis",
+      "skill": "Sensitivity & Transfer Function (XF) Analysis"
+    },
+    {
+      "group": "Verification & Modeling",
+      "skill": "Corner Analysis"
+    },
+    {
+      "group": "Verification & Modeling",
+      "skill": "Monte Carlo Analysis"
+    },
+    {
+      "group": "Verification & Modeling",
+      "skill": "Parasitic-Aware Simulation"
+    },
+    {
+      "group": "Verification & Modeling",
+      "skill": "Mixed-Signal Co-Simulation"
+    },
+    {
+      "group": "Verification & Modeling",
+      "skill": "Verilog-A / Verilog-AMS Behavioral Modeling"
+    },
+    {
+      "group": "Verification & Modeling",
+      "skill": "Yield Optimization & Design for Manufacturability (DFM)"
+    },
+    {
+      "group": "Coding",
+      "skill": "C/C++"
+    },
+    {
+      "group": "Coding ",
+      "skill": "VHDL/Verilog"
+    },
+    {
+      "group": "Coding",
       "skill": "Git"
     },
     {
-      "group": "Tooling",
-      "skill": "Linux / shell"
+      "group": "Coding",
+      "skill": "Linux"
+    },
+    {
+      "group": "Coding",
+      "skill": "Bash"
     }
   ]
 }
