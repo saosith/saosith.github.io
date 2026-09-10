@@ -313,8 +313,12 @@ details.data-table thead th { color: var(--ink-3); font-family: var(--mono); fon
 .tl-evidence { display: flex; flex-wrap: wrap; gap: 0.6rem; font-size: var(--t-cap); }
 
 /* The last row in a list draws no rule of its own: the section boundary already
-   draws one directly under it, and two lines a band apart read as a mistake. */
+   draws one directly under it, and two lines a band apart read as a mistake.
+   The outer rows also drop their outer padding — the heading's own margin above
+   and the boundary rule below each already carry one band of air. */
 .tl-item:last-child, .course-item:last-child { box-shadow: none; }
+.tl-item:first-child, .course-item:first-child { padding-top: 0; }
+.tl-item:last-child, .course-item:last-child { padding-bottom: 0; }
 .note-item:last-child { border-bottom: 0; }
 
 /* ---------------- skills matrix ---------------- */
