@@ -637,9 +637,16 @@ a.data-dl:hover { border-color: var(--ink); background: var(--panel-sunk); }
    way round. Any in-flow sizing here is circular: the stage's own track grows to
    fit the image, so a percentage height resolves against the image itself and
    never constrains anything. object-fit does the letterboxing. */
+/* Filling the stage, with the breathing room as padding on the media itself.
+   Two traps avoided here: padding on the stage does nothing, because an
+   absolutely positioned child's containing block is the padding box; and
+   `inset` alone does not stretch a replaced element, which keeps its intrinsic
+   size and ignores the opposite offset. Sizing to 100% with border-box and
+   padding works, because object-fit fits inside the content box. */
 .lb-stage img,
 .lb-stage iframe {
   position: absolute; inset: 0; width: 100%; height: 100%;
+  padding: var(--unit);
 }
 .lb-stage img {
   object-fit: contain; transform-origin: center center;
