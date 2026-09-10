@@ -208,6 +208,10 @@ content:
     path: src/data/site.json
     format: json
     fields:
+      - name: brand
+        label: Header brand
+        type: string
+        description: The short label beside the logo, top left. Keep it short so it never wraps. Leave blank to use your name instead.
       - name: name
         label: Your name
         type: string

@@ -63,9 +63,14 @@
 }
 
 .hero h1 {
-  font-size: var(--t-2xl); font-weight: 600; letter-spacing: -0.032em;
-  line-height: 1.02; margin-bottom: 0.9rem;
+  /* Sized to keep a full name on one line beside the photo, rather than the
+     display scale used elsewhere. */
+  font-size: clamp(1.9rem, 0.9rem + 2.3vw, 2.75rem);
+  font-weight: 600; letter-spacing: -0.032em;
+  line-height: 1.05; margin-bottom: 0.55rem;
+  text-wrap: nowrap;
 }
+@media (max-width: 34rem) { .hero h1 { text-wrap: balance; } }
 .hero-lede { font-size: var(--t-md); color: var(--ink-2); max-width: 46ch; margin-bottom: 1.6rem; }
 .hero-portrait { min-width: 0; }
 
