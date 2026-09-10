@@ -8,6 +8,22 @@ interface Props {
   emptyText: string;
 }
 const { entries, isLive, emptyText } = Astro.props;
+
+/**
+ * Monogram used when an entry has no logo yet. Takes the first letter of up to
+ * three words, skipping the small connecting words that would otherwise crowd
+ * the tile, so "Student Learning Center" reads SLC rather than SLC-of-the.
+ */
+const SKIP = new Set(['of', 'the', 'and', 'for', 'at', 'in', 'a']);
+function monogram(entry: TimelineEntry): string {
+  const source = entry.org?.trim() || entry.title;
+  return source
+    .split(/[\s—–-]+/)
+    .filter((w) => /[a-z0-9]/i.test(w) && !SKIP.has(w.toLowerCase()))
+    .slice(0, 3)
+    .map((w) => w[0].toUpperCase())
+    .join('');
+}
 ---
 
 {entries.length === 0 ? (
@@ -17,6 +33,9 @@ const { entries, isLive, emptyText } = Astro.props;
     {entries.map((t) => (
       <li class="tl-item">
         <div class="tl-date">{t.date}</div>
+        {t.logo
+          ? <img class="tl-logo" src={t.logo} alt={t.org ? `${t.org} logo` : ''} width="80" height="80" loading="lazy" decoding="async" />
+          : <div class="tl-logo tl-logo-empty" aria-hidden="true">{monogram(t)}</div>}
         <div>
           <div class="tl-title">
             {t.title}

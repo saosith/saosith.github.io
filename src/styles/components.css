@@ -292,9 +292,18 @@ details.data-table thead th { color: var(--ink-3); font-family: var(--mono); fon
 
 /* ---------------- timeline ---------------- */
 .timeline { list-style: none; padding: 0; margin: 0; box-shadow: inset 0 1px 0 var(--rule-strong); }
-.tl-item { display: grid; gap: 0 1.5rem; padding: var(--unit) 0; box-shadow: inset 0 -1px 0 var(--rule); }
-@media (min-width: 44rem) { .tl-item { grid-template-columns: 10.5rem minmax(0, 1fr); } }
-.tl-date { font-family: var(--mono); font-size: var(--t-sm); color: var(--ink-3); padding-top: 0.15rem; }
+/* Logo, then text. Narrow screens put the date on its own row above both so the
+   mark stays beside the entry it belongs to rather than dropping below it. */
+.tl-item { display: grid; gap: 0 1rem; grid-template-columns: 3rem minmax(0, 1fr); padding: var(--unit) 0; box-shadow: inset 0 -1px 0 var(--rule); }
+.tl-date { grid-column: 1 / -1; font-family: var(--mono); font-size: var(--t-sm); color: var(--ink-3); padding-top: 0.15rem; }
+@media (min-width: 44rem) {
+  .tl-item { grid-template-columns: 10.5rem 3rem minmax(0, 1fr); gap: 0 1.25rem; }
+  .tl-date { grid-column: auto; }
+}
+/* Logos carry their own background, as they do on LinkedIn, so the tile is white
+   in both themes rather than tinting a mark that was drawn for white. */
+.tl-logo { width: 3rem; height: 3rem; border: 1px solid var(--rule); border-radius: 3px; background: #fff; object-fit: contain; }
+.tl-logo-empty { background: var(--paper); display: grid; place-items: center; font-family: var(--mono); font-size: 0.7rem; letter-spacing: 0.03em; color: var(--ink-3); }
 .tl-title { font-weight: 600; }
 .tl-org { color: var(--ink-2); font-size: var(--t-cap); }
 .tl-body { color: var(--ink-2); font-size: var(--t-cap); max-width: 62ch; }

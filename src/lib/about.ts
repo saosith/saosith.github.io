@@ -24,6 +24,12 @@ export interface TimelineEntry {
   date: string;
   title: string;
   org?: string;
+  /**
+   * Square organisation mark shown beside the entry. Optional: without one the
+   * entry falls back to a monogram tile built from the organisation name, so a
+   * missing image never leaves a hole in the column.
+   */
+  logo?: string;
   body?: string;
   evidenceLabel?: string;
   evidenceHref?: string;

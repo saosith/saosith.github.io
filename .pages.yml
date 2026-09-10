@@ -182,6 +182,10 @@ content:
           - { name: date, label: Date, type: string, required: true }
           - { name: title, label: Title, type: string, required: true }
           - { name: org, label: Organisation, type: string }
+          - name: logo
+            label: Organisation logo
+            type: image
+            description: Square mark shown beside the entry. Leave empty and the entry falls back to initials.
           - { name: body, label: What you did, type: text }
           - { name: evidenceLabel, label: Evidence — label, type: string }
           - { name: evidenceHref, label: Evidence — link, type: string }
