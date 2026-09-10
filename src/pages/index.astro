@@ -13,7 +13,7 @@ import { SITE } from '../lib/site';
 ---
 
 <Base
-  title={`${SITE.siteTitle} — ${SITE.role}`}
+  title={`${SITE.name} — ${SITE.role}`}
   bareTitle
   description={SITE.tagline}
 >
@@ -21,7 +21,7 @@ import { SITE } from '../lib/site';
     <div class="hero-grid">
       <div class="hero-text">
         {SITE.location && <p class="hero-eyebrow">{SITE.location}</p>}
-        <h1>{SITE.siteTitle}</h1>
+        <h1>{SITE.name}</h1>
         <p class="hero-role">
           {SITE.role}{SITE.credential && <><span class="sep" aria-hidden="true">|</span>{SITE.credential}</>}
         </p>

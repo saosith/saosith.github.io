@@ -208,16 +208,11 @@ content:
     path: src/data/site.json
     format: json
     fields:
-      - name: siteTitle
-        label: Site title
-        type: string
-        required: true
-        description: The name of the site itself. Shown in the header, as the big heading on the home page, and in the browser tab.
       - name: name
         label: Your name
         type: string
         required: true
-        description: Your own name, as a person. Used for the photo caption, the copyright line, and the About page. Keep this separate from the site title above.
+        description: Shown in the header, as the heading on the home page, in the browser tab, and in the copyright line. Use the name you want a recruiter to find you by.
       - { name: role, label: Role, type: string }
       - name: credential
         label: Credential
