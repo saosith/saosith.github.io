@@ -1,0 +1,17 @@
+---
+import { education } from '../lib/about';
+import { livePredicate } from '../lib/published';
+import TimelineList from './TimelineList.astro';
+
+const isLive = await livePredicate();
+---
+
+<section id="education" class="wrap section rule-top">
+  <div class="section-head">
+    <span class="idx">05</span>
+    <h2>Education</h2>
+    <p class="note">Degree and relevant coursework.</p>
+  </div>
+
+  <TimelineList entries={education()} isLive={isLive} emptyText="Nothing listed yet." />
+</section>

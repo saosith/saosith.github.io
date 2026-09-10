@@ -1,0 +1,38 @@
+---
+import type { TimelineEntry } from '../lib/about';
+
+interface Props {
+  entries: TimelineEntry[];
+  /** Hrefs that actually resolve, so dead links degrade instead of 404ing. */
+  isLive: (href?: string) => boolean;
+  emptyText: string;
+}
+const { entries, isLive, emptyText } = Astro.props;
+---
+
+{entries.length === 0 ? (
+  <p class="muted">{emptyText}</p>
+) : (
+  <ol class="timeline">
+    {entries.map((t) => (
+      <li class="tl-item">
+        <div class="tl-date">{t.date}</div>
+        <div>
+          <div class="tl-title">
+            {t.title}
+            {t.placeholder && <span class="chip chip-warning" style="margin-left:0.5rem">replace this entry</span>}
+          </div>
+          {t.org && <div class="tl-org">{t.org}</div>}
+          {t.body && <p class="tl-body">{t.body}</p>}
+          {t.evidenceLabel && (
+            <div class="tl-evidence">
+              {isLive(t.evidenceHref)
+                ? <a href={t.evidenceHref}>{t.evidenceLabel}</a>
+                : <span class="muted">{t.evidenceLabel} — add the link</span>}
+            </div>
+          )}
+        </div>
+      </li>
+    ))}
+  </ol>
+)}

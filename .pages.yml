@@ -164,11 +164,20 @@ content:
     format: json
     fields:
       - name: timeline
-        label: Timeline
+        label: Timeline (Experience & Education)
         type: object
         list: true
         description: Every entry needs a date and something a reader can open. Do not list anything you cannot evidence.
         fields:
+          - name: kind
+            label: Section
+            type: select
+            default: experience
+            required: true
+            description: Which section this entry appears under.
+            options:
+              - { value: experience, label: Experience }
+              - { value: education, label: Education }
           - { name: date, label: Date, type: string, required: true }
           - { name: title, label: Title, type: string, required: true }
           - { name: org, label: Organisation, type: string }
@@ -210,21 +219,39 @@ content:
         required: true
         description: Your own name, as a person. Used for the photo caption, the copyright line, and the About page. Keep this separate from the site title above.
       - { name: role, label: Role, type: string }
+      - name: credential
+        label: Credential
+        type: string
+        description: Shown beside your role, e.g. "OU ECE '27". Leave blank to hide it.
       - name: tagline
         label: Tagline
         type: text
         description: Shown under your name on the home page and used as the search-result description.
+      - name: location
+        label: Location
+        type: string
+        description: Small line above your name, e.g. "Norman, OK". Leave blank to hide it.
       - name: photo
         label: Photo
         type: image
-        description: Shown on the home page. A plain headshot against a clean background works best; roughly 4:5 portrait crops nicest.
+        description: Shown beside the hero text. Cropped to 3:2 landscape, so a lab, conference or team photo suits it better than a tight headshot.
+      - name: photoCaption
+        label: Photo caption
+        type: text
+        description: The line under the photo. Say what it shows, where, and when.
       - name: resume
         label: Resume (PDF)
         type: file
         description: Upload your CV here. The nav, the footer and the home-page button all follow this, so replacing it updates every link at once.
       - { name: email, label: Email, type: string }
+      - name: phone
+        label: Phone
+        type: string
+        description: Shown in the hero contact row. Leave blank to hide it.
       - { name: github, label: GitHub URL, type: string }
       - { name: linkedin, label: LinkedIn URL, type: string }
       - { name: university, label: University, type: string }
-      - { name: homeIntro, label: Home page — "How these pages are put together", type: text }
-      - { name: aboutIntro, label: About page — second paragraph, type: text }
+      - name: homeIntro
+        label: About — intro paragraph
+        type: text
+        description: The paragraph under the About heading.

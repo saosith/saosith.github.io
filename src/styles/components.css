@@ -20,7 +20,7 @@
 }
 .brand:hover { color: var(--signal-deep); }
 .brand-mark { width: 20px; height: 20px; flex: none; color: var(--signal); }
-.site-nav { display: flex; gap: 1.15rem; align-items: center; margin-left: auto; flex-wrap: wrap; }
+.site-nav { display: flex; gap: 0.95rem; align-items: center; margin-left: auto; flex-wrap: wrap; }
 .site-nav a {
   font-size: var(--t-cap); color: var(--ink-2); text-decoration: none;
   padding-block: 0.35rem; border-bottom: 2px solid transparent;
@@ -58,8 +58,8 @@
   /* Explicit minmax(0,…) base: a grid item's default min-width:auto lets a wide
      child (a plot, a nowrap table cell) push the column past the viewport. */
   grid-template-columns: minmax(0, 1fr); }
-@media (min-width: 60rem) {
-  .hero-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 18rem); align-items: center; }
+@media (min-width: 62rem) {
+  .hero-grid { grid-template-columns: minmax(0, 1fr) minmax(0, 1.05fr); align-items: start; }
 }
 
 .hero h1 {
@@ -71,12 +71,12 @@
 
 .portrait { margin: 0; display: grid; gap: 0.6rem; }
 .portrait-img {
-  width: 100%; aspect-ratio: 4 / 5; object-fit: cover;
+  width: 100%; aspect-ratio: 3 / 2; object-fit: cover;
   background: var(--panel-sunk);
   border: 1px solid var(--rule); border-radius: 3px;
 }
 .portrait-empty {
-  aspect-ratio: 4 / 5;
+  aspect-ratio: 3 / 2;
   display: grid; place-content: center; justify-items: center; gap: 0.9rem;
   padding: 1.25rem;
   background: var(--panel);
@@ -85,7 +85,8 @@
 }
 .portrait-empty svg { width: 3rem; height: 3rem; }
 .portrait-empty p { font-size: var(--t-xs); color: var(--ink-2); text-align: center; max-width: 26ch; line-height: 1.5; }
-.portrait figcaption { font-size: var(--t-xs); color: var(--ink-3); font-family: var(--mono); }
+.portrait figcaption { font-size: var(--t-cap); color: var(--ink-2); line-height: 1.5; }
+.portrait figcaption.is-placeholder { color: var(--ink-3); font-style: italic; }
 
 /* headline parameters, set as a datasheet's key-specs block */
 .keyspecs { display: grid; gap: 0; border-top: 1px solid var(--rule-strong); margin-bottom: 1.6rem; }
@@ -353,3 +354,38 @@ section[id] { scroll-margin-top: 74px; }
 }
 .contact-list dt { font-size: var(--t-cap); color: var(--ink-2); }
 .contact-list dd { margin: 0; font-family: var(--mono); font-size: var(--t-cap); word-break: break-word; }
+
+/* ---------------- hero, reference layout ---------------- */
+.hero-text { min-width: 0; }
+.hero-eyebrow {
+  font-family: var(--mono); font-size: var(--t-xs);
+  letter-spacing: 0.08em; color: var(--ink-3);
+  margin-bottom: 0.7rem;
+}
+.hero-role {
+  font-size: var(--t-md); font-weight: 500; color: var(--ink);
+  margin-bottom: 0.9rem;
+}
+.hero-role .sep { color: var(--rule-strong); margin-inline: 0.6rem; font-weight: 400; }
+
+.hero-contacts {
+  list-style: none; padding: 0; margin: 1.6rem 0 0;
+  display: flex; flex-wrap: wrap; gap: 0.5rem 1.6rem;
+}
+.hero-contacts a {
+  display: inline-flex; align-items: center; gap: 0.45rem;
+  font-size: var(--t-cap); color: var(--ink); text-decoration: none;
+}
+.hero-contacts a:hover { color: var(--signal-deep); text-decoration: underline; }
+.hero-contacts svg { width: 1.05em; height: 1.05em; flex: none; color: var(--ink-2); }
+
+/* Resume as a button in the nav, per the reference.
+   Scoped under .site-nav so it beats `.site-nav a`, which would otherwise
+   repaint the label in body-text ink and leave it unreadable on the fill. */
+.site-nav a.nav-resume {
+  padding: 0.4rem 0.8rem;
+  color: var(--on-signal);
+  border-bottom: 1px solid var(--signal-deep);
+}
+.site-nav a.nav-resume:hover { color: var(--paper); border-bottom-color: var(--ink); }
+.site-nav a.nav-resume svg { width: 0.95em; height: 0.95em; }

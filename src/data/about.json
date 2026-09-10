@@ -5,7 +5,8 @@
       "title": "B.S. Electrical Engineering",
       "org": "University of Oklahoma",
       "body": "Coursework in analog electronics, semiconductor devices, signals and systems, and electromagnetics. Self-directed work in analog IC design on the sky130 open PDK alongside it.",
-      "placeholder": true
+      "placeholder": true,
+      "kind": "education"
     },
     {
       "date": "Add a date",
@@ -13,7 +14,8 @@
       "org": "Group or lab name",
       "body": "One or two sentences on what you actually built or measured — the instrument, the circuit, the result. Not the topic area.",
       "evidenceLabel": "Poster / report (PDF)",
-      "placeholder": true
+      "placeholder": true,
+      "kind": "experience"
     },
     {
       "date": "Add a date",
@@ -21,7 +23,8 @@
       "org": "Shuttle, sponsor, or competition",
       "body": "If you have taped out, name the shuttle and the date — for example \"sky130 via the Efabless MPW shuttle\". A die photo or GDS render on the home page is the strongest single signal an IC portfolio can carry.",
       "evidenceLabel": "GDS / die photo",
-      "placeholder": true
+      "placeholder": true,
+      "kind": "experience"
     }
   ],
   "skills": [

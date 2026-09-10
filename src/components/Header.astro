@@ -8,10 +8,12 @@ import { SITE } from '../lib/site';
  */
 const links = [
   { href: '/#about', label: 'About', section: 'about' },
+  { href: '/#experience', label: 'Experience', section: 'experience' },
   { href: '/#projects', label: 'Projects', section: 'projects' },
   { href: '/#notes', label: 'Notes', section: 'notes' },
+  { href: '/#education', label: 'Education', section: 'education' },
+  { href: '/#skills', label: 'Skills', section: 'skills' },
   { href: '/#contact', label: 'Contact', section: 'contact' },
-  { href: SITE.resume, label: 'Resume', external: true },
 ];
 ---
 
@@ -28,11 +30,7 @@ const links = [
 
     <nav class="site-nav" aria-label="Primary">
       {links.map((l) => (
-        <a
-          href={l.href}
-          data-section={l.section}
-          {...(l.external ? { target: '_blank', rel: 'noopener' } : {})}
-        >{l.label}</a>
+        <a href={l.href} data-section={l.section}>{l.label}</a>
       ))}
       <button class="theme-toggle" type="button" data-theme-toggle aria-label="Switch colour theme">
         <svg class="i-sun" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -45,6 +43,14 @@ const links = [
                 stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/>
         </svg>
       </button>
+
+      <a class="btn btn-primary nav-resume" href={SITE.resume} target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" fill="none" aria-hidden="true">
+          <path d="M12 3.5v11m0 0l-4-4m4 4l4-4M4.5 17.5v1a2 2 0 002 2h11a2 2 0 002-2v-1"
+                stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+        </svg>
+        Resume
+      </a>
     </nav>
   </div>
 </header>

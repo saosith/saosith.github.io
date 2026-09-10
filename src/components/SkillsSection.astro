@@ -1,0 +1,33 @@
+---
+import { skillGroups } from '../lib/about';
+import { livePredicate } from '../lib/published';
+
+const SKILLS = skillGroups();
+const isLive = await livePredicate();
+---
+
+<section id="skills" class="wrap section rule-top">
+  <div class="section-head">
+    <span class="idx">06</span>
+    <h2>Skills</h2>
+    <p class="note">Linked entries point at the project that used them.</p>
+  </div>
+
+  <div class="skills">
+    {SKILLS.map((g) => (
+      <div class="skill-group">
+        <h3>{g.name}</h3>
+        <ul>
+          {g.items.map((i) => (
+            <li>
+              <span>{i.skill}</span>
+              {i.whereLabel && isLive(i.whereHref)
+                ? <span class="where"><a href={i.whereHref}>{i.whereLabel}</a></span>
+                : <span class="no-link">coursework</span>}
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+  </div>
+</section>

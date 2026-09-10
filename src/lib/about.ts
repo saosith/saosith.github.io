@@ -17,7 +17,10 @@ import data from '../data/about.json';
  *      chip photo. An entry with no evidence is a claim, not an achievement.
  */
 
+export type TimelineKind = 'experience' | 'education';
+
 export interface TimelineEntry {
+  kind?: TimelineKind;
   date: string;
   title: string;
   org?: string;
@@ -34,7 +37,11 @@ export interface SkillRow {
   whereHref?: string;
 }
 
-export const TIMELINE: TimelineEntry[] = data.timeline;
+export const TIMELINE: TimelineEntry[] = data.timeline as TimelineEntry[];
+
+/** Experience and education are shown as separate sections on the page. */
+export const experience = () => TIMELINE.filter((t) => (t.kind ?? 'experience') === 'experience');
+export const education  = () => TIMELINE.filter((t) => t.kind === 'education');
 
 /**
  * The CMS edits a flat list (one row per skill, carrying its group name) because

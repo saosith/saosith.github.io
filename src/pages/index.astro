@@ -1,9 +1,13 @@
 ---
 import Base from '../layouts/Base.astro';
 import Portrait from '../components/Portrait.astro';
+import HeroContacts from '../components/HeroContacts.astro';
 import AboutSection from '../components/AboutSection.astro';
+import ExperienceSection from '../components/ExperienceSection.astro';
 import ProjectsSection from '../components/ProjectsSection.astro';
 import NotesSection from '../components/NotesSection.astro';
+import EducationSection from '../components/EducationSection.astro';
+import SkillsSection from '../components/SkillsSection.astro';
 import ContactSection from '../components/ContactSection.astro';
 import { SITE } from '../lib/site';
 ---
@@ -15,27 +19,27 @@ import { SITE } from '../lib/site';
 >
   <section id="top" class="wrap hero">
     <div class="hero-grid">
-      <div>
+      <div class="hero-text">
+        {SITE.location && <p class="hero-eyebrow">{SITE.location}</p>}
         <h1>{SITE.siteTitle}</h1>
+        <p class="hero-role">
+          {SITE.role}{SITE.credential && <><span class="sep" aria-hidden="true">|</span>{SITE.credential}</>}
+        </p>
         <p class="hero-lede">{SITE.tagline}</p>
-
-        <div class="btn-row">
-          <a class="btn btn-primary" href="#projects">See the projects</a>
-          <a class="btn" href={SITE.resume}>Resume (PDF)</a>
-          <a class="btn" href={SITE.linkedin} target="_blank" rel="noopener">LinkedIn</a>
-        </div>
+        <HeroContacts />
       </div>
 
       <div class="hero-portrait">
         <Portrait />
       </div>
     </div>
-
-    <p class="site-intro prose">{SITE.homeIntro}</p>
   </section>
 
   <AboutSection />
+  <ExperienceSection />
   <ProjectsSection />
   <NotesSection />
+  <EducationSection />
+  <SkillsSection />
   <ContactSection />
 </Base>
