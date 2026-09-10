@@ -1,104 +1,100 @@
 {
   "skills": [
     {
-      "group": "Tools",
-      "skill": " LTspice"
+      "group": "Design & simulation",
+      "skill": "LTspice, ngspice"
     },
     {
-      "group": "Tools",
-      "skill": "KiCad"
-    },
-    {
-      "group": "Tools",
-      "skill": "Altium"
-    },
-    {
-      "group": "Tools",
+      "group": "Design & simulation",
       "skill": "Xschem"
     },
     {
-      "group": "Tools",
-      "skill": "KLayout"
+      "group": "Design & simulation",
+      "skill": "Magic VLSI, KLayout"
     },
     {
-      "group": "Tools",
-      "skill": "Matlab"
+      "group": "Design & simulation",
+      "skill": "KiCad, Altium"
     },
     {
-      "group": "Tools",
-      "skill": "Arduino IDE"
+      "group": "Design & simulation",
+      "skill": "Onshape"
     },
     {
-      "group": "Simulation & Analysis",
-      "skill": "DC Sweep & Operating Point Analysis"
+      "group": "Design & simulation",
+      "skill": "LabVIEW"
     },
     {
-      "group": "Simulation & Analysis ",
-      "skill": "AC Frequency Response & Stability Analysis"
+      "group": "Simulation & verification",
+      "skill": "DC, AC, transient"
     },
     {
-      "group": "Simulation & Analysis",
-      "skill": "Transient Analysis & Settling Time"
+      "group": "Simulation & verification",
+      "skill": "Noise & distortion"
     },
     {
-      "group": "Simulation & Analysis",
-      "skill": "Periodic Steady-State (PSS) & Periodic AC (PAC) Analysis"
+      "group": "Simulation & verification",
+      "skill": "Corners & Monte Carlo"
     },
     {
-      "group": "Simulation & Analysis",
-      "skill": "Noise Analysis (Thermal, Flicker, Integrated Noise, NF)"
+      "group": "Simulation & verification",
+      "skill": "Parasitic extraction"
     },
     {
-      "group": "Simulation & Analysis",
-      "skill": "Distortion Analysis"
+      "group": "Simulation & verification",
+      "skill": "DRC / LVS"
     },
     {
-      "group": "Simulation & Analysis",
-      "skill": "Sensitivity & Transfer Function (XF) Analysis"
+      "group": "Simulation & verification",
+      "skill": "sky130 open PDK"
     },
     {
-      "group": "Verification & Modeling",
-      "skill": "Corner Analysis"
+      "group": "Fabrication & lab",
+      "skill": "Photolithography"
     },
     {
-      "group": "Verification & Modeling",
-      "skill": "Monte Carlo Analysis"
+      "group": "Fabrication & lab",
+      "skill": "Reactive ion etching"
     },
     {
-      "group": "Verification & Modeling",
-      "skill": "Parasitic-Aware Simulation"
+      "group": "Fabrication & lab",
+      "skill": "Pulsed laser deposition"
     },
     {
-      "group": "Verification & Modeling",
-      "skill": "Mixed-Signal Co-Simulation"
+      "group": "Fabrication & lab",
+      "skill": "Cleanroom processing"
     },
     {
-      "group": "Verification & Modeling",
-      "skill": "Verilog-A / Verilog-AMS Behavioral Modeling"
+      "group": "Fabrication & lab",
+      "skill": "Optical spectroscopy"
     },
     {
-      "group": "Verification & Modeling",
-      "skill": "Yield Optimization & Design for Manufacturability (DFM)"
+      "group": "Fabrication & lab",
+      "skill": "AFM / FTIR"
     },
     {
-      "group": "Coding",
+      "group": "Programming",
+      "skill": "Python (NumPy, Pandas)"
+    },
+    {
+      "group": "Programming",
+      "skill": "MATLAB"
+    },
+    {
+      "group": "Programming",
       "skill": "C/C++"
     },
     {
-      "group": "Coding ",
-      "skill": "VHDL/Verilog"
+      "group": "Programming",
+      "skill": "Verilog / VHDL"
     },
     {
-      "group": "Coding",
-      "skill": "Git"
+      "group": "Programming",
+      "skill": "Verilog-A / AMS"
     },
     {
-      "group": "Coding",
-      "skill": "Linux"
-    },
-    {
-      "group": "Coding",
-      "skill": "Bash"
+      "group": "Programming",
+      "skill": "Git, Linux, Bash"
     }
   ]
 }

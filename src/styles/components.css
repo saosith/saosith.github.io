@@ -321,11 +321,13 @@ details.data-table thead th { color: var(--ink-3); font-family: var(--mono); fon
 .tl-item:last-child, .course-item:last-child { padding-bottom: 0; }
 .note-item:last-child { border-bottom: 0; }
 
-/* ---------------- skills matrix ---------------- */
-.skills { display: grid; gap: var(--unit); grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); }
+/* ---------------- skills ----------------
+   One column per group. Long entries wrap with a hanging indent so a second
+   line reads as a continuation rather than as another skill. */
+.skills { display: grid; gap: var(--unit); grid-template-columns: repeat(auto-fit, minmax(14rem, 1fr)); align-items: start; }
 .skill-group h3 { font-size: var(--t-cap); padding-bottom: 0; box-shadow: inset 0 -1px 0 var(--rule-strong); margin-bottom: 0; }
-.skill-group ul { list-style: none; padding: 0; display: grid; gap: 0; }
-.skill-group li { font-size: var(--t-cap); }
+.skill-group ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 0; }
+.skill-group li { font-size: var(--t-cap); padding-left: 0.8rem; text-indent: -0.8rem; text-wrap: pretty; }
 
 /* ---------------- notes list ---------------- */
 .note-list { list-style: none; padding: 0; }
@@ -447,3 +449,111 @@ a.data-dl {
 }
 a.data-dl::before { content: '\2193'; color: var(--ink-3); }
 a.data-dl:hover { border-color: var(--ink); background: var(--panel-sunk); }
+
+/* ---------------- "Now" line ----------------
+   Kept off the page's vertical rhythm by using a left rule rather than a box:
+   a top and bottom border would add 2px and push everything below off the
+   24px graticule. Every line box here is exactly one grid row tall. */
+.now {
+  margin-top: var(--unit);
+  padding-left: 0.9rem;
+  border-left: 2px solid var(--signal);
+  max-width: 46ch;
+}
+.now-head {
+  display: flex; align-items: center; gap: 0.7rem;
+  height: var(--unit); margin: 0;
+}
+.now-label {
+  font-family: var(--mono); font-size: var(--t-xs); font-weight: 600;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--signal-deep);
+}
+.now-trace { width: 64px; height: 14px; flex: none; overflow: visible; }
+.now-trace path { stroke-width: 1.5; stroke-linecap: round; }
+.now-trace-ghost { stroke: var(--rule-strong); opacity: 0.45; }
+.now-trace-live {
+  stroke: var(--signal);
+  stroke-dasharray: 22 100;
+  animation: now-sweep 2.8s linear infinite;
+}
+@keyframes now-sweep {
+  from { stroke-dashoffset: 22; }
+  to   { stroke-dashoffset: -100; }
+}
+.now-text {
+  font-size: var(--t-cap); line-height: var(--unit);
+  color: var(--ink); margin: 0; text-wrap: pretty;
+}
+.now-meta {
+  font-family: var(--mono); font-size: var(--t-xs); line-height: var(--unit);
+  color: var(--ink-3); margin: 0;
+}
+
+/* The sweep is decoration, so it goes entirely rather than slowing down.
+   The static trace stays: it is what carries the meaning. */
+@media (prefers-reduced-motion: reduce) {
+  .now-trace-live { animation: none; stroke-dasharray: none; }
+}
+
+@media print {
+  .now-trace-live { animation: none; stroke-dasharray: none; }
+}
+
+/* ---------------- About: prose + profile photo ----------------
+   The photo column is a fixed nine grid rows wide, so a 1:1 image is also nine
+   rows tall and the section keeps landing on the graticule. Below the
+   breakpoint the columns stack and the photo caps at the same 216px rather
+   than stretching to full width, which would dwarf the text. */
+.about-grid {
+  display: grid;
+  gap: var(--unit);
+  grid-template-columns: minmax(0, 1fr);
+}
+/* Lower than the hero's breakpoint on purpose: the hero photo is a fluid
+   column that needs room, this one is a fixed 216px, so it still sits beside
+   the text on a narrow laptop and leaves the prose about 50 characters. */
+@media (min-width: 52rem) {
+  .about-grid {
+    /* The prose track is capped at the measure, so the photo track is exactly
+       the space the text leaves over. Centring the photo in it puts the same
+       gap either side — against the text and against the page edge — instead of
+       pinning the photo to the right margin with a large hole beside it.
+       The track's 264px floor keeps at least one grid unit of air on each side
+       at the narrowest width where the two columns still apply. */
+    grid-template-columns:
+      minmax(0, var(--measure))
+      minmax(calc(var(--unit) * 11), 1fr);
+    gap: 0;
+    align-items: start;
+  }
+  .about-photo { justify-self: center; }
+}
+
+.about-photo { min-width: 0; }
+.about-photo-img,
+.about-photo-empty {
+  width: 100%;
+  max-width: calc(var(--unit) * 9);
+  aspect-ratio: 1 / 1;
+  border-radius: 3px;
+}
+.about-photo-img {
+  display: block;
+  object-fit: cover;
+  background: var(--panel-sunk);
+  border: 1px solid var(--rule);
+}
+.about-photo-empty {
+  display: grid; place-content: center; justify-items: center;
+  gap: 0.75rem; padding: 1rem;
+  background: var(--panel);
+  border: 1px dashed var(--rule-strong);
+  color: var(--ink-3);
+  text-align: center;
+}
+.about-photo-empty svg { width: 2rem; height: 2rem; }
+.about-photo-empty p { margin: 0; font-size: var(--t-xs); line-height: var(--unit); text-wrap: pretty; }
+/* Keep the CMS path on one line — breaking it after the arrow reads as two
+   separate instructions. */
+.about-photo-empty .mono { white-space: nowrap; }

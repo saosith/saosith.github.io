@@ -1,5 +1,17 @@
 ---
-import { ABOUT } from '../lib/about';
+import { ABOUT, ABOUT_PHOTO } from '../lib/about';
+import { SITE } from '../lib/site';
+
+/**
+ * About: prose on the left, a square profile photo on the right.
+ *
+ * The photo column is a fixed 216px — nine grid rows — rather than a fraction
+ * of the width. A percentage column would give a 1:1 image an arbitrary height
+ * that almost never lands on the 24px graticule, and the section below it would
+ * inherit the error.
+ */
+const photo = ABOUT_PHOTO.src;
+const alt = ABOUT_PHOTO.alt || `${SITE.name}, ${SITE.role}`;
 ---
 
 <section id="about" class="wrap section">
@@ -7,7 +19,31 @@ import { ABOUT } from '../lib/about';
     <h2>About</h2>
   </div>
 
-  <div class="prose">
-    {ABOUT.map((p) => <p>{p}</p>)}
+  <div class="about-grid">
+    <div class="prose">
+      {ABOUT.map((p) => <p>{p}</p>)}
+    </div>
+
+    <div class="about-photo">
+      {photo ? (
+        <img
+          class="about-photo-img"
+          src={photo}
+          alt={alt}
+          width="432"
+          height="432"
+          loading="lazy"
+          decoding="async"
+        />
+      ) : (
+        <div class="about-photo-empty">
+          <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+            <circle cx="16" cy="11" r="5.5" stroke="currentColor" stroke-width="2" />
+            <path d="M5 29c0-5.5 4.9-9.5 11-9.5S27 23.5 27 29" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
+          </svg>
+          <p>Add a square photo in <span class="mono">About → Profile photo</span>.</p>
+        </div>
+      )}
+    </div>
   </div>
 </section>

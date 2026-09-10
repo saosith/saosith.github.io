@@ -1,0 +1,60 @@
+---
+import now from '../data/now.json';
+
+/**
+ * "Now" — one line saying what is on the bench this week.
+ *
+ * Deliberately static, not live. A heartbeat from a laptop would need a backend
+ * this site does not have, and its common state would be "offline", which reads
+ * worse than nothing. A dated line is honest either way: fresh when it is
+ * fresh, and visibly stale when it is not, which is information too.
+ *
+ * The sweeping trace is the only motion on the page. It is a scope sweep rather
+ * than a spinner because a spinner would imply something is loading.
+ */
+const data = now as {
+  show?: boolean;
+  status?: string;
+  href?: string;
+  hrefLabel?: string;
+  updated?: string;
+};
+
+const status = (data.status ?? '').trim();
+const show = data.show !== false && status.length > 0;
+
+const href = (data.href ?? '').trim();
+const hrefLabel = (data.hrefLabel ?? '').trim() || 'Read more';
+
+/** Dates are typed as YYYY-MM-DD; parse as UTC so the day never slips a zone. */
+const stamp = (() => {
+  const raw = (data.updated ?? '').trim();
+  if (!raw) return '';
+  const d = new Date(`${raw}T00:00:00Z`);
+  if (Number.isNaN(d.getTime())) return '';
+  return new Intl.DateTimeFormat('en-GB', {
+    day: 'numeric', month: 'short', year: 'numeric', timeZone: 'UTC',
+  }).format(d);
+})();
+---
+
+{show && (
+  <div class="now">
+    <p class="now-head">
+      <span class="now-label">Now</span>
+      {/* pathLength="100" normalises the dash maths, so the sweep timing does
+          not change if the waveform is ever redrawn. */}
+      <svg class="now-trace" viewBox="0 0 64 14" fill="none" aria-hidden="true">
+        <path class="now-trace-ghost" pathLength="100" d="M0 7 Q 4 1, 8 7 T 16 7 T 24 7 T 32 7 T 40 7 T 48 7 T 56 7 T 64 7" />
+        <path class="now-trace-live" pathLength="100" d="M0 7 Q 4 1, 8 7 T 16 7 T 24 7 T 32 7 T 40 7 T 48 7 T 56 7 T 64 7" />
+      </svg>
+    </p>
+
+    <p class="now-text">
+      {status}
+      {href && <> <a href={href}>{hrefLabel}</a></>}
+    </p>
+
+    {stamp && <p class="now-meta">Updated {stamp}</p>}
+  </div>
+)}

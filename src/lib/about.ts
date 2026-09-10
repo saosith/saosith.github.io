@@ -54,6 +54,12 @@ export interface Course {
 /** The About section's paragraphs, in order. */
 export const ABOUT: string[] = (aboutData as { paragraphs?: string[] }).paragraphs ?? [];
 
+/** The square profile photo shown beside the About text. Empty renders a slot. */
+export const ABOUT_PHOTO = {
+  src: ((aboutData as { photo?: string }).photo ?? '').trim(),
+  alt: ((aboutData as { photoAlt?: string }).photoAlt ?? '').trim(),
+};
+
 const entries = (d: unknown) => ((d as { entries?: TimelineEntry[] }).entries ?? []);
 
 export const experience = () => entries(experienceData);
@@ -69,7 +75,11 @@ export const COURSES: Course[] = (coursesData as { courses?: Course[] }).courses
  */
 export function skillGroups(): { name: string; items: SkillRow[] }[] {
   const groups: { name: string; items: SkillRow[] }[] = [];
-  for (const row of (skillsData as { skills?: SkillRow[] }).skills ?? []) {
+  for (const raw of (skillsData as { skills?: SkillRow[] }).skills ?? []) {
+    // Trimmed: a trailing space typed in the CMS would otherwise read as a
+    // different group and print the same heading twice.
+    const row = { group: raw.group.trim(), skill: raw.skill.trim() };
+    if (!row.skill) continue;
     let g = groups.find((x) => x.name === row.group);
     if (!g) { g = { name: row.group, items: [] }; groups.push(g); }
     g.items.push(row);

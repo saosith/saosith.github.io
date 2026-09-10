@@ -26,6 +26,37 @@ media:
   categories: [image, document]
 
 content:
+  # ----------------------------------------------------------------- now
+  # Lives at the top of the sidebar because it is the one entry meant to be
+  # edited often. Static on purpose — see the note in NowLine.astro.
+  - name: now
+    label: Now — what you're working on
+    type: file
+    path: src/data/now.json
+    format: json
+    fields:
+      - name: show
+        label: Show the Now line
+        type: boolean
+        default: true
+        description: Untick to hide it from the home page without deleting what you wrote.
+      - name: status
+        label: What you're working on
+        type: text
+        description: One sentence, present tense. Name the actual thing — "sizing a two-stage Miller op-amp in sky130" beats "working on analog design".
+      - name: updated
+        label: Last updated
+        type: date
+        description: Shown under the line. Change it whenever you change the sentence — a date that stops moving tells a reader the line went stale.
+      - name: href
+        label: Link (optional)
+        type: string
+        description: Point at the project page or repo if there is one to point at. Leave blank for no link.
+      - name: hrefLabel
+        label: Link text
+        type: string
+        description: Leave blank for "Read more".
+
   # ------------------------------------------------------------ 01  about
   - name: about
     label: 01 · About
@@ -38,6 +69,14 @@ content:
         type: string
         list: true
         description: One entry per paragraph, in the order they should read.
+      - name: photo
+        label: Profile photo
+        type: image
+        description: Square, like a LinkedIn profile picture — it is displayed 1:1, so a portrait or landscape crop will be cut off. Leave empty and the slot shows a placeholder.
+      - name: photoAlt
+        label: Photo description
+        type: string
+        description: For screen readers and for when the image fails to load. Leave blank to use your name and role.
 
   # ------------------------------------------------------- 02  experience
   - name: experience
