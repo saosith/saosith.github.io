@@ -30,13 +30,13 @@ const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month:
   {projects.length === 0 ? (
     <div class="panel panel-pad" style="max-width:60ch">
       <h3>No projects published yet</h3>
-      <p class="muted" style="margin-top:0.6rem">
+      <p class="muted">
         The repository ships worked examples, kept as drafts so the page
         structure stays visible. Open one in the CMS, replace the numbers and
         the write-up with your own, then untick <span class="mono">Draft</span>
         to publish it.
       </p>
-      <div class="btn-row" style="margin-top:1.2rem">
+      <div class="btn-row" style="margin-top:var(--unit)">
         <a class="btn btn-primary" href="https://app.pagescms.org" target="_blank" rel="noopener">Open the CMS</a>
       </div>
     </div>
@@ -65,7 +65,7 @@ const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month:
             <div class="project-meta">
               {p.data.tags.map((t) => <span class="tag">{t}</span>)}
             </div>
-            <div class="small muted" style="margin-top:0.4rem">{fmt(p.data.date)}</div>
+            <div class="small muted">{fmt(p.data.date)}</div>
           </div>
         </a>
       </li>

@@ -19,7 +19,7 @@ const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month:
 
 <Base title={data.title} description={data.summary}>
   <div class="wrap project-header">
-    <p class="small muted mono" style="margin-bottom:0.6rem">
+    <p class="small muted mono" style="margin-bottom:0">
       <a href="/#projects" style="color:inherit">Projects</a> / {data.tags[0] ?? 'design'}
     </p>
     <h1>{data.title}</h1>
@@ -34,12 +34,12 @@ const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month:
     </div>
   </div>
 
-  <div class="wrap project-layout" style="padding-bottom:2rem">
+  <div class="wrap project-layout" style="padding-bottom:calc(var(--unit) * 2)">
     <div>
       <DataBadge status={data.dataStatus} conditions={data.conditions} />
 
       {data.specs.length > 0 && (
-        <div style="margin-top:1.8rem">
+        <div style="margin-top:var(--unit)">
           <SpecTable
             rows={data.specs}
             conditions={data.conditions}
@@ -48,7 +48,7 @@ const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month:
         </div>
       )}
 
-      <div class="prose" style="margin-top:2rem">
+      <div class="prose" style="margin-top:calc(var(--unit) * 2)">
         <Content />
       </div>
     </div>
@@ -102,7 +102,7 @@ const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month:
       {data.ip && (
         <div class="rail-block">
           <h3>IP status</h3>
-          <p class="small" style="padding:0.55rem 0.85rem 0.75rem;color:var(--ink-2)">{data.ip}</p>
+          <p class="small" style="padding:0 0.85rem var(--unit);color:var(--ink-2)">{data.ip}</p>
         </div>
       )}
     </aside>

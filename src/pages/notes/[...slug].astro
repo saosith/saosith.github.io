@@ -14,19 +14,19 @@ const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month:
 
 <Base title={note.data.title} description={note.data.summary}>
   <article class="wrap section">
-    <p class="small muted mono" style="margin-bottom:0.6rem">
+    <p class="small muted mono" style="margin-bottom:0">
       <a href="/#notes" style="color:inherit">Notes</a> / {fmt(note.data.date)}
     </p>
     <h1 style="max-width:24ch">{note.data.title}</h1>
-    <p class="muted" style="font-size:var(--t-md);max-width:62ch;margin-top:0.7rem">{note.data.summary}</p>
+    <p class="muted" style="font-size:var(--t-md);max-width:62ch">{note.data.summary}</p>
 
     {note.data.tags.length > 0 && (
-      <div class="meta-row" style="display:flex;gap:0.4rem;flex-wrap:wrap;margin-top:1rem">
+      <div class="meta-row" style="display:flex;gap:0.4rem;flex-wrap:wrap;margin-top:var(--unit)">
         {note.data.tags.map((t) => <span class="tag">{t}</span>)}
       </div>
     )}
 
-    <div class="prose" style="margin-top:2.2rem">
+    <div class="prose" style="margin-top:calc(var(--unit) * 2)">
       <Content />
     </div>
   </article>

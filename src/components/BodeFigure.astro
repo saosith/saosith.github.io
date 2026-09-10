@@ -34,7 +34,7 @@ const id = `bode-${figNo.replace(/\W/g, '')}`;
       </noscript>
     </div>
 
-    <div class="scroll-x" style="margin-top:1rem;border-top:1px solid var(--rule-strong)">
+    <div class="scroll-x" style="margin-top:var(--unit);border-top:1px solid var(--rule-strong)">
     <table class="spec-table">
       <caption class="visually-hidden">Corner summary</caption>
       <thead>
@@ -83,7 +83,7 @@ const id = `bode-${figNo.replace(/\W/g, '')}`;
           </tbody>
         </table>
       </div>
-      <p class="small muted" style="margin-top:0.5rem">
+      <p class="small muted">
         Every 12th sample. <a href={`/data/${file}`}>Download the full dataset</a>.
       </p>
     </details>

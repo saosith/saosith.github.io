@@ -49,11 +49,11 @@ const KNOBS = [
         <dl class="readouts" data-readouts aria-live="polite">
           <!-- filled in on mount; server render keeps the box from jumping -->
         </dl>
-        <div data-explorer-plot style="margin-top:1rem"></div>
+        <div data-explorer-plot style="margin-top:var(--unit)"></div>
       </div>
     </div>
 
-    <p class="small muted" style="margin-top:0.8rem">
+    <p class="small muted">
       Square-law drain current, a lumped output pole, and a nulling resistor
       sized at 1/gm6 so the right-half-plane zero drops out. It shows which way
       each knob moves the trade-off and roughly how far — it is not a substitute

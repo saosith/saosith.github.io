@@ -47,13 +47,16 @@
   --t-xs:   0.75rem;
   --t-sm:   0.8125rem;
   --t-cap:  0.875rem;
-  --t-base: 1.0625rem;
+  --t-base: 1rem;
   --t-md:   1.1875rem;
   --t-lg:   clamp(1.35rem, 1.1rem + 0.9vw, 1.65rem);
   --t-xl:   clamp(1.75rem, 1.3rem + 1.9vw, 2.45rem);
   --t-2xl:  clamp(2.3rem, 1.5rem + 3.4vw, 3.6rem);
 
   /* --- measure & rhythm --- */
+  /* One grid row. Every vertical measurement on the site is a multiple of it,
+     which is what keeps the type sitting on the background graticule. */
+  --unit: 1.5rem;   /* 24px */
   --measure: 68ch;
   --gutter: clamp(1.25rem, 4vw, 3rem);
   --max: 1180px;
@@ -123,15 +126,9 @@ html { -webkit-text-size-adjust: 100%; scroll-behavior: smooth; }
 body {
   font-family: var(--sans);
   font-size: var(--t-base);
-  line-height: 1.6;
+  line-height: var(--unit);
   color: var(--ink);
   background-color: var(--paper);
-  /* The graticule: a 24px instrument grid, barely there. */
-  background-image:
-    linear-gradient(to right, color-mix(in srgb, var(--rule) 40%, transparent) 1px, transparent 1px),
-    linear-gradient(to bottom, color-mix(in srgb, var(--rule) 40%, transparent) 1px, transparent 1px);
-  background-size: 24px 24px;
-  background-position: -1px -1px;
   -webkit-font-smoothing: antialiased;
   text-rendering: optimizeLegibility;
   font-variant-numeric: tabular-nums;
@@ -158,11 +155,12 @@ input, button, select, textarea { font: inherit; color: inherit; }
 .skip-link:focus { top: 0.5rem; }
 
 /* ---------------- typography ---------------- */
-h1, h2, h3, h4 { font-weight: 600; line-height: 1.15; letter-spacing: -0.018em; text-wrap: balance; }
-h1 { font-size: var(--t-xl); }
-h2 { font-size: var(--t-lg); letter-spacing: -0.014em; }
-h3 { font-size: var(--t-md); letter-spacing: -0.008em; }
-h4 { font-size: var(--t-base); }
+h1, h2, h3, h4 { font-weight: 600; letter-spacing: -0.018em; text-wrap: balance; }
+h1 { font-size: var(--t-xl); line-height: calc(var(--unit) * 2); }
+h2 { padding-top: 8px; margin-bottom: -8px; }
+h2 { font-size: var(--t-lg); line-height: calc(var(--unit) * 2); letter-spacing: -0.014em; }
+h3 { font-size: var(--t-md); line-height: var(--unit); letter-spacing: -0.008em; }
+h4 { font-size: var(--t-base); line-height: var(--unit); }
 
 .num, .mono {
   font-family: var(--mono);
@@ -171,22 +169,42 @@ h4 { font-size: var(--t-base); }
 }
 .unit { color: var(--ink-3); font-weight: 400; }
 
+/* ---------------- the graticule ---------------- */
+/*
+ * Anchored per section rather than once on <body>. A section's height depends on
+ * its content — an image, a table — so a page-wide grid drifts a little further
+ * out of step with every section. Re-anchoring at each section keeps the rules
+ * under the text they belong to. `--grid-offset` places the line just below the
+ * text baseline, so type sits on the rule without touching it.
+ */
+:root { --grid-offset: 21.6px; }
+
+body > main > section,
+.site-header,
+.site-footer {
+  background-image:
+    linear-gradient(to right, color-mix(in srgb, var(--rule) 40%, transparent) 1px, transparent 1px),
+    linear-gradient(to bottom, color-mix(in srgb, var(--rule) 40%, transparent) 1px, transparent 1px);
+  background-size: 24px 24px;
+  background-position: -1px var(--grid-offset);
+}
+
 /* ---------------- layout ---------------- */
 .wrap { width: min(100% - var(--gutter) * 2, var(--max)); margin-inline: auto; }
 .wrap-wide { width: min(100% - var(--gutter) * 2, var(--max-wide)); margin-inline: auto; }
 .prose-col { max-width: var(--measure); }
-.section { padding-block: clamp(2rem, 3.6vw, 3.1rem); }
-.section-tight { padding-block: clamp(1.5rem, 2.6vw, 2.2rem); }
-.rule-top { border-top: 1px solid var(--rule); }
+.section { padding-block: calc(var(--unit) * 2); }
+.section-tight { padding-block: var(--unit); }
+.rule-top { box-shadow: inset 0 1px 0 var(--rule); }
 
 .section-head {
   display: flex; align-items: baseline; gap: 0.9rem; flex-wrap: wrap;
-  padding-bottom: 0.6rem; margin-bottom: 1.3rem;
-  border-bottom: 1px solid var(--rule-strong);
+  padding-bottom: 0; margin-bottom: var(--unit);
+  box-shadow: inset 0 -1px 0 var(--rule-strong);
 }
 .section-head .idx {
   font-family: var(--mono); font-size: var(--t-sm);
-  color: var(--ink-3); flex: none; padding-top: 0.2em;
+  color: var(--ink-3); flex: none;
 }
 .section-head .note {
   color: var(--ink-2); font-size: var(--t-cap);
@@ -195,7 +213,9 @@ h4 { font-size: var(--t-base); }
 
 /* ---------------- panels ---------------- */
 .panel { background: var(--panel); border: 1px solid var(--rule); border-radius: 3px; }
-.panel-pad { padding: clamp(1.1rem, 2.4vw, 1.75rem); }
+.panel-pad { padding: var(--unit); }
+/* Stacked blocks inside a panel keep the same one-row rhythm as the page. */
+.panel-pad > * + * { margin-top: var(--unit); }
 
 /* ---------------- buttons ---------------- */
 .btn {
@@ -216,7 +236,11 @@ h4 { font-size: var(--t-base); }
 .chip {
   display: inline-flex; align-items: center; gap: 0.35rem;
   font-family: var(--mono); font-size: var(--t-xs); font-weight: 500;
-  padding: 0.12rem 0.45rem; border-radius: 2px;
+  /* Shorter than one grid row and centred on the text: a chip sitting inside a
+     heading must not deepen the line box, or everything below it drifts off the
+     grid. */
+  line-height: 14px; padding: 0 0.45rem; border-radius: 2px;
+  vertical-align: middle;
   border: 1px solid currentColor; white-space: nowrap;
 }
 .chip svg { width: 0.72em; height: 0.72em; flex: none; }
@@ -245,11 +269,11 @@ h4 { font-size: var(--t-base); }
 .prose > h3,
 .prose > h4,
 .prose > blockquote { max-width: var(--measure); }
-.prose > h2 { margin-block: 2.3em 0.7em; padding-bottom: 0.35em; border-bottom: 1px solid var(--rule); }
-.prose > h3 { margin-block: 1.9em 0.5em; }
-.prose > p, .prose > ul, .prose > ol { margin-block-end: 1.05em; }
+.prose > h2 { margin-block: calc(var(--unit) * 2) var(--unit); padding-bottom: 0; border-bottom: 1px solid var(--rule); }
+.prose > h3 { margin-block: calc(var(--unit) * 2) var(--unit); }
+.prose > p, .prose > ul, .prose > ol { margin-block-end: var(--unit); }
 .prose ul, .prose ol { padding-inline-start: 1.3em; }
-.prose li { margin-block-end: 0.35em; }
+.prose li { margin-block-end: 0; }
 .prose li::marker { color: var(--ink-3); }
 .prose blockquote { border-left: 2px solid var(--signal); padding-left: 1rem; color: var(--ink-2); }
 .prose code {
@@ -259,12 +283,12 @@ h4 { font-size: var(--t-base); }
 }
 .prose pre {
   background: var(--panel-sunk); border: 1px solid var(--rule);
-  border-radius: 3px; padding: 1rem 1.1rem;
-  overflow-x: auto; font-size: var(--t-sm); line-height: 1.55;
-  margin-block-end: 1.2em;
+  border-radius: 3px; padding: var(--unit);
+  overflow-x: auto; font-size: var(--t-sm); line-height: var(--unit);
+  margin-block-end: var(--unit);
 }
 .prose pre code { background: none; border: 0; padding: 0; font-size: inherit; }
-.prose hr { border: 0; border-top: 1px solid var(--rule); margin-block: 2.5em; }
+.prose hr { border: 0; border-top: 1px solid var(--rule); margin-block: calc(var(--unit) * 2); }
 .prose table { width: 100%; border-collapse: collapse; font-size: var(--t-cap); margin-block-end: 1.2em; }
 .prose th, .prose td { text-align: left; padding: 0.5rem 0.7rem; border-bottom: 1px solid var(--rule); }
 

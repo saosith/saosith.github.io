@@ -51,12 +51,12 @@ const SOURCE_LABEL: Record<string, string> = { simulated: 'simulated', measured:
   {files.length === 0 ? (
     <div class="panel panel-pad" style="max-width:62ch">
       <h3>No datasets published yet</h3>
-      <p class="muted" style="margin-top:0.6rem">
+      <p class="muted">
         Once a project has real simulation or measurement results, the file
         behind every plot is listed here as a direct download, with the
         conditions it was taken under.
       </p>
-      <p class="muted" style="margin-top:0.7rem">
+      <p class="muted">
         Convert an ngspice run with
         <span class="mono">scripts/raw-to-json.mjs</span> and it appears on the
         next build. Nothing to configure.
@@ -91,7 +91,7 @@ const SOURCE_LABEL: Record<string, string> = { simulated: 'simulated', measured:
         </table>
       </div>
 
-      <p class="small muted" style="margin-top:0.9rem">
+      <p class="small muted" style="margin-top:var(--unit)">
         Plain JSON. Each file carries a <span class="mono">meta</span> block naming
         the conditions it was taken under, so a number is never separated from the
         setup that produced it.

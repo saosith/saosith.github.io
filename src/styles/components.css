@@ -8,11 +8,11 @@
   /* Opaque, not translucent: a blurred backdrop over a full-width SVG plot is
      expensive to raster and made scrolling stutter on the project pages. */
   background: var(--paper);
-  border-bottom: 1px solid var(--rule);
+  box-shadow: inset 0 -1px 0 var(--rule);
 }
 .site-header-inner {
   display: flex; align-items: center; gap: 1.5rem;
-  min-height: 58px; flex-wrap: wrap;
+  min-height: calc(var(--unit) * 3); flex-wrap: wrap;
 }
 .brand {
   font-weight: 600; font-size: var(--t-cap); letter-spacing: -0.01em;
@@ -43,18 +43,18 @@
 
 /* ---------------- footer ---------------- */
 .site-footer {
-  border-top: 1px solid var(--rule); margin-top: 2rem;
-  padding-block: 1.75rem 2.25rem; font-size: var(--t-cap); color: var(--ink-2);
+  box-shadow: inset 0 1px 0 var(--rule); margin-top: calc(var(--unit) * 2);
+  padding-block: calc(var(--unit) * 2); font-size: var(--t-cap); color: var(--ink-2);
 }
-.site-footer-grid { display: flex; flex-wrap: wrap; gap: 1.5rem clamp(2.5rem, 6vw, 5rem); }
-.site-footer h3 { font-size: var(--t-xs); font-family: var(--mono); color: var(--ink-3); font-weight: 500; margin-bottom: 0.5rem; }
-.site-footer ul { list-style: none; padding: 0; display: grid; gap: 0.3rem; }
+.site-footer-grid { display: flex; flex-wrap: wrap; gap: var(--unit) clamp(2.5rem, 6vw, 5rem); }
+.site-footer h3 { font-size: var(--t-xs); font-family: var(--mono); color: var(--ink-3); font-weight: 500; margin-bottom: 0; }
+.site-footer ul { list-style: none; padding: 0; display: grid; gap: 0; }
 .site-footer a { color: var(--ink-2); text-decoration: none; }
 .site-footer a:hover { color: var(--ink); text-decoration: underline; }
 
 /* ---------------- hero ---------------- */
-.hero { padding-block: clamp(2rem, 4vw, 3rem) clamp(1.5rem, 3vw, 2.4rem); }
-.hero-grid { display: grid; gap: clamp(1.75rem, 4vw, 3rem); align-items: start;
+.hero { padding-block: calc(var(--unit) * 2) var(--unit); }
+.hero-grid { display: grid; gap: calc(var(--unit) * 2); align-items: start;
   /* Explicit minmax(0,…) base: a grid item's default min-width:auto lets a wide
      child (a plot, a nowrap table cell) push the column past the viewport. */
   grid-template-columns: minmax(0, 1fr); }
@@ -67,14 +67,14 @@
      display scale used elsewhere. */
   font-size: clamp(1.9rem, 0.9rem + 2.3vw, 2.75rem);
   font-weight: 600; letter-spacing: -0.032em;
-  line-height: 1.05; margin-bottom: 0.55rem;
+  line-height: calc(var(--unit) * 2); margin-bottom: 0;
   text-wrap: nowrap;
 }
 @media (max-width: 34rem) { .hero h1 { text-wrap: balance; } }
-.hero-lede { font-size: var(--t-md); color: var(--ink-2); max-width: 46ch; margin-bottom: 1.6rem; }
+.hero-lede { font-size: var(--t-md); color: var(--ink-2); max-width: 46ch; margin-bottom: var(--unit); }
 .hero-portrait { min-width: 0; }
 
-.portrait { margin: 0; display: grid; gap: 0.6rem; }
+.portrait { margin: 0; display: grid; gap: var(--unit); }
 .portrait-img {
   width: 100%; aspect-ratio: 3 / 2; object-fit: cover;
   background: var(--panel-sunk);
@@ -214,7 +214,7 @@ details.data-table thead th { color: var(--ink-3); font-family: var(--mono); fon
 /* ---------------- project grid ---------------- */
 .filter-bar {
   display: flex; gap: 0.5rem; align-items: center; flex-wrap: wrap;
-  padding-bottom: 1rem; margin-bottom: 1.6rem; border-bottom: 1px solid var(--rule);
+  padding-bottom: var(--unit); margin-bottom: var(--unit); box-shadow: inset 0 -1px 0 var(--rule);
 }
 .filter-bar .count { margin-left: auto; font-size: var(--t-xs); font-family: var(--mono); color: var(--ink-3); }
 .filter-chip {
@@ -229,8 +229,8 @@ details.data-table thead th { color: var(--ink-3); font-family: var(--mono); fon
   background: var(--panel); font-size: var(--t-cap); min-width: 12rem;
 }
 
-.project-list { display: grid; gap: 0; border-top: 1px solid var(--rule-strong); list-style: none; padding: 0; }
-.project-row { border-bottom: 1px solid var(--rule); }
+.project-list { display: grid; gap: 0; box-shadow: inset 0 1px 0 var(--rule-strong); list-style: none; padding: 0; }
+.project-row { box-shadow: inset 0 -1px 0 var(--rule); }
 .project-row[hidden] { display: none; }
 .project-link {
   display: grid; gap: 0.35rem 1.5rem; padding: 1.35rem 0.2rem;
@@ -291,19 +291,19 @@ details.data-table thead th { color: var(--ink-3); font-family: var(--mono); fon
 .blk[aria-pressed='true'] rect { fill: var(--signal-wash); stroke: var(--signal); stroke-width: 2; }
 
 /* ---------------- timeline ---------------- */
-.timeline { list-style: none; padding: 0; margin: 0; border-top: 1px solid var(--rule-strong); }
-.tl-item { display: grid; gap: 0.2rem 1.5rem; padding: 1.1rem 0; border-bottom: 1px solid var(--rule); }
+.timeline { list-style: none; padding: 0; margin: 0; box-shadow: inset 0 1px 0 var(--rule-strong); }
+.tl-item { display: grid; gap: 0 1.5rem; padding: var(--unit) 0; box-shadow: inset 0 -1px 0 var(--rule); }
 @media (min-width: 44rem) { .tl-item { grid-template-columns: 10.5rem minmax(0, 1fr); } }
 .tl-date { font-family: var(--mono); font-size: var(--t-sm); color: var(--ink-3); padding-top: 0.15rem; }
 .tl-title { font-weight: 600; }
 .tl-org { color: var(--ink-2); font-size: var(--t-cap); }
-.tl-body { color: var(--ink-2); font-size: var(--t-cap); margin-top: 0.35rem; max-width: 62ch; }
-.tl-evidence { margin-top: 0.5rem; display: flex; flex-wrap: wrap; gap: 0.6rem; font-size: var(--t-cap); }
+.tl-body { color: var(--ink-2); font-size: var(--t-cap); max-width: 62ch; }
+.tl-evidence { display: flex; flex-wrap: wrap; gap: 0.6rem; font-size: var(--t-cap); }
 
 /* ---------------- skills matrix ---------------- */
-.skills { display: grid; gap: 1.5rem; grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); }
-.skill-group h3 { font-size: var(--t-cap); padding-bottom: 0.4rem; border-bottom: 1px solid var(--rule-strong); margin-bottom: 0.6rem; }
-.skill-group ul { list-style: none; padding: 0; display: grid; gap: 0.45rem; }
+.skills { display: grid; gap: var(--unit); grid-template-columns: repeat(auto-fit, minmax(15rem, 1fr)); }
+.skill-group h3 { font-size: var(--t-cap); padding-bottom: 0; box-shadow: inset 0 -1px 0 var(--rule-strong); margin-bottom: 0; }
+.skill-group ul { list-style: none; padding: 0; display: grid; gap: 0; }
 .skill-group li { font-size: var(--t-cap); }
 
 /* ---------------- notes list ---------------- */
@@ -361,17 +361,17 @@ section[id] { scroll-margin-top: 74px; }
 .hero-eyebrow {
   font-family: var(--mono); font-size: var(--t-xs);
   letter-spacing: 0.08em; color: var(--ink-3);
-  margin-bottom: 0.7rem;
+  margin-bottom: 0;
 }
 .hero-role {
   font-size: var(--t-md); font-weight: 500; color: var(--ink);
-  margin-bottom: 0.9rem;
+  margin-bottom: var(--unit);
 }
 .hero-role .sep { color: var(--rule-strong); margin-inline: 0.6rem; font-weight: 400; }
 
 .hero-contacts {
-  list-style: none; padding: 0; margin: 1.6rem 0 0;
-  display: flex; flex-wrap: wrap; gap: 0.5rem 1.6rem;
+  list-style: none; padding: 0; margin: var(--unit) 0 0;
+  display: flex; flex-wrap: wrap; gap: 0 1.6rem;
 }
 .hero-contacts a {
   display: inline-flex; align-items: center; gap: 0.45rem;
@@ -394,11 +394,11 @@ section[id] { scroll-margin-top: 74px; }
 /* ---------------- courses ---------------- */
 .course-list {
   list-style: none; padding: 0; margin: 0;
-  border-top: 1px solid var(--rule-strong);
+  box-shadow: inset 0 1px 0 var(--rule-strong);
 }
 .course-item {
-  display: grid; gap: 0.2rem 1.5rem; align-items: baseline;
-  padding: 0.7rem 0; border-bottom: 1px solid var(--rule);
+  display: grid; gap: 0 1.5rem; align-items: baseline;
+  padding: var(--unit) 0; box-shadow: inset 0 -1px 0 var(--rule);
 }
 @media (min-width: 44rem) {
   .course-item { grid-template-columns: minmax(0, 1fr) 9rem; }
@@ -412,7 +412,7 @@ section[id] { scroll-margin-top: 74px; }
 .course-term { font-family: var(--mono); font-size: var(--t-sm); color: var(--ink-3); }
 .course-note {
   grid-column: 1 / -1;
-  font-size: var(--t-cap); color: var(--ink-2); max-width: 62ch; margin-top: 0.2rem;
+  font-size: var(--t-cap); color: var(--ink-2); max-width: 62ch;
 }
 
 /* ---------------- data downloads ---------------- */
