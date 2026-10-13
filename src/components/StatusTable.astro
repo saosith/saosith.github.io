@@ -1,0 +1,48 @@
+---
+interface Stage {
+  stage: string;
+  status?: 'done' | 'next' | 'planned';
+  plan?: string;
+}
+interface Props {
+  rows: Stage[];
+}
+const { rows = [] } = Astro.props;
+
+/**
+ * Project status: one row per stage, from schematic to bring-up. It replaces
+ * empty "Not yet" sections, so a report is only as long as the work actually
+ * done while still showing the plan for what comes next. Status is shown as a
+ * symbol plus a word, never colour alone, so it survives black-and-white print.
+ * `frontmatter` in MDX is raw YAML, so a missing status falls back to 'planned'.
+ */
+const MAP = {
+  done: { cls: 'chip-good', label: '✓ Complete' },
+  next: { cls: 'chip-warning', label: '▶ In progress' },
+  planned: { cls: 'chip-neutral', label: '○ Planned' },
+} as const;
+---
+
+{rows.length > 0 ? (
+  <div class="spec-table-wrap report-table">
+    <table class="spec-table status-table">
+      <thead>
+        <tr><th scope="col">Stage</th><th scope="col">Status</th><th scope="col">Plan</th></tr>
+      </thead>
+      <tbody>
+        {rows.map((r) => {
+          const m = MAP[r.status ?? 'planned'] ?? MAP.planned;
+          return (
+            <tr>
+              <th scope="row">{r.stage}</th>
+              <td><span class={`chip ${m.cls}`}>{m.label}</span></td>
+              <td>{r.plan ?? '—'}</td>
+            </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  </div>
+) : (
+  <p class="report-empty">No stages recorded yet. Add them under "Project status" in the CMS.</p>
+)}

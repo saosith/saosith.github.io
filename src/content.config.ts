@@ -56,6 +56,65 @@ const projects = defineCollection({
     footnotes: z.array(z.object({ ref: z.string(), text: z.string() })).default([]),
 
     links: z.array(z.object({ label: z.string(), href: z.string() })).default([]),
+
+    /* ---- Report fields. All optional, so a short project page needs none. ---- */
+
+    /** e.g. "Rev A — schematic". Shown in the header and on the PDF title block. */
+    revision: z.string().optional(),
+    /** Three to five sentences: problem, what was built, the key result. */
+    abstract: z.string().optional(),
+    /** Team work: who it was for and what you did. Absent means solo work. */
+    team: z.object({ org: z.string(), role: z.string() }).optional(),
+    /** Overrides the badge text, e.g. "Simulated in LTspice; no board built yet." */
+    dataNote: z.string().optional(),
+    /**
+     * Report PDF. Leave empty: `npm run pdf` writes /uploads/<slug>-report.pdf and
+     * the page finds it on the next build. Set it only to point somewhere else.
+     */
+    pdf: z.string().optional(),
+
+    /** Choices between options. Placed in the body with <DecisionTable />. */
+    decisions: z.array(z.object({
+      id: z.string().optional(),
+      topic: z.string(),
+      options: z.string(),
+      choice: z.string(),
+      reason: z.string(),
+      status: z.enum(['decided', 'open', 'reversed']).default('decided'),
+    })).default([]),
+
+    /**
+     * Where the project stands. Replaces empty Layout / Simulation / Test sections:
+     * a section appears only once it has content; everything still to come is a row
+     * here. Placed in the body with <StatusTable rows={frontmatter.stages} />.
+     */
+    stages: z.array(z.object({
+      stage: z.string(),
+      status: z.enum(['done', 'next', 'planned']).default('planned'),
+      plan: z.string().optional(),
+    })).default([]),
+
+    /** Rendered automatically at the end of the page, newest first as written. */
+    revisions: z.array(z.object({
+      rev: z.string(),
+      date: z.string(),
+      change: z.string(),
+    })).default([]),
+
+    /** Rendered automatically as the BOM appendix. */
+    bom: z.array(z.object({
+      ref: z.string(),
+      part: z.string(),
+      value: z.string().optional(),
+      pkg: z.string().optional(),
+      source: z.string().optional(),
+    })).default([]),
+
+    /** Rendered automatically as the references list. */
+    references: z.array(z.object({
+      label: z.string(),
+      href: z.string().optional(),
+    })).default([]),
   }),
 });
 

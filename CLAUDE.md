@@ -55,3 +55,21 @@ alone miss grid drift — measure with `getBoundingClientRect()` and check
 The repo ships worked examples whose numbers are invented, and several
 placeholder entries. Never present placeholder or example content as real work,
 and never publish a project whose numbers have not actually been produced.
+
+## Project reports (web page + PDF)
+
+A project page doubles as an engineering report. Optional frontmatter (`revision`,
+`abstract`, `team`, `dataNote`, `decisions`, `revisions`, `references`, `bom`) feeds the
+template: revision history, references and the BOM appendix render automatically at the
+end; `<DecisionTable rows={frontmatter.decisions} />` and `<Placeholder what=… why=… />`
+go in the body. `npm run pdf -- <slug>` prints the page to PDF through the print rules in
+`components.css` — published projects to `public/uploads/<slug>-report.pdf` (linked
+automatically on the next build), drafts to the git-ignored `reports-draft/`. The
+`/report` skill (`~/.claude/skills/report`) holds the section structure and workflow.
+
+## Voice
+
+All site text should sound like Sao wrote it. Read `VOICE.md` (git-ignored, local only) before writing or editing
+any prose (reports, About, Now line, captions): first person, plain, no em dashes, no
+AI flourishes. Prefer editing Sao's own notes over writing from scratch, and show a
+before/after of anything rewritten.

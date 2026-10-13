@@ -1,6 +1,6 @@
 ---
 title: MSPM0 USB-C controller board
-summary: A USB-C powered MSPM0G3507 board with an onboard USB-to-UART bridge and SWD debug, drawn in KiCad as the control and acquisition half of an amplifier project.
+summary: A USB-C powered MSPM0G3507 board I designed in KiCad to control my amplifier project and send its data to a PC over USB.
 date: 2026-09-10
 order: 1
 featured: true
@@ -23,20 +23,96 @@ headline:
 links:
   - { label: 'Schematic (PDF)', href: '/uploads/mspm0g3507schem.pdf' }
   - { label: 'Schematic (PNG)', href: '/uploads/schematic-mspm0-usb-board.png' }
+updated: 2026-10-12
+revision: Rev A (schematic)
+abstract: >-
+  This board controls my amplifier project and sends its measurements to a PC. It runs
+  from a laptop's USB-C port, appears to the PC as a serial port, and can be
+  reprogrammed on the bench without extra hardware. The design centres on a TI
+  MSPM0G3507 microcontroller with a CH340E USB-to-UART bridge, USB ESD protection, a
+  3.3 V LDO, an 8 MHz crystal and a Tag-Connect SWD footprint. Status: schematic
+  complete in KiCad. Next: layout, fabrication and bring-up.
+dataNote: 'Status: schematic complete in KiCad. Layout, fabrication and bring-up come next, so no values on this page are measured.'
+
+decisions:
+  - topic: Clock source
+    options: Internal oscillator, or an external 8 MHz crystal
+    choice: 8 MHz crystal (two 15 pF load caps)
+    reason: A crystal is typically accurate to tens of ppm, while an on-chip RC oscillator is usually off by around a percent. I chose the crystal so the UART baud rate and the timing of the amplifier measurements do not depend on that error.
+  - topic: Programming connector
+    options: Soldered pin header, or a TC2030 Tag-Connect footprint
+    choice: TC2030 Tag-Connect
+    reason: The Tag-Connect cable's spring pins press onto bare pads, so the board needs no header. I chose it to save board area and one part.
+  - topic: Crystal load capacitors
+    options: 15 pF as drawn, or a value recomputed from the crystal's rated load capacitance
+    choice: Not settled
+    reason: 'To verify before layout: C = 2 × (CL − Cstray), using the chosen crystal''s rated load capacitance CL and an estimate of the board''s stray capacitance.'
+    status: open
+
+stages:
+  - { stage: Schematic, status: done }
+  - { stage: Design review, status: next, plan: 'Check decoupling, the serial handshake wiring and the ADC reference filter against the MSPM0 [1] and CH340E [2] datasheets.' }
+  - { stage: Simulation, status: planned, plan: 'ADC reference filter response and LDO start-up.' }
+  - { stage: Layout, status: planned, plan: 'Stack-up, placement and routing, with the ESD array right at the USB-C connector.' }
+  - { stage: Fabrication, status: planned }
+  - { stage: Bring-up and test, status: planned, plan: 'Rail voltages, USB enumeration, UART loop-back and SWD flashing.' }
+
+revisions:
+  - { rev: A, date: '2026-09-10', change: Schematic captured in KiCad and first written up. }
+  - { rev: A, date: '2026-10-12', change: 'Write-up restructured as a report: abstract, decisions, BOM appendix, placeholders for layout and test.' }
+
+references:
+  - { label: 'Texas Instruments, MSPM0G350x mixed-signal microcontroller datasheet' }
+  - { label: 'WCH, CH340 USB-to-serial bridge datasheet' }
+  - { label: 'STMicroelectronics, USBLC6-2 ESD protection datasheet' }
+  - { label: 'MaxLinear, SPX3819 500 mA low-dropout regulator datasheet' }
+  - { label: 'USB Type-C Cable and Connector Specification (sink Rd pull-down on CC1/CC2)' }
+
+# Exported from MCU_TI_MSP0.kicad_sch with kicad-cli on 2026-10-12. Values are as
+# they appear in the schematic; sources stay TBD until a part number is chosen.
+bom:
+  - { ref: IC1, part: MSPM0G3507SPTR microcontroller, pkg: LQFP-48 7x7 mm, source: LCSC C22362630 }
+  - { ref: U2, part: SPX3819M5-L-3-3 LDO regulator, value: 3.3 V, pkg: SOT-23-5 }
+  - { ref: U3, part: CH340E USB-to-UART bridge, pkg: MSOP-10 }
+  - { ref: U4, part: LIS2DH accelerometer, pkg: LGA-14 2x2 mm }
+  - { ref: D1, part: USBLC6-2SC6 ESD array, pkg: SOT-23-6 }
+  - { ref: J1, part: 'USB-C receptacle (USB 2.0, 16 pin)', pkg: GCT USB4105 footprint }
+  - { ref: x1, part: Crystal, value: 8 MHz, pkg: 3225 4-pin }
+  - { ref: 'C1, C2, C4, C6, C7, C13', part: Capacitor, value: 470 nF, pkg: '0201' }
+  - { ref: 'C3, C5, C11', part: Capacitor, value: 10 µF, pkg: '0805' }
+  - { ref: 'C8, C9', part: Capacitor, value: 15 pF, pkg: '0201' }
+  - { ref: 'C10, C12, C14', part: Capacitor, value: 470 µF (as drawn), pkg: '0201' }
+  - { ref: 'R1, R2, R6–R8', part: Resistor, value: 5.1 kΩ, pkg: '0201' }
+  - { ref: 'R3, R4', part: Resistor, value: 0 Ω, pkg: '0201' }
+  - { ref: R5, part: Resistor, value: 100 kΩ, pkg: '0201' }
 ---
 
 import ImageFigure from '../../components/ImageFigure.astro';
+import DecisionTable from '../../components/DecisionTable.astro';
+import StatusTable from '../../components/StatusTable.astro';
 
-## What it is for
+## Introduction
 
-The amplifier work needs something to drive it and read it back: a board that
-takes power from a laptop, exposes a serial port for logging, and can be
-reflashed without extra hardware on the bench. This is that board — a TI
-MSPM0G3507 (Arm Cortex-M0+) with USB-C power in, a USB-to-UART bridge, a
-crystal, an SWD debug pad and a filtered ADC reference.
+For my amplifier project, I needed a board that could control the amplifier and
+read its output. I wanted it to run off my laptop's USB-C port, send data to the
+PC over a serial port, and be reprogrammed on the bench without extra hardware.
+So I designed this board around a TI MSPM0G3507 (Arm Cortex-M0+) [1]. It has
+USB-C power, a USB-to-UART bridge, a crystal, an SWD debug pad and a filtered ADC
+reference.
 
-Nothing on this page is a measurement. The schematic is captured; no board has
-been fabricated.
+**Status:** schematic complete. **Next:** layout, then fabrication and bring-up.
+No values on this page are measured.
+
+## Requirements
+
+- **Power** from a laptop's USB-C port, with no separate bench supply.
+- **Serial link** to a PC for logging, with no extra adapter.
+- **Reprogramming** on the bench without extra hardware on the board.
+- **Clean ADC reference**, because the board reads the amplifier's outputs.
+
+No numeric targets (current budget, ADC noise, board size) are set yet.
+
+## System overview
 
 <ImageFigure
   src="/uploads/schematic-mspm0-usb-board.png"
@@ -45,46 +121,59 @@ been fabricated.
   height={1526}
   href="/uploads/mspm0g3507schem.pdf"
   figNo="Fig. 1"
-  caption="The whole board on one sheet. Power enters at the left, the microcontroller sits at the right, and the serial bridge bridges the two."
+  caption="The full schematic. Power comes in on the left, the microcontroller is on the right, and the USB-to-UART bridge is in the middle."
 />
 
-## Power path
+## Design
 
-USB-C brings in 5 V on VBUS. **R5 and R6, both 5.1 kΩ, pull CC1 and CC2 to
-ground** — that is how a USB-C device declares itself a power sink. Without
-them a compliant host or charger supplies nothing at all, because it never sees
-a device attached. VBUS then passes through R4 (0 Ω, a place to fit a fuse or
-cut the supply) into an SPX3819 low-dropout regulator, which holds 3.3 V and
-dissipates the difference as heat.
+### Power path
 
-## Data path and protection
+USB-C supplies 5 V on VBUS. Normally, a USB-C host or charger keeps VBUS off
+until it detects a device. **R5 and R6 pull CC1 and CC2 to ground through 5.1 kΩ**,
+the value the USB Type-C specification sets for a sink [5], so the host sees the
+board as a device requesting power. VBUS then passes through R4, a 0 Ω link that
+can be replaced with a fuse or removed to cut the supply. An SPX3819 low-dropout
+regulator (LDO) [4] drops the 5 V to 3.3 V and dissipates the difference as heat.
 
-D+ and D− run through a USBLC6-2SC6 ESD array before they reach anything else,
-so a static discharge from a hand is clamped to ground rather than delivered to
-the transceiver. They then meet a CH340E USB-to-UART bridge: the PC sees a
-serial port, the microcontroller sees a plain two-wire UART, and neither has to
-know about the other.
+### Data path and protection
 
-## Clock, reset, reference
+D+ and D− pass through a USBLC6-2SC6 ESD array [3] first. If someone touches the
+connector, the electrostatic discharge (ESD) is clamped to ground before it reaches
+the CH340E USB-to-UART bridge [2]. In layout, I'll place the array right at the
+connector so the discharge has the shortest path to ground. The CH340E appears to
+the PC as a standard serial port and to the microcontroller as a two-wire UART.
 
-An 8 MHz crystal with two 15 pF load capacitors feeds HFXIN/HFXOUT, giving a far
-tighter clock than the internal oscillator — which matters for baud-rate accuracy and
-for any timing the amplifier measurements depend on. NRST has a pull-up and a
-capacitor to hold the part in reset while the rail comes up. A 100 kΩ resistor
-on ROSC sets the internal oscillator's reference current. An RC network sits on
-the ADC reference nets, because the converter measures every input as a fraction
-of that reference, so noise on it lands directly in the readings.
+### Clock, reset, reference
 
-Programming and debug go through a TC2030 Tag-Connect footprint — spring pins
-pressed against pads, no soldered header taking up board area.
+An 8 MHz crystal with two 15 pF load capacitors drives HFXIN/HFXOUT. A crystal is
+typically accurate to tens of ppm, while an on-chip RC oscillator is usually off by
+around a percent, which is enough to disturb UART timing. The pull-up and capacitor
+on NRST hold the microcontroller in reset until the 3.3 V rail is stable. A 100 kΩ
+resistor on ROSC sets the reference current for the internal oscillator.
 
-## Limitations and next steps
+An RC low-pass filter sits on the ADC reference. The ADC measures every input as a
+fraction of this reference voltage, so noise on the reference appears in every
+reading.
 
-- **Not built.** No PCB layout, no fabrication, no bring-up.
-- **No auto-reset.** The bridge's handshake lines are not wired to NRST, so
-  firmware loading goes through SWD rather than a host-triggered reset.
-- **Design review pending.** Decoupling, the serial handshake wiring and the
-  ADC reference network all need a pass against the MSPM0 and CH340E datasheets
-  before this goes to layout.
-- Crystal load capacitors need checking against the crystal's specified load
-  capacitance, including the board's own stray capacitance.
+Programming and debugging use a TC2030 Tag-Connect footprint: the cable's spring
+pins press onto pads on the board, so no header is soldered on.
+
+## Design decisions
+
+<DecisionTable rows={frontmatter.decisions} />
+
+## Project status
+
+Sections for layout, simulation and test results are added as each stage is completed.
+
+<StatusTable rows={frontmatter.stages} />
+
+## Open issues
+
+- **No auto-reset.** The bridge's handshake lines are not
+  connected to NRST, so firmware loads through SWD and the PC cannot reset the
+  microcontroller. Wiring RTS/DTR to NRST is an option for Rev B.
+- **Design review before layout.** Check decoupling, the serial handshake wiring and
+  the ADC reference filter against the MSPM0 [1] and CH340E [2] datasheets.
+- **Crystal load capacitors.** Recalculate with C = 2 × (CL − Cstray) once the
+  crystal part number is fixed.

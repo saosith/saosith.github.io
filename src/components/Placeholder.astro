@@ -1,0 +1,20 @@
+---
+interface Props {
+  /** What will go here, e.g. "Scope captures of the 3.3 V rail at power-up". No full stop. */
+  what: string;
+  /** A full sentence in Sao's voice, e.g. "The board hasn't been made yet." */
+  why?: string;
+}
+const { what, why } = Astro.props;
+
+/**
+ * A report section that has no content yet. It stays visible on purpose: a
+ * missing Test section that silently disappears reads as "never planned", a
+ * dashed box reads as "not done yet" — which is the honest state.
+ */
+---
+
+<div class="report-placeholder">
+  <span class="mono">Not yet</span>
+  <p><strong>{what}.</strong>{why && <>{' '}{why}</>}</p>
+</div>

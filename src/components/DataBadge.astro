@@ -2,8 +2,10 @@
 interface Props {
   status: 'design' | 'model' | 'simulated' | 'measured';
   conditions?: string;
+  /** Replaces the stock sentence, which is written for sky130 IC work. */
+  note?: string;
 }
-const { status, conditions } = Astro.props;
+const { status, conditions, note } = Astro.props;
 
 const COPY = {
   design: {
@@ -34,7 +36,7 @@ const c = COPY[status];
     <circle cx="8" cy="11.4" r="0.95" fill="currentColor" />
   </svg>
   <span>
-    <strong>{c.label}.</strong> {c.body}
+    <strong>{c.label}.</strong> {note ?? c.body}
     {conditions && <><br /><span class="mono small" style="color:var(--ink-3)">{conditions}</span></>}
   </span>
 </p>

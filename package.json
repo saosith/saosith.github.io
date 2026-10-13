@@ -7,7 +7,8 @@
     "dev": "astro dev",
     "build": "astro build",
     "preview": "astro preview",
-    "data": "node scripts/gen-sample-data.mjs"
+    "data": "node scripts/gen-sample-data.mjs",
+    "pdf": "node scripts/export-pdf.mjs"
   },
   "dependencies": {
     "@astrojs/mdx": "^4.3.14",

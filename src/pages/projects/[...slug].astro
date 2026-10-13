@@ -1,11 +1,17 @@
 ---
+import { existsSync } from 'node:fs';
+import path from 'node:path';
 import { getCollection, render } from 'astro:content';
 import Base from '../../layouts/Base.astro';
 import DataBadge from '../../components/DataBadge.astro';
 import SpecTable from '../../components/SpecTable.astro';
+import { SITE } from '../../lib/site';
 
 export async function getStaticPaths() {
-  const projects = await getCollection('projects', ({ data }) => !data.draft);
+  // REPORT_DRAFTS=1 is set only by `npm run pdf` for a local build, so a draft
+  // report can be proofread as a PDF. The deploy workflow never sets it.
+  const withDrafts = process.env.REPORT_DRAFTS === '1';
+  const projects = await getCollection('projects', ({ data }) => withDrafts || !data.draft);
   return projects.map((p) => ({ params: { slug: p.id }, props: { project: p } }));
 }
 
@@ -13,30 +19,89 @@ const { project } = Astro.props;
 const { data } = project;
 const { Content, headings } = await render(project);
 
-const toc = headings.filter((h) => h.depth === 2 || h.depth === 3);
 const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
+const fmtLong = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
+
+// The report PDF: an explicit `pdf` field wins, otherwise whatever `npm run pdf`
+// left in public/uploads. Checked on disk, so the link never points at a 404.
+const autoPdf = `/uploads/${project.id}-report.pdf`;
+const pdfHref =
+  data.pdf ?? (existsSync(path.join(process.cwd(), 'public', autoPdf)) ? autoPdf : undefined);
+const files = pdfHref ? [{ label: 'Report (PDF)', href: pdfHref }, ...data.links] : data.links;
+
+// End matter is rendered by this template, not the MDX body, so every report
+// closes the same way and the CMS fields always land somewhere.
+const endMatter = [
+  data.revisions.length > 0 && { depth: 2, slug: 'revision-history', text: 'Revision history' },
+  data.references.length > 0 && { depth: 2, slug: 'references', text: 'References' },
+  data.bom.length > 0 && { depth: 2, slug: 'appendix-bom', text: 'Appendix: Bill of materials' },
+].filter(Boolean) as { depth: number; slug: string; text: string }[];
+
+const toc = [...headings.filter((h) => h.depth === 2 || h.depth === 3), ...endMatter];
+const pageUrl = new URL(`/projects/${project.id}/`, SITE.url).href;
 ---
 
 <Base title={data.title} description={data.summary}>
   <div class="wrap project-header">
-    <p class="small muted mono" style="margin-bottom:0">
+    <p class="small muted mono no-print" style="margin-bottom:0">
       <a href="/#projects" style="color:inherit">Projects</a> / {data.tags[0] ?? 'design'}
     </p>
     <h1>{data.title}</h1>
     <p class="lede">{data.summary}</p>
 
     <div class="meta-row">
+      {data.revision && <span class="tag tag-rev">{data.revision}</span>}
       {data.process && <span class="tag">{data.process}</span>}
       {data.tags.map((t) => <span class="tag">{t}</span>)}
       <span class="small muted" style="margin-left:auto">
         {fmt(data.date)}{data.updated && ` · updated ${fmt(data.updated)}`}
       </span>
     </div>
+    {data.team && (
+      <p class="small muted team-line">
+        Team project with {data.team.org}. My role: {data.team.role}
+      </p>
+    )}
+    {pdfHref && (
+      <p class="no-print" style="margin-top:var(--unit)">
+        <a class="btn" href={pdfHref} target="_blank" rel="noopener">Download the report (PDF)</a>
+      </p>
+    )}
   </div>
 
   <div class="wrap project-layout" style="padding-bottom:calc(var(--unit) * 2)">
     <div>
-      <DataBadge status={data.dataStatus} conditions={data.conditions} />
+      {/* The rail is hidden on paper, so its facts are repeated here as a title block. */}
+      <div class="print-only report-titleblock">
+        <dl>
+          <div><dt>Author</dt><dd>{SITE.name}</dd></div>
+          {data.revision && <div><dt>Revision</dt><dd>{data.revision}</dd></div>}
+          <div><dt>Date</dt><dd>{fmtLong(data.updated ?? data.date)}</dd></div>
+          {data.tools.length > 0 && <div><dt>Tools</dt><dd>{data.tools.join(', ')}</dd></div>}
+          {data.headline.map((h) => (
+            <div><dt>{h.label}</dt><dd>{h.value}{h.unit && ` ${h.unit}`}</dd></div>
+          ))}
+          <div><dt>Online</dt><dd>{pageUrl}</dd></div>
+        </dl>
+      </div>
+
+      <DataBadge status={data.dataStatus} conditions={data.conditions} note={data.dataNote} />
+
+      {data.abstract && (
+        <section class="report-abstract" aria-label="Abstract">
+          <h2 class="report-label">Abstract</h2>
+          <p>{data.abstract}</p>
+        </section>
+      )}
+
+      {toc.length > 2 && (
+        <nav class="print-only report-toc" aria-label="Contents">
+          <h2 class="report-label">Contents</h2>
+          <ol>
+            {toc.filter((h) => h.depth === 2).map((h) => <li>{h.text}</li>)}
+          </ol>
+        </nav>
+      )}
 
       {data.specs.length > 0 && (
         <div style="margin-top:var(--unit)">
@@ -50,6 +115,66 @@ const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month:
 
       <div class="prose" style="margin-top:calc(var(--unit) * 2)">
         <Content />
+
+        {data.revisions.length > 0 && (
+          <>
+            <h2 id="revision-history">Revision history</h2>
+            <div class="spec-table-wrap report-table">
+              <table class="spec-table">
+                <thead>
+                  <tr><th scope="col">Rev</th><th scope="col">Date</th><th scope="col">What changed</th></tr>
+                </thead>
+                <tbody>
+                  {data.revisions.map((r) => (
+                    <tr><th scope="row" class="v">{r.rev}</th><td class="v">{r.date}</td><td>{r.change}</td></tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
+        )}
+
+        {data.references.length > 0 && (
+          <>
+            <h2 id="references">References</h2>
+            <ol class="report-refs">
+              {data.references.map((r) => (
+                <li>
+                  {r.href
+                    ? <a href={r.href} target={r.href.startsWith('http') ? '_blank' : undefined} rel="noopener">{r.label}</a>
+                    : r.label}
+                </li>
+              ))}
+            </ol>
+          </>
+        )}
+
+        {data.bom.length > 0 && (
+          <>
+            <h2 id="appendix-bom">Appendix: Bill of materials</h2>
+            <div class="spec-table-wrap report-table">
+              <table class="spec-table">
+                <thead>
+                  <tr>
+                    <th scope="col">Ref</th><th scope="col">Part</th><th scope="col">Value</th>
+                    <th scope="col">Package</th><th scope="col">Source</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {data.bom.map((b) => (
+                    <tr>
+                      <th scope="row" class="v">{b.ref}</th>
+                      <td>{b.part}</td>
+                      <td class="v">{b.value ?? '—'}</td>
+                      <td class="sym">{b.pkg ?? '—'}</td>
+                      <td class="sym">{b.source ?? 'TBD'}</td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          </>
+        )}
       </div>
     </div>
 
@@ -88,11 +213,11 @@ const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month:
         </div>
       )}
 
-      {data.links.length > 0 && (
+      {files.length > 0 && (
         <div class="rail-block">
           <h3>Files</h3>
           <ul class="rail-toc">
-            {data.links.map((l) => (
+            {files.map((l) => (
               <li><a href={l.href} target={l.href.startsWith('http') ? '_blank' : undefined} rel="noopener">{l.label}</a></li>
             ))}
           </ul>

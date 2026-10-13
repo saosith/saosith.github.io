@@ -235,6 +235,101 @@ content:
           - { name: label, label: Label, type: string, required: true }
           - { name: href, label: URL or path, type: string, required: true }
 
+      # ---- report fields: all optional; a short project page needs none ----
+      - name: revision
+        label: Revision
+        type: string
+        description: 'e.g. "Rev A — schematic" or "Rev B — built and tested". Shown in the header and on the PDF title block. Bump it when the design changes, and add a row to Revision history.'
+      - name: abstract
+        label: Abstract
+        type: text
+        description: Three to five sentences — the problem, what you built, and the key result (or "not yet built"). Someone who reads only this should know what the project is.
+      - name: team
+        label: Team project
+        type: object
+        description: Fill both for team work (e.g. SCR). Leave empty for solo work.
+        fields:
+          - { name: org, label: Team or organisation, type: string, description: 'e.g. "Sooner Competitive Robotics (IGVC 2027)"' }
+          - { name: role, label: Your role, type: string, description: 'Say what you owned, e.g. "Designed the Hub board: schematic, layout, part selection."' }
+      - name: dataNote
+        label: Badge text (optional)
+        type: string
+        description: Replaces the stock sentence on the status badge, which is written for sky130 chip work. e.g. "Simulated in LTspice; no board has been built."
+      - name: pdf
+        label: Report PDF (optional)
+        type: file
+        description: Usually leave empty — `npm run pdf` writes /uploads/<project>-report.pdf and the page links it automatically. Upload here only to use a different PDF.
+
+      - name: decisions
+        label: Design decisions
+        type: object
+        list: true
+        description: Each choice between options, including what was rejected. Shown wherever the write-up has <DecisionTable rows={frontmatter.decisions} />.
+        fields:
+          - { name: id, label: ID, type: string, description: 'Optional, e.g. "D-003".' }
+          - { name: topic, label: Decision, type: string, required: true, description: 'e.g. "3.3 V regulator"' }
+          - { name: options, label: Options considered, type: text, required: true, description: 'e.g. "LDO (REG1117), buck (MP2359), buck (AP63301)"' }
+          - { name: choice, label: Choice, type: string, required: true }
+          - { name: reason, label: Why, type: text, required: true, description: One or two sentences — the deciding trade-off, and why the others lost. }
+          - name: status
+            label: Status
+            type: select
+            default: decided
+            options:
+              values:
+                - { value: decided, label: Decided }
+                - { value: open, label: Still open }
+                - { value: reversed, label: Reversed later }
+
+      - name: stages
+        label: Project status
+        type: object
+        list: true
+        description: One row per stage, schematic to bring-up. Shown wherever the write-up has <StatusTable rows={frontmatter.stages} />. Add a full Layout, Simulation or Test section only once it has real content; until then the stage lives here.
+        fields:
+          - { name: stage, label: Stage, type: string, required: true, description: 'e.g. "Placement and routing"' }
+          - name: status
+            label: Status
+            type: select
+            default: planned
+            options:
+              values:
+                - { value: done, label: Complete }
+                - { value: next, label: In progress }
+                - { value: planned, label: Planned }
+          - { name: plan, label: Plan, type: text, description: 'What this stage covers, e.g. "Rail voltages, USB enumeration, UART loop-back"' }
+
+      - name: revisions
+        label: Revision history
+        type: object
+        list: true
+        description: One row per revision. Shown automatically near the end of the page.
+        fields:
+          - { name: rev, label: Rev, type: string, required: true, description: 'e.g. "A"' }
+          - { name: date, label: Date, type: string, required: true, description: 'YYYY-MM-DD' }
+          - { name: change, label: What changed and why, type: text, required: true }
+
+      - name: references
+        label: References
+        type: object
+        list: true
+        description: Datasheets, app notes, standards. Shown automatically as a numbered list.
+        fields:
+          - { name: label, label: Reference, type: string, required: true, description: 'e.g. "TI MSPM0G3507 datasheet"' }
+          - { name: href, label: Link, type: string, description: A URL, or an uploaded file as /uploads/<filename>. }
+
+      - name: bom
+        label: Bill of materials
+        type: object
+        list: true
+        description: Shown automatically as the appendix. Leave Source empty until you have a real distributor part number — it shows "TBD".
+        fields:
+          - { name: ref, label: Designators, type: string, required: true, description: 'e.g. "C1, C2"' }
+          - { name: part, label: Part, type: string, required: true }
+          - { name: value, label: Value, type: string }
+          - { name: pkg, label: Package, type: string }
+          - { name: source, label: Source, type: string, description: 'Distributor and part number, e.g. "LCSC C22362630"' }
+
       - name: body
         label: Write-up (MDX)
         type: text

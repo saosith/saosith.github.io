@@ -1,0 +1,66 @@
+---
+interface Decision {
+  id?: string;
+  topic: string;
+  options: string;
+  choice: string;
+  reason: string;
+  status?: 'decided' | 'open' | 'reversed';
+}
+interface Props {
+  rows: Decision[];
+  /** Omit when the table sits under its own "Design decisions" heading. */
+  caption?: string;
+}
+const { rows = [], caption } = Astro.props;
+
+/**
+ * Options → choice → reason, rejected options included. The options column is
+ * the point: a reviewer learns more from what was turned down, and why, than
+ * from the choice alone. Fed from the `decisions` frontmatter so Pages CMS can
+ * edit it; placed in the body with <DecisionTable rows={frontmatter.decisions} />.
+ */
+// `frontmatter` inside MDX is the raw YAML, without the schema's defaults, so
+// a row with no status arrives undefined rather than 'decided'.
+const STATUS = {
+  decided: { cls: 'chip-good', label: 'decided' },
+  open: { cls: 'chip-warning', label: 'open' },
+  reversed: { cls: 'chip-neutral', label: 'reversed' },
+} as const;
+---
+
+{rows.length > 0 ? (
+  <div class="spec-table-wrap report-table">
+    <table class="spec-table">
+      {caption && <caption>{caption}</caption>}
+      <thead>
+        <tr>
+          <th scope="col">Decision</th>
+          <th scope="col">Options considered</th>
+          <th scope="col">Choice</th>
+          <th scope="col">Why</th>
+          <th scope="col">Status</th>
+        </tr>
+      </thead>
+      <tbody>
+        {rows.map((d) => {
+          const st = STATUS[d.status ?? 'decided'] ?? STATUS.decided;
+          return (
+          <tr>
+            <th scope="row">
+              {d.id && <span class="sym">{d.id} </span>}
+              {d.topic}
+            </th>
+            <td>{d.options}</td>
+            <td><strong>{d.choice}</strong></td>
+            <td>{d.reason}</td>
+            <td><span class={`chip ${st.cls}`}>{st.label}</span></td>
+          </tr>
+          );
+        })}
+      </tbody>
+    </table>
+  </div>
+) : (
+  <p class="report-empty">No decisions recorded yet. Add them under “Design decisions” in the CMS.</p>
+)}

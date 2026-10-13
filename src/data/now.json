@@ -1,5 +1,5 @@
 {
   "show": true,
-  "status": "Designing a custom PCB integrating the TI MSPM0G3507 microcontroller for embedded control.",
-  "updated": "2026-09-10"
+  "status": "Laying out the Hub PCB for our IGVC 2027 robot in Altium: a 4-layer board that distributes power, CAN and the E-Stop line to seven boards and measures the current each one draws.",
+  "updated": "2026-10-13"
 }
