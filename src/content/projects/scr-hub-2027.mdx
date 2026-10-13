@@ -1,0 +1,286 @@
+---
+title: SCR Hub board (IGVC 2027)
+summary: The power, CAN and E-Stop distribution board for Sooner Competitive Robotics' IGVC 2027 robot, with current sensing on every board port. Designed in Altium.
+date: 2026-09-24
+updated: 2026-10-13
+order: 0
+featured: true
+# Published 2026-10-13 at Sao's request (before formal captain approval).
+draft: false
+
+dataStatus: design
+dataNote: 'Status: schematic complete, PCB layout in progress. No values on this page are measured.'
+revision: Rev A (layout in progress)
+team:
+  org: Sooner Competitive Robotics (IGVC 2027)
+  role: Schematic, part selection and PCB layout of the Hub.
+ip: Team project for Sooner Competitive Robotics. This page covers my part of the design.
+
+cover: /uploads/scr-hub-pcb-wip.png
+coverAlt: Altium PCB print of the Hub board, layout in progress
+
+tags: [pcb, power, can, altium]
+tools: [Altium Designer]
+
+abstract: >-
+  The Hub sits between the robot's battery and every other board. It distributes 12 V
+  power, the CAN bus and the hardware E-Stop line to seven 6-pin Molex ports, and it
+  measures the current and voltage on each port so the team can see what every board
+  draws. I redesigned it for 2027 around an STM32C092 microcontroller, P-MOSFET
+  reverse-polarity protection, a 3.3 V buck converter and seven INA220 current sensors
+  on a 4-layer board. Status: schematic complete; PCB layout in progress.
+
+headline:
+  - { label: 'Input', value: '12', unit: 'V, 5-8 A total' }
+  - { label: 'Board ports', value: '7', unit: 'with current sensing' }
+  - { label: 'Board', value: '4-layer', unit: '100 x 100 mm max' }
+  - { label: 'Status', value: 'layout in progress' }
+
+links:
+  - { label: 'Schematics and PCB print (Altium PDF)', href: '/uploads/scr-hub-schematic.pdf' }
+
+decisions:
+  - topic: Reverse protection
+    options: Series Schottky (team guide default), or a P-MOSFET
+    choice: P-MOSFET DMP4015SK3Q-13
+    reason: At 8 A a Schottky drops about 0.45 V and dissipates about 3.6 W. The MOSFET dissipates about 0.7 W. I chose it for efficiency and less heat.
+  - topic: 3.3 V supply
+    options: Last year's LDO, or a buck converter
+    choice: AP63301 buck
+    reason: An LDO turns most of the 12 V to 3.3 V drop into heat. The buck is far more efficient and accepts up to 32 V.
+  - topic: Microcontroller and CAN
+    options: Pico + MCP2515 (team standard), or STM32C092 + MAX3051
+    choice: STM32C092 + MAX3051
+    reason: One chip handles CAN, it matches the 2026 Hub and Safety Lights, and their firmware can be reused.
+    status: open
+  - topic: MCU clock
+    options: Internal HSI48 oscillator, or an 8 MHz crystal
+    choice: 8 MHz crystal, Abracon ABLS (16 pF load caps)
+    reason: HSI48 can drift ±1% over temperature, and two nodes drifting apart can break CAN timing. The ABLS is ±30 ppm and has a footprint in the library.
+  - topic: I²C buses
+    options: One shared bus, or two buses for fault isolation
+    choice: One bus
+    reason: Standard for about 8 devices; firmware timeouts and bus recovery handle a stuck device.
+    status: open
+  - topic: Debug access
+    options: None, test points only, UART header, or on-board USB-C
+    choice: USB-C (CH340C) + UART header + test points
+    reason: One cable for debugging, with the header as a backup and for probing.
+  - topic: Layer count
+    options: 2-layer, or 4-layer
+    choice: 4-layer
+    reason: A solid ground plane makes the buck, USB and CAN layout forgiving for a first board and frees routing space.
+  - topic: Main fuse rating
+    options: 10 A, or 15 A
+    choice: 10 A for now
+    reason: Depends on whether the NUC computer is powered through the Hub (about 2 A more).
+    status: open
+
+stages:
+  - { stage: Requirements and architecture, status: done, plan: "From the 2027 task document and a review of last year's Hub." }
+  - { stage: Schematic, status: done, plan: 'Five sheets, in the Altium PDF. Small fixes listed under Open issues.' }
+  - { stage: Design rules and stack-up, status: done, plan: 'PCBWay 4-layer 1.6 mm stack-up; rules with margin over PCBWay minimums.' }
+  - { stage: Placement and routing, status: next, plan: 'Power path as pours, buck loop, Kelvin sense traces, USB and CAN pairs.' }
+  - { stage: Design review, status: planned, plan: 'Team and captain review before any order.' }
+  - { stage: Fabrication, status: planned, plan: 'PCBWay, 4-layer 1.6 mm, after captain approval.' }
+  - { stage: Firmware, status: planned, plan: 'Start from the 2026 Safety Lights code (same STM32C092); report port currents over CAN.' }
+  - { stage: Bring-up and test, status: planned, plan: 'Rail voltages, reverse-polarity test, current readings against a bench meter, CAN and E-Stop checks.' }
+
+revisions:
+  - { rev: A, date: '2026-09-24', change: 'Project started; requirements collected from the team documents.' }
+  - { rev: A, date: '2026-10-01', change: "Schematic started from last year's Hub; crystal and buck converter chosen." }
+  - { rev: A, date: '2026-10-04', change: 'Reverse protection changed from a Schottky to a P-MOSFET.' }
+  - { rev: A, date: '2026-10-05', change: 'Buck changed to the AP63301; on-board USB-C to UART added.' }
+  - { rev: A, date: '2026-10-08', change: '4-layer board chosen; PCBWay stack-up and design rules set (10-09 to 10-10).' }
+  - { rev: A, date: '2026-10-12', change: 'Placement and routing in progress; main input path drawn as pours.' }
+
+references:
+  - { label: 'Sooner Competitive Robotics, IGVC 2027 Electrical Requirements and Tasks' }
+  - { label: 'Sooner Competitive Robotics, Board Design Guide, Rev 0.5' }
+  - { label: 'Diodes Inc., DMP4015SK3 P-channel MOSFET datasheet' }
+  - { label: 'Diodes Inc., AP63300/AP63301 synchronous buck converter datasheet' }
+  - { label: 'STMicroelectronics, STM32C092 datasheet, and AN2867 oscillator design guide' }
+  - { label: 'Texas Instruments, INA220 current and power monitor datasheet' }
+  - { label: 'PCBWay, 4-layer 1.6 mm standard stack-up' }
+
+# Key parts from the exported Altium schematic (2026-10-13). Passives omitted.
+bom:
+  - { ref: J3, part: Amass XT60PW-F battery connector, pkg: XT60 right-angle }
+  - { ref: XF1, part: 'Keystone 3557-2 fuse holder (10 A blade fuse)', pkg: ATO clip, source: LCSC C352820 }
+  - { ref: D2, part: SMBJ15A input TVS, pkg: SMB }
+  - { ref: Q1, part: Diodes Inc. DMP4015SK3Q-13 P-MOSFET, pkg: TO-252, source: LCSC C461089 }
+  - { ref: D1, part: Diodes Inc. BZT52C12-7-F gate Zener, value: 12 V, pkg: SOD-123, source: LCSC C124196 }
+  - { ref: U4, part: Diodes Inc. AP63301WU-7 buck converter, value: 3.3 V out, pkg: TSOT-26 }
+  - { ref: IC1, part: ST STM32C092KBT6 microcontroller, pkg: LQFP-32 }
+  - { ref: X1, part: Abracon ABLS-8.000MHZ-B4-T crystal, value: 8 MHz, pkg: HC-49/US SMD, source: LCSC C596838 }
+  - { ref: U2, part: Maxim MAX3051ESA+T CAN transceiver, pkg: SOIC-8 }
+  - { ref: 'F1-F7', part: 'Port fuses: Littelfuse 0466005.NR (F1), SF-1206S100-2 (F2-F7)', pkg: '1206' }
+  - { ref: 'R15-R21', part: Yageo RL1206FR-070R02L port shunt, value: 20 mΩ, pkg: '1206', source: LCSC C513558 }
+  - { ref: 'U6-U12', part: TI INA220AIDGSR current sensor, pkg: VSSOP-10 }
+  - { ref: U5, part: TI SN74AHC244QPWRQ1 E-Stop buffer, pkg: TSSOP-20 }
+  - { ref: 'LED1-LED7', part: AP2012SGD3 port status LED, pkg: '0805' }
+  - { ref: J1, part: GCT USB4105-GF-A USB-C receptacle, pkg: SMD, source: LCSC C3020560 }
+  - { ref: U1, part: ST USBLC6-2SC6 USB ESD array, pkg: SOT-23-6, source: LCSC C7519 }
+  - { ref: U3, part: WCH CH340C USB-to-UART bridge, pkg: SOIC-16, source: LCSC C84681 }
+  - { ref: 'J4-J10', part: 6-pin Molex board connectors }
+---
+
+import ImageFigure from '../../components/ImageFigure.astro';
+import DecisionTable from '../../components/DecisionTable.astro';
+import StatusTable from '../../components/StatusTable.astro';
+
+## Introduction
+
+The Hub is the board every other board on our robot plugs into. It takes power from
+the battery and passes three things to each board: 12 V power, the CAN bus and the
+E-Stop line. For 2027, the team wanted more from it: current and voltage sensing for
+every board, a temperature reading for fan control, and a measure of how busy the CAN
+bus is [1]. I started from last year's Hub, reviewed what to keep, and redesigned the
+power input, the 3.3 V supply, the sensing and the debug access.
+
+**Status:** schematic complete. **Next:** finish placement and routing, then a team and
+captain review before ordering. No values on this page are measured.
+
+## Requirements
+
+- **Distribution:** power, CAN and the E-Stop line to every board through 6-pin Molex
+  connectors [1].
+- **Sensing:** current and voltage for every board, plus CAN bus utilization [1].
+  Temperature sensing for the fan is shared with the Fan Controller board; ownership is
+  still open.
+- **Load:** about 5-8 A total for the boards the Hub feeds (team estimate), not counting
+  the motors.
+- **Safety:** the E-Stop path must be hardware only, never through firmware [2].
+- **Input protection order:** fuse, then a TVS diode in parallel, then series reverse
+  protection [2].
+- **Board:** 4-layer boards must stay within 100 x 100 mm [2]. Parts should be
+  surface-mount, hand-solderable, and stocked at DigiKey or JLCPCB/LCSC.
+
+## System overview
+
+Figure 1 shows the board in three layers. The **power layer** runs from the XT60 through
+the input protection to a 12 V bus that feeds the seven board ports and the 3.3 V buck.
+The **data layer** is the CAN bus to every port, plus an I²C bus from the microcontroller
+to the seven current sensors. The **safety layer** is the E-Stop line, which a buffer
+copies to every port with no firmware in the path.
+
+<ImageFigure
+  src="/uploads/scr-hub-block-diagram.png"
+  alt="Hub block diagram: battery through fuse, TVS and P-MOSFET to a 12 V bus feeding seven ports and a 3.3 V buck; microcontroller with I2C to seven INA220 sensors and CAN to every port; USB-C to UART; E-Stop buffer to every port."
+  width={1580}
+  height={880}
+  figNo="Fig. 1"
+  caption="Hub block diagram. Red lines carry 12 V power; the dashed red line is the hardware E-Stop path."
+/>
+
+## Design
+
+### Input protection
+
+Battery power enters through an XT60 and passes a 10 A blade fuse in a Keystone 3557-2
+holder, then an SMBJ15A TVS diode that clamps voltage spikes to ground. Normally the
+team uses a series Schottky diode for reverse-polarity protection [2]. At 8 A, a
+Schottky drops about 0.45 V and dissipates about 3.6 W. I used a P-MOSFET instead: the
+DMP4015SK3Q-13 has 11 mΩ of on-resistance at V<sub>GS</sub> = −10 V [3], so
+P = I² × R = 8² × 0.011 ≈ 0.7 W.
+
+The drain faces the fuse and the source faces the 12 V bus, so the body diode conducts
+first and the channel then turns on. If the battery is connected backwards, the gate
+cannot turn on and the MOSFET blocks. A 10 kΩ resistor pulls the gate to ground, and a
+12 V Zener clamps the gate-source voltage within the ±25 V rating. A 100 µF bulk
+capacitor, a 10 µF ceramic and a 0.1 µF ceramic sit on the bus.
+
+### 3.3 V supply
+
+Last year's Hub used an LDO, which turns the whole 12 V to 3.3 V drop into heat. I
+replaced it with an AP63301 synchronous buck converter (3.8-32 V input, 3 A, 500 kHz)
+[4]. The component values follow the datasheet's 3.3 V table: R12 = 93.1 kΩ and
+R13 = 30.1 kΩ for feedback, 56 pF feed-forward, a 4.7 µH inductor, a 0.1 µF bootstrap
+capacitor, 10 µF at the input and 2 × 22 µF at the output. Because the converter is
+synchronous, no catch diode is needed.
+
+### Board ports and current sensing
+
+Each of the seven ports has the same chain: an SMD fuse, a 20 mΩ shunt resistor, then
+pin 1 of the Molex connector. Pin 6 of each connector drives a status LED through
+1 kΩ. An INA220 measures the voltage across the shunt and the port voltage [6]. At
+2.5 A the shunt drops 50 mV, inside the INA220's ±80 mV range, and its 10 µV step gives
+10 µV / 20 mΩ = 0.5 mA resolution. The sense lines are routed as Kelvin connections
+from the shunt pads. All seven sensors share one I²C bus, with unique addresses set by
+strapping A0 and A1.
+
+### Microcontroller, clock and CAN
+
+The STM32C092 has a built-in CAN controller (FDCAN), so it needs only a MAX3051
+transceiver. This matches last year's Hub and Safety Lights boards, so their firmware
+can be reused. The internal HSI48 oscillator can drift ±1% over 0-85 °C [5], and two
+nodes drifting in opposite directions can break CAN timing, so the CAN clock comes from
+an 8 MHz crystal (Abracon ABLS-8.000MHZ-B4-T). At 125 kbps that gives
+8 MHz / 125 kbps = 64 clock cycles per bit. The crystal's load capacitance is
+C<sub>L</sub> = 18 pF, so the load capacitors are
+C = 2 × (C<sub>L</sub> − C<sub>stray</sub>) = 2 × (18 − 10) = 16 pF [5]. Bus
+termination is a 120 Ω resistor with a jumper, so the Hub can be either end of the bus.
+
+### E-Stop path
+
+The E-Stop line is active-low 3.3 V logic: high means the robot may run. It comes in
+from the E-Stop relay board on J10 and goes through an SN74AHC244 buffer, which drives a
+separate copy to every port. Firmware never touches this path.
+
+### Debug access
+
+A USB-C connector feeds a USBLC6-2SC6 ESD array and a CH340C USB-to-UART bridge, which
+connects to the microcontroller's UART through 1 kΩ resistors. A 3-pin UART header sits
+on the microcontroller side of those resistors, so an external adapter can still be
+used. Test points cover +12 V, +3.3 V, CANH, CANL, the E-Stop line, SDA, SCL and ground.
+
+## Design decisions
+
+<DecisionTable rows={frontmatter.decisions} />
+
+## Layout
+
+The board is 4-layer: signals on L1 and L4, a solid ground plane on L2, and split
++12 V / +3.3 V regions on L3, on PCBWay's 1.6 mm stack-up [7]. The design rules keep a
+margin over PCBWay's minimums: 0.2 mm clearance, 0.3 mm / 0.6 mm vias, 0.5 mm copper to
+the board edge, and wider minimum widths for the power nets (1.0 mm for port power,
+1.5 mm for +12 V). USB D+/D− is routed as a 90 Ω differential pair.
+
+The Molex ports sit around the edges with their port blocks (fuse, shunt, INA220) right
+behind them. The XT60 input, fuse holder and P-MOSFET are on the right, the
+microcontroller is in the center with the crystal at its pins, the USB-C connector is
+on the bottom edge, and the buck converter is in the bottom-right corner, away from the
+crystal and the USB lines. The 10 A input path is drawn as wide pours on the outer
+layers.
+
+<ImageFigure
+  src="/uploads/scr-hub-pcb-wip.png"
+  alt="Altium PCB print of the Hub: top copper in red, bottom copper in blue, Molex connectors around the edges, input power on the right."
+  width={2640}
+  height={2550}
+  href="/uploads/scr-hub-schematic.pdf"
+  figNo="Fig. 2"
+  caption="Altium PCB print, work in progress: top copper in red, bottom copper in blue. Routing is not finished."
+/>
+
+## Project status
+
+Sections for simulation and test results are added as each stage is completed.
+
+<StatusTable rows={frontmatter.stages} />
+
+## Open issues
+
+- **Main fuse rating.** 10 A, or 15 A if the NUC is powered through the Hub. Waiting on
+  the team's power plan.
+- **Port fuse ratings.** Each board's maximum current is still needed to size its fuse.
+  Port 1 uses a Littelfuse 0466005.NR while ports 2-7 use SF-1206S100-2; these should be
+  reconciled.
+- **Spare E-Stop buffer inputs.** Pins 15 and 17 of the SN74AHC244 are marked
+  no-connect; tie them to ground.
+- **Port surge protection.** The ports have fuses but no TVS diodes; decide whether each
+  port needs one.
+- **Overlap with the Sensor Board.** Both boards measure the main current and
+  temperature; the team needs to decide which board owns what.
+- **Approvals.** The STM32C092, the single I²C bus, the P-MOSFET and the PCBWay order all
+  need captain approval.
