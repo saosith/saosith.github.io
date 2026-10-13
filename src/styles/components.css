@@ -967,3 +967,9 @@ body { font-size: 1.0625rem; }
 /* Air below every section, so white sections don't run into the grey band below. */
 .section { padding-bottom: clamp(3rem, 6vw, 5rem); }
 #projects { padding-bottom: 0; }
+
+/* Experience: a short context line, then resume-style points. */
+.tl-context { font-weight: 500; color: var(--ink); }
+.tl-bullets { margin: 0.45rem 0 0.6rem; padding-left: 1.15rem; display: grid; gap: 0.3rem; }
+.tl-bullets li { font-size: 1.02rem; line-height: 1.6; color: var(--ink-2); }
+.tl-bullets li::marker { color: var(--signal); }

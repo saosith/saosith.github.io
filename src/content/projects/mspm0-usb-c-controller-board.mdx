@@ -7,7 +7,7 @@ featured: true
 draft: false
 
 dataStatus: design
-ip: Own work. Every part on the board is a catalogue component and the design can be published in full.
+ip: Own work. Every part on the board is a catalog component and the design can be published in full.
 
 cover: /uploads/thumb-mspm0-usb-board.png
 coverAlt: KiCad schematic of the board
@@ -18,7 +18,8 @@ tools: [KiCad]
 headline:
   - { label: 'Microcontroller', value: 'MSPM0G3507' }
   - { label: 'Supply', value: '3.3', unit: 'V from USB-C' }
-  - { label: 'Status', value: 'schematic captured' }
+  - { label: 'Board', value: '2-layer', unit: 'routing in progress' }
+  - { label: 'Status', value: 'schematic complete' }
 
 links:
   - { label: 'Schematic (PDF)', href: '/uploads/mspm0g3507schem.pdf' }
@@ -27,13 +28,10 @@ links:
 updated: 2026-10-12
 revision: Rev A (schematic)
 abstract: >-
-  This is a general-purpose microcontroller board for my projects. It runs
-  from a laptop's USB-C port, appears to the PC as a serial port, and can be
-  reprogrammed on the bench without extra hardware. The design centres on a TI
-  MSPM0G3507 microcontroller with a CH340E USB-to-UART bridge, USB ESD protection, a
-  3.3 V LDO, an 8 MHz crystal and a Tag-Connect SWD footprint. Status: schematic
-  complete in KiCad. Next: layout, fabrication and bring-up.
-dataNote: 'Status: schematic complete in KiCad. Layout, fabrication and bring-up come next, so no values on this page are measured.'
+  A general-purpose TI MSPM0G3507 board that runs from USB-C, shows up on a PC as a
+  serial port, and is programmed over SWD. Status: schematic complete in KiCad,
+  2-layer PCB routing in progress. Next: fabrication and bring-up.
+dataNote: 'Status: schematic complete in KiCad and 2-layer PCB routing in progress. Fabrication and bring-up come next, so no values on this page are measured.'
 
 # Design targets (not measurements). Derived from the USB 2.0 limits and the part
 # datasheets; the "Simulated"/"Measured" columns fill in once there are results.
@@ -70,7 +68,7 @@ stages:
   - { stage: Schematic, status: done }
   - { stage: Design review, status: next, plan: 'Check decoupling, the serial handshake wiring and the ADC reference filter against the MSPM0 [1] and CH340E [2] datasheets.' }
   - { stage: Simulation, status: planned, plan: 'ADC reference filter response and LDO start-up.' }
-  - { stage: Layout, status: planned, plan: 'Stack-up, placement and routing, with the ESD array right at the USB-C connector.' }
+  - { stage: Layout, status: next, plan: '2-layer board, routing in progress in KiCad, with the ESD array right at the USB-C connector.' }
   - { stage: Fabrication, status: planned }
   - { stage: Bring-up and test, status: planned, plan: 'Rail voltages, USB enumeration, UART loop-back and SWD flashing.' }
 
@@ -116,7 +114,7 @@ So I designed this board around a TI MSPM0G3507 (Arm Cortex-M0+) [1]. It has
 USB-C power, a USB-to-UART bridge, a crystal, an SWD debug pad and a filtered ADC
 reference.
 
-**Status:** schematic complete. **Next:** layout, then fabrication and bring-up.
+**Status:** schematic complete, 2-layer PCB routing in progress. **Next:** fabrication and bring-up.
 No values on this page are measured.
 
 ## Requirements

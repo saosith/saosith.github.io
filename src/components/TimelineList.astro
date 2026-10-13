@@ -44,7 +44,10 @@ function monogram(entry: TimelineEntry): string {
             {t.placeholder && <span class="chip chip-warning" style="margin-left:0.5rem">replace this entry</span>}
           </div>
           {t.org && <div class="tl-org">{t.org}</div>}
-          {t.body && <p class="tl-body">{t.body}</p>}
+          {t.body && <p class={`tl-body${(t.bullets ?? []).length ? ' tl-context' : ''}`}>{t.body}</p>}
+          {(t.bullets ?? []).length > 0 && (
+            <ul class="tl-bullets">{(t.bullets ?? []).map((b) => <li>{b}</li>)}</ul>
+          )}
           {t.evidenceLabel && (
             <div class="tl-evidence">
               {isLive(t.evidenceHref)

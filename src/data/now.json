@@ -1,6 +1,6 @@
 {
   "show": true,
-  "status": "Laying out the Hub PCB for our IGVC 2027 robot in Altium: a 4-layer board that distributes power, CAN and the E-Stop line to seven boards and measures the current each one draws.",
+  "status": "Laying out the Hub board for our IGVC 2027 robot in Altium: 4 layers, 7 ports, current sensing on each.",
   "updated": "2026-10-13",
   "href": "/projects/scr-hub-2027/",
   "hrefLabel": "See the Hub board"

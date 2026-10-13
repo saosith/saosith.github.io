@@ -1,6 +1,6 @@
 ---
 title: SCR Hub board (IGVC 2027)
-summary: The power, CAN and E-Stop distribution board for Sooner Competitive Robotics' IGVC 2027 robot, with current sensing on every board port. Designed in Altium.
+summary: The power, CAN and E-Stop distribution board for Sooner Competitive Robotics' IGVC 2027 robot, with current sensing on every port, designed in Altium.
 date: 2026-09-24
 updated: 2026-10-13
 order: 0
@@ -13,7 +13,7 @@ dataNote: 'Status: schematic complete, PCB layout in progress. No values on this
 revision: Rev A (layout in progress)
 team:
   org: Sooner Competitive Robotics (IGVC 2027)
-  role: Schematic, part selection and PCB layout of the Hub.
+  role: schematic, part selection and PCB layout of the Hub.
 ip: Team project for Sooner Competitive Robotics. This page covers my part of the design.
 
 cover: /uploads/scr-hub-pcb-wip.png
@@ -26,7 +26,7 @@ abstract: >-
   The Hub sits between the robot's battery and every other board. It distributes 12 V
   power, the CAN bus and the hardware E-Stop line to seven 6-pin Molex ports, and it
   measures the current and voltage on each port so the team can see what every board
-  draws. I redesigned it for 2027 around an STM32C092 microcontroller, P-MOSFET
+  draws. I redesigned it for 2027 around a proposed STM32C092 microcontroller, P-MOSFET
   reverse-polarity protection, a 3.3 V buck converter and seven INA220 current sensors
   on a 4-layer board. Status: schematic complete; PCB layout in progress.
 
@@ -47,7 +47,7 @@ decisions:
   - topic: 3.3 V supply
     options: Last year's LDO, or a buck converter
     choice: AP63301 buck
-    reason: An LDO turns most of the 12 V to 3.3 V drop into heat. The buck is far more efficient and accepts up to 32 V.
+    reason: An LDO's efficiency is at most V_out / V_in = 3.3 / 12 ≈ 28% here. At the Hub's estimated 50–100 mA load, the AP63301 datasheet curve for 12 V to 3.3 V shows about 55–70%, and it accepts up to 32 V.
   - topic: Microcontroller and CAN
     options: Pico + MCP2515 (team standard), or STM32C092 + MAX3051
     choice: STM32C092 + MAX3051
@@ -224,8 +224,8 @@ termination is a 120 Ω resistor with a jumper, so the Hub can be either end of 
 ### E-Stop path
 
 The E-Stop line is active-low 3.3 V logic: high means the robot may run. It comes in
-from the E-Stop relay board on J10 and goes through an SN74AHC244 buffer, which drives a
-separate copy to every port. Firmware never touches this path.
+from the E-Stop relay board on J10, so J10's E-Stop pin is the input, and an SN74AHC244
+buffer drives a separate copy to the other six ports (J4–J9). Firmware never touches this path.
 
 ### Debug access
 

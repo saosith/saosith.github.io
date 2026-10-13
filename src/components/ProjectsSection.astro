@@ -8,7 +8,7 @@ const projects = (await getCollection('projects', ({ data }) => withDrafts || !d
   .sort((a, b) => a.data.order - b.data.order || +b.data.date - +a.data.date);
 
 const tags = [...new Set(projects.flatMap((p) => p.data.tags))].sort();
-const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month: 'short' });
+const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', timeZone: 'UTC' });
 ---
 
 <section id="projects" class="wrap section rule-top">

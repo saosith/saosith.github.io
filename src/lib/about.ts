@@ -34,6 +34,8 @@ export interface TimelineEntry {
    */
   logo?: string;
   body?: string;
+  /** Resume-style points shown under the body (Experience): verb + what + how + result. */
+  bullets?: string[];
   evidenceLabel?: string;
   evidenceHref?: string;
   placeholder?: boolean;

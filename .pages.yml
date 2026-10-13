@@ -98,15 +98,23 @@ content:
             label: Organisation logo
             type: image
             description: Square mark shown beside the entry. Leave it empty and the entry falls back to initials.
-          - { name: body, label: What you did, type: text }
+          - name: body
+            label: Context line
+            type: text
+            description: 'One short fragment, no "I": what the role is and what it is for, e.g. "Hub board for SCR''s IGVC 2027 robot: power, CAN and E-Stop distribution."'
+          - name: bullets
+            label: Points (resume style)
+            type: string
+            list: true
+            description: '2 or 3 points, no "I": verb + what + how + result or scale, e.g. "Replaced the Schottky with P-MOSFET protection, cutting calculated loss at 8 A from 3.6 W to 0.7 W." Under about 60 words in total.'
           - name: evidenceLabel
             label: Evidence — label
             type: string
-            description: What the reader is about to open, e.g. "Research poster". Say the real thing — do not call an image a PDF.
+            description: What the reader is about to open, e.g. "Read the Hub write-up" or "Research poster". Say the real thing — do not call an image a PDF.
           - name: evidenceHref
             label: Evidence — link
             type: string
-            description: An external URL, or a file you uploaded. For an upload, add it under Media first, then paste its path here as /uploads/<filename>. A label with no link renders as "— add the link", so fill both or neither.
+            description: A project page (/projects/...), an external URL, or an uploaded file as /uploads/<filename>. A label with no link renders as "— add the link", so fill both or neither.
           - name: placeholder
             label: Still a placeholder
             type: boolean

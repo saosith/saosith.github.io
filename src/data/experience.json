@@ -2,67 +2,85 @@
   "entries": [
     {
       "date": "Jan 2026 – present",
-      "title": "Undergraduate Research Assistant, Pulsed Laser Template Engineering (PLATEN)",
-      "org": "Center for Quantum Research and Technology (CQRT), University of Oklahoma",
+      "title": "Undergraduate Researcher, Semiconductor Nanofabrication",
+      "org": "Pulsed Laser Template Engineering (PLATEN) Lab, University of Oklahoma",
       "logo": "/uploads/logo-cqrt.png",
-      "body": "I started in the cleanroom, using photolithography, reactive ion etching and pulsed laser deposition to build and test high-aspect-ratio micro- and nanostructures. Most of my time went into tuning the plasma etch (gas chemistry, RF power and chamber pressure) to get vertical sidewalls and a controlled feature depth. I also grew LAO on STO by pulsed laser deposition, watching the growth with RHEED. Now I'm starting on the design side in the same group, on optically bistable ring resonators.",
+      "body": "Cleanroom fabrication of high-aspect-ratio micro- and nanostructures.",
       "placeholder": false,
       "highlights": [
         "Photolithography",
         "Reactive ion etching",
         "Pulsed laser deposition",
-        "Ring resonators"
+        "RHEED"
       ],
       "media": "/uploads/platen-wafer.jpg",
-      "mediaAlt": "Sample wafer after photolithography and plasma etching in the cleanroom."
+      "mediaAlt": "Sample wafer after photolithography and plasma etching in the cleanroom.",
+      "bullets": [
+        "Fabricate high-aspect-ratio micro- and nanostructures using photolithography, reactive ion etching and pulsed laser deposition.",
+        "Independently own the pulsed laser deposition step, growing LAO films on STO substrates and monitoring growth with RHEED.",
+        "Optimize anisotropic plasma etch parameters (gas chemistry, RF power, chamber pressure) and mask selectivity for vertical sidewalls and controlled depth."
+      ]
     },
     {
       "date": "Jan 2026 – present",
-      "title": "Electrical Systems Member",
+      "title": "Electrical Systems Engineer, Power Distribution",
       "org": "Sooner Competitive Robotics",
       "logo": "/uploads/logo-sooner-competitive-robotics.png",
-      "body": "I'm designing the Hub board for our IGVC 2027 robot in Altium: a 4-layer PCB that takes power from the battery and sends 12 V power, the CAN bus and the hardware E-Stop line to seven boards, with a current sensor on every port. I chose the reverse-polarity protection, the 3.3 V buck converter and the microcontroller, and I'm now laying out the board. Before that, I planned the robot's component placement and wire routing in Onshape.",
+      "body": "Hub board for SCR's IGVC 2027 robot.",
       "placeholder": false,
       "highlights": [
         "Altium Designer",
         "4-layer PCB",
         "Power distribution",
-        "CAN bus",
-        "Onshape CAD"
-      ]
+        "CAN bus"
+      ],
+      "bullets": [
+        "Designed a 4-layer power, CAN and E-Stop distribution PCB in Altium, routing 12 V at up to 10 A to 7 ports with INA220 current sensing.",
+        "Replaced the team-standard Schottky with P-MOSFET reverse-polarity protection, cutting calculated loss at 8 A from 3.6 W to 0.7 W.",
+        "Selected the 3.3 V buck converter and proposed an STM32C092 with CAN to reuse last year's firmware."
+      ],
+      "evidenceLabel": "Read the Hub write-up",
+      "evidenceHref": "/projects/scr-hub-2027/"
     },
     {
       "date": "Aug 2025 – present",
       "title": "Peer Learning Assistant",
       "org": "Student Learning Center, University of Oklahoma",
-      "body": "I mentor 250+ students every semester in Physics I and II, Calculus I to III and General Chemistry I. Most of the job is explaining the same idea in a few different ways until it clicks, and breaking a problem into steps students can repeat on their own.",
+      "body": "Tutoring in core math and science courses at OU's Student Learning Center.",
       "highlights": [
         "250+ students per semester",
-        "Physics I–II",
-        "Calculus I–III",
-        "General Chemistry I"
+        "Physics",
+        "Calculus",
+        "Chemistry"
       ],
-      "placeholder": false
+      "placeholder": false,
+      "bullets": [
+        "Mentor 250+ students per semester in Physics I–II, Calculus I–III and General Chemistry I.",
+        "Teach structured, step-by-step problem-solving methods that students can repeat on their own."
+      ]
     },
     {
       "date": "Aug 2025 – Dec 2025",
-      "title": "Research Apprentice, Light–Matter Interaction (Dr. Tischler)",
-      "org": "Center for Quantum Research and Technology (CQRT), University of Oklahoma",
+      "title": "Undergraduate Researcher, Optical Characterization (Dr. Tischler)",
+      "org": "Light–Matter Interaction Lab, University of Oklahoma",
       "logo": "/uploads/logo-cqrt.png",
-      "body": "I reviewed research papers on quantum optical effects in silicon carbide and other wide-bandgap semiconductor nanocrystals, and learned how the lab's optical spectroscopy setups measure them. This is where I first got interested in photonics.",
+      "body": "Optical characterization of silicon carbide nanocrystals.",
       "placeholder": false,
       "highlights": [
+        "Raman spectroscopy",
         "Silicon carbide",
-        "Photonics",
-        "Optical spectroscopy"
+        "Optical alignment"
+      ],
+      "bullets": [
+        "Characterized silicon carbide nanocrystals by Raman spectroscopy, aligning the benchtop optical setup and collecting spectra to assess crystal structure and material quality."
       ]
     },
     {
       "date": "Jan 2025 – May 2025",
-      "title": "Research Apprentice, Cloud Microphysics (Dr. McFarquhar)",
+      "title": "Undergraduate Researcher, Data Analysis (Dr. McFarquhar)",
       "org": "National Weather Center, University of Oklahoma",
       "logo": "/uploads/logo-national-weather-center.png",
-      "body": "I analyzed aircraft data from the CAESAR campaign, where an NSF/NCAR C-130 flew through cold-air outbreaks out of Kiruna, Sweden. My question was how cloud properties change with altitude, so I compared water content, particle size and condensation-nuclei concentration from several probes against normalized cloud height. I did all the data processing and plots in Python (NumPy, Pandas, Matplotlib).",
+      "body": "First Year Research Experience with the cloud microphysics group.",
       "evidenceLabel": "Research poster",
       "placeholder": false,
       "evidenceHref": "/uploads/poster-caesar-arctic-clouds.jpg",
@@ -72,7 +90,12 @@
         "Matplotlib"
       ],
       "media": "/uploads/poster-caesar-arctic-clouds.jpg",
-      "mediaAlt": "Research poster on Arctic cloud microphysics from the CAESAR campaign"
+      "mediaAlt": "Research poster on Arctic cloud microphysics from the CAESAR campaign",
+      "bullets": [
+        "Analyzed NSF/NCAR C-130 data from the CAESAR campaign to see how cloud properties change with altitude.",
+        "Compared water content, particle size and condensation-nuclei concentration from several probes against normalized cloud height.",
+        "Processed and plotted the data in Python (NumPy, Pandas, Matplotlib) for a research poster."
+      ]
     }
   ]
 }
