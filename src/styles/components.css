@@ -744,7 +744,8 @@ a.data-dl:hover { border-color: var(--ink); background: var(--panel-sunk); }
   .data-badge { display: flex; }
   .prose > h2 { break-after: avoid; page-break-after: avoid; margin-top: 1.4rem; }
   .prose > h3 { break-after: avoid; page-break-after: avoid; }
-  .figure, .spec-table-wrap, .report-placeholder, table, pre { break-inside: avoid; page-break-inside: avoid; }
+  .figure, .report-placeholder, pre { break-inside: avoid; page-break-inside: avoid; }
+  tr { break-inside: avoid; }
   .spec-table-wrap { overflow: visible; }
   .figure-body img { max-height: 190mm; width: auto; max-width: 100%; margin-inline: auto; display: block; }
   .prose a { color: inherit; }
@@ -929,7 +930,7 @@ body { font-size: 1.0625rem; }
 
 /* Closing call to action: dark, full width. */
 .cta-band {
-  margin-top: clamp(3rem, 6vw, 5rem);
+  margin-top: 0;   /* the section above runs straight into the band; its own padding gives the air */
   background: var(--band-2); color: #f2f2f2;
   box-shadow: inset 0 3px 0 var(--signal);
   padding-block: clamp(3rem, 7vw, 5.5rem);
@@ -973,3 +974,131 @@ body { font-size: 1.0625rem; }
 .tl-bullets { margin: 0.45rem 0 0.6rem; padding-left: 1.15rem; display: grid; gap: 0.3rem; }
 .tl-bullets li { font-size: 1.02rem; line-height: 1.6; color: var(--ink-2); }
 .tl-bullets li::marker { color: var(--signal); }
+
+
+/* =============================================================
+   2026-10-13 round 4: closer to the Ramit reference.
+   Manrope 500 headings over Poppins body text, a plain hero,
+   three nav links, and the first project band in TI red.
+   Project pages use report.css (Arial, TI datasheet) instead.
+   ============================================================= */
+h1, h2, h3, h4, .brand, .band-title, .cta-title, .section-head h2, .section-head .section-toggle, .tl-title {
+  font-family: var(--display); font-weight: 500; letter-spacing: -0.02em;
+}
+.hero h1.hero-greeting { font-family: var(--display); font-weight: 500; letter-spacing: -0.03em; }
+.brand { font-weight: 600; }
+.tl-title { font-weight: 600; }
+body { letter-spacing: 0; }
+.hero-lede { font-size: 1.1rem; line-height: 1.7; }
+.hero .hero-text { align-self: center; }
+
+.projects-now { margin: -0.5rem 0 2rem; max-width: 60ch; }
+.projects-now .now { margin: 0; }
+
+.band-accent { background: var(--brand-red); color: #fff; }
+.band-accent .band-kicker { color: #fff; opacity: 1; }
+.band-accent .band-sub { opacity: 1; }
+.band-accent .band-btn { background: #fff; color: #111; }
+.band-accent .band-btn:hover { background: #111; color: #fff; }
+.band-accent .band-figures dt { opacity: 1; }   /* full white: 5.9:1 on the red */
+/* Media side alternates by position, not by colour. */
+.band-dark .band-inner { direction: ltr; }
+.band-flip .band-inner { direction: rtl; }
+.band-flip .band-inner > * { direction: ltr; }
+
+/* Projects now come before Experience. The project bands end on grey or black
+   depending on how many projects are shown, so Experience goes white: it then
+   separates from the last band either way. Awards and Education stay grey. */
+#experience { background: none; box-shadow: none; clip-path: none; }
+
+/* Dark mode: the grey bands' button was #111 on #171717. Make it light. */
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) .band-light .band-btn { background: #f2f2f2; color: #111; }
+  :root:not([data-theme='light']) .band-light .band-btn:hover { background: var(--brand-red); color: #fff; }
+}
+:root[data-theme='dark'] .band-light .band-btn { background: #f2f2f2; color: #111; }
+:root[data-theme='dark'] .band-light .band-btn:hover { background: var(--brand-red); color: #fff; }
+
+/* ---- Contact band: message box (copy + open LinkedIn, or mailto) ---- */
+.cta-kicker { color: #fff; }   /* was #ff6b6b, read as pink; white is 18:1 on the band */
+@media (min-width: 56rem) {
+  .cta-inner { grid-template-columns: minmax(0, 1fr) minmax(0, 34rem); gap: clamp(2rem, 5vw, 5rem); align-items: start; }
+}
+.cta-message { display: grid; gap: 0.6rem; min-width: 0; }
+.cta-label { font-size: 1rem; font-weight: 600; color: #f2f2f2; }
+.cta-textarea {
+  width: 100%; min-height: 7.5rem; resize: vertical; box-sizing: border-box;
+  font: inherit; font-size: 1rem; line-height: 1.55; color: #f2f2f2;
+  background: #0b0b0b; border: 1.5px solid #5a5a5a; border-radius: 10px;
+  padding: 0.8rem 0.95rem;
+}
+.cta-textarea::placeholder { color: #9a9a9a; opacity: 1; }
+.cta-textarea:hover { border-color: #8a8a8a; }
+.cta-textarea:focus-visible { outline: 3px solid #fff; outline-offset: 2px; border-color: #fff; }
+.cta-message .cta-actions { margin-top: 0.4rem; gap: 0.7rem; }
+.cta-message .cta-btn, .cta-message .cta-btn-outline { min-width: 0; padding: 0.85rem 1.3rem; }
+.cta-band a:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+.cta-status { min-height: 1.5em; margin: 0; font-size: 0.95rem; color: #d6d6d6; }
+.cta-status:empty { min-height: 0; }
+@media (max-width: 34rem) {
+  .cta-message .cta-actions { flex-direction: column; align-items: stretch; }
+}
+
+/* =============================================================
+   2026-10-13 hero C2-A: a red tile for the greeting, tagline and two
+   buttons, bleeding off the left edge; the PLD video beside it with
+   its caption laid over the bottom on a dark gradient. Both tiles
+   share one grid row, so they end on the same line (no script).
+   ============================================================= */
+#top.hero { padding-block: 2rem 0; }
+#top .hero-text {
+  background: var(--brand-red); color: #fff; box-sizing: border-box; min-width: 0;
+  display: flex; flex-direction: column; justify-content: center;
+  padding: clamp(1.75rem, 3.5vw, 3rem) clamp(1.75rem, 3.5vw, 3rem) clamp(1.75rem, 3.5vw, 3rem) 0;
+  /* bleed to the left screen edge; round only the right corners */
+  box-shadow: 0 0 0 100vw var(--brand-red);
+  clip-path: inset(0 0 0 -100vw round 0 16px 16px 0);
+  border-radius: 0 16px 16px 0;
+}
+#top .hero-text h1.hero-greeting { color: #fff; }
+#top .hero-text .hero-lede { color: #fff; margin-bottom: 0; }
+#top .hero-text ::selection { background: #fff; color: var(--brand-red); }
+@media (min-width: 62rem) {
+  /* same gap as the project bands (.band-inner) */
+  #top .hero-grid { gap: clamp(1.5rem, 4vw, 4rem); align-items: stretch; }
+  #top .hero-text { align-self: stretch; }
+}
+@media (max-width: 61.99rem) {
+  #top.hero { padding-top: 0; }
+  #top .hero-grid { gap: 1.5rem; }
+  #top .hero-text {
+    padding: 1.75rem 0 2rem; border-radius: 0;
+    box-shadow: 0 0 0 100vw var(--brand-red); clip-path: inset(0 -100vw);
+  }
+}
+
+.hero-actions { display: flex; flex-wrap: wrap; gap: 0.75rem; margin-top: 1.6rem; }
+.hero-btn {
+  display: inline-flex; align-items: center; justify-content: center; box-sizing: border-box;
+  min-height: 48px; padding: 0.7rem 1.4rem; border-radius: 10px; border: 1.5px solid #fff;
+  font-weight: 600; text-decoration: none;
+}
+.hero-btn-solid { background: #fff; color: #111; }
+.hero-btn-solid:hover { background: #111; border-color: #111; color: #fff; }
+.hero-btn-outline { background: transparent; color: #fff; }
+.hero-btn-outline:hover { background: rgba(255, 255, 255, 0.12); color: #fff; }
+
+/* Video card with the caption laid over its bottom edge. If the video cannot
+   play, the poster frame (or the grey fill) still sits under the gradient. */
+#top .portrait.has-media { position: relative; gap: 0; }
+#top .portrait-img { border: 0; border-radius: 14px; display: block; }
+#top .portrait.has-media figcaption {
+  position: absolute; left: 0; right: 0; bottom: 0;
+  padding: 3rem 1.1rem 0.9rem; color: #fff; font-size: 0.95rem; line-height: 1.45;
+  background: linear-gradient(to top, rgba(0,0,0,0.85) 0%, rgba(0,0,0,0.78) 60%, rgba(0,0,0,0) 100%);
+  border-radius: 0 0 14px 14px; pointer-events: none;
+}
+#top .portrait.has-media figcaption.is-placeholder { color: #fff; }
+
+/* Focus ring: white inside red surfaces, where the red --signal ring disappears. */
+.band-accent :focus-visible, #top .hero-text :focus-visible { outline: 3px solid #fff; outline-offset: 3px; }

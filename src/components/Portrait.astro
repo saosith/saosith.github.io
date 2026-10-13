@@ -13,7 +13,7 @@ const photo = SITE.photo?.trim();
 const caption = SITE.photoCaption?.trim();
 ---
 
-<figure class="portrait">
+<figure class={`portrait${photo ? ' has-media' : ''}`}>
   {photo && /\.(mp4|webm)$/i.test(photo) ? (
     <video
       class="portrait-img"

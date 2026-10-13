@@ -1,7 +1,10 @@
 #!/usr/bin/env node
 /**
- * Prints project pages to PDF — the same page a visitor sees, through the
- * print stylesheet in components.css, so the web page and the PDF never drift.
+ * Prints project pages to PDF from the same page a visitor sees, so the web
+ * page and the PDF never drift. The page is opened with ?paged, which loads
+ * public/report-paged.css and Paged.js (TI-datasheet layout: front page,
+ * contents with page numbers, running header). Chrome is driven over the
+ * DevTools protocol so the PDF gets clickable bookmarks for every heading.
  *
  *   npm run pdf -- <slug> [<slug> …]     one or more projects
  *   npm run pdf -- --all                 every project, drafts included
@@ -15,8 +18,9 @@
  * Needs Chrome or Edge. Set CHROME_PATH if neither is in its usual place.
  */
 import { spawn, spawnSync } from 'node:child_process';
+import { tmpdir } from 'node:os';
 import { createServer } from 'node:http';
-import { existsSync, mkdirSync, readFileSync, readdirSync, statSync } from 'node:fs';
+import { existsSync, mkdirSync, mkdtempSync, readFileSync, readdirSync, rmSync, statSync, writeFileSync } from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
@@ -102,32 +106,63 @@ await new Promise((r) => server.listen(0, '127.0.0.1', r));
 const port = server.address().port;
 
 const browser = findBrowser();
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+// One headless browser for every report, driven over the DevTools protocol.
+const debugPort = 9300 + Math.floor(Math.random() * 500);
+const profile = mkdtempSync(path.join(tmpdir(), 'report-pdf-'));
+const chrome = spawn(browser, ['--headless=new', '--disable-gpu', '--no-first-run',
+  `--remote-debugging-port=${debugPort}`, `--user-data-dir=${profile}`, 'about:blank'], { stdio: 'ignore' });
+
+let ws;
+for (let i = 0; i < 75 && !ws; i++) {
+  try {
+    const list = await (await fetch(`http://127.0.0.1:${debugPort}/json`)).json();
+    const page = list.find((t) => t.type === 'page');
+    if (page) ws = new WebSocket(page.webSocketDebuggerUrl);
+  } catch {}
+  if (!ws) await sleep(200);
+}
+if (!ws) { console.error('Could not reach the headless browser.'); process.exit(1); }
+await new Promise((r) => ws.addEventListener('open', r));
+let msgId = 0;
+const pending = new Map();
+ws.addEventListener('message', (e) => {
+  const m = JSON.parse(e.data);
+  if (m.id && pending.has(m.id)) { pending.get(m.id)(m); pending.delete(m.id); }
+});
+const send = (method, params = {}) => new Promise((r) => {
+  const i = ++msgId; pending.set(i, r); ws.send(JSON.stringify({ id: i, method, params }));
+});
+await send('Page.enable');
+
 let failed = 0;
 for (const slug of slugs) {
   const draft = isDraft(slug);
   const outDir = draft ? path.join(root, 'reports-draft') : path.join(root, 'public', 'uploads');
   mkdirSync(outDir, { recursive: true });
   const out = path.join(outDir, `${slug}-report.pdf`);
-  const url = `http://127.0.0.1:${port}/projects/${slug}/`;
 
-  // Async, not spawnSync: the static server runs on this same event loop and
-  // would never answer the browser while a synchronous call blocks it.
-  const status = await new Promise((resolve) => {
-    const p = spawn(browser, [
-      '--headless=new', '--disable-gpu', '--no-first-run', '--hide-scrollbars',
-      '--no-pdf-header-footer', '--run-all-compositor-stages-before-draw',
-      '--virtual-time-budget=15000', `--print-to-pdf=${out}`, url,
-    ], { stdio: 'ignore' });
-    p.on('close', resolve);
-  });
-
-  if (status === 0 && existsSync(out)) {
-    console.log(`${draft ? 'DRAFT ' : ''}${path.relative(root, out)}  (${Math.round(statSync(out).size / 1024)} KB)`);
-  } else {
-    console.error(`Failed: ${slug}`);
-    failed++;
+  await send('Page.navigate', { url: `http://127.0.0.1:${port}/projects/${slug}/?paged` });
+  let done = false;
+  for (let i = 0; i < 300 && !done; i++) {
+    await sleep(200);
+    const r = await send('Runtime.evaluate', { expression: 'window.__pagedDone === true', returnByValue: true });
+    done = r.result?.result?.value === true;
   }
+  if (!done) { console.error(`Failed: ${slug} (Paged.js never finished)`); failed++; continue; }
+  await sleep(300);
+  const pdf = await send('Page.printToPDF', {
+    preferCSSPageSize: true, printBackground: true, displayHeaderFooter: false,
+    generateDocumentOutline: true,
+  });
+  if (!pdf.result?.data) { console.error(`Failed: ${slug}`); failed++; continue; }
+  writeFileSync(out, Buffer.from(pdf.result.data, 'base64'));
+  console.log(`${draft ? 'DRAFT ' : ''}${path.relative(root, out)}  (${Math.round(statSync(out).size / 1024)} KB)`);
 }
+ws.close();
+chrome.kill();
+try { rmSync(profile, { recursive: true, force: true }); } catch {}
 server.close();
 
 if (!failed) {

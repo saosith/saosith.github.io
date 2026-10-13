@@ -5,7 +5,7 @@
    of an instrument screen.
    ============================================================= */
 
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700&family=Poppins:wght@400;500;600&display=swap');
 
 :root {
   color-scheme: light;
@@ -25,6 +25,9 @@
   --signal-deep:  #a30000;
   --signal-wash:  #fbeaea;
   --on-signal:    #ffffff;
+  /* Large red surfaces (hero, featured project band). Fixed in both themes:
+     the dark-mode --signal (#ff5c5c) is for small accents only. */
+  --brand-red:    #cc0000;
 
   /* --- project bands --- */
   --band-1:       #f3f3f3;
@@ -45,7 +48,9 @@
   --grid-line: #e3e9e7;
 
   /* --- type --- */
-  --sans: 'Manrope', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  /* Ramit-style pairing: Manrope for headings, Poppins for running text. */
+  --display: 'Manrope', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --sans: 'Poppins', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
   --mono: ui-monospace, 'SF Mono', 'Cascadia Mono', Consolas, monospace;
 
   --t-xs:   0.75rem;

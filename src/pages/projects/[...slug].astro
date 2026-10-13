@@ -6,6 +6,7 @@ import Base from '../../layouts/Base.astro';
 import DataBadge from '../../components/DataBadge.astro';
 import SpecTable from '../../components/SpecTable.astro';
 import { SITE } from '../../lib/site';
+import '../../styles/report.css';
 
 export async function getStaticPaths() {
   // REPORT_DRAFTS=1 is set only by `npm run pdf` for a local build, so a draft
@@ -20,7 +21,8 @@ const { data } = project;
 const { Content, headings } = await render(project);
 
 const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month: 'short', timeZone: 'UTC' });
-const fmtLong = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric', timeZone: 'UTC' });
+// Month and year only: project dates are usually known to the month, not the day.
+const fmtLong = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month: 'long', timeZone: 'UTC' });
 
 // The report PDF: an explicit `pdf` field wins, otherwise whatever `npm run pdf`
 // left in public/uploads. Checked on disk, so the link never points at a 404.
@@ -39,11 +41,92 @@ const endMatter = [
 
 const toc = [...headings.filter((h) => h.depth === 2 || h.depth === 3), ...endMatter];
 const pageUrl = new URL(`/projects/${project.id}/`, SITE.url).href;
+
+const statusLine = data.dataNote ?? {
+  design: 'Design only. Nothing in this report is simulated, built or measured.',
+  model: 'Hand-model data, not simulated or measured.',
+  simulated: 'Simulated. No measured results yet.',
+  built: 'Built and working. No formal measurements are recorded.',
+  measured: 'Measured on built hardware.',
+}[data.dataStatus];
+// Numbers are written into the contents page here, and into the headings by the
+// paged script below: Paged.js mishandles CSS counters across page breaks.
+let secNo = 0;
+const bodyToc = toc
+  .filter((h) => h.depth === 2)
+  .map((h) => ({ ...h, no: h.slug === 'appendix-bom' ? '' : String(++secNo) }));
+const statusText = statusLine.replace(/^Status:\s*/i, '');
+const cover = data.cover && !/\.(mp4|webm)$/i.test(data.cover) && !project.body?.includes(data.cover)
+  ? data.cover : undefined;
 ---
 
 <Base title={data.title} description={data.summary}>
+  <div class="report">
+
+  {/* PDF only (?paged): the TI-style front page and contents page. */}
+  <div class="paged-only">
+    <div class="running-title">{data.title}{data.revision && ` · ${data.revision}`}</div>
+    <div class="running-author">{SITE.name}</div>
+    <header class="pf-band">
+      <span>PROJECT REPORT · {SITE.name.toUpperCase()}</span>
+      <span>{data.revision && `${data.revision} · `}{fmtLong(data.updated ?? data.date)}</span>
+    </header>
+    <h1 class="pf-title">{data.title}</h1>
+    <p class="pf-subtitle">{data.summary}</p>
+    <div class="pf-grid">
+      {(data.features.length > 0 || data.applications.length > 0) && (
+        <div>
+          {data.features.length > 0 && <>
+            <h4>Features</h4>
+            <ul class="pf-list">{data.features.map((f) => <li>{f}</li>)}</ul>
+          </>}
+          {data.applications.length > 0 && <>
+            <h4>Applications</h4>
+            <ul class="pf-list">{data.applications.map((f) => <li>{f}</li>)}</ul>
+          </>}
+        </div>
+      )}
+      <div>
+        {data.abstract && <><h4>Description</h4><p>{data.abstract}</p></>}
+        {data.team && <p class="pf-note">Team project with {data.team.org}. My role: {data.team.role}</p>}
+        {data.headline.length > 0 && (
+          <table class="pf-kp">
+            <caption>Key parameters</caption>
+            <thead><tr><th>Parameter</th><th>Value</th></tr></thead>
+            <tbody>
+              {data.headline.map((h) => <tr><td>{h.label}</td><td>{h.value}{h.unit && ` ${h.unit}`}</td></tr>)}
+            </tbody>
+          </table>
+        )}
+        <p class="pf-status"><b>Data status:</b> {statusText}</p>
+      </div>
+    </div>
+    {cover && (
+      <figure class="pf-fig">
+        <img src={cover} alt={data.coverAlt ?? ''} />
+        {data.coverAlt && <figcaption>{data.coverAlt}.</figcaption>}
+      </figure>
+    )}
+    <p class="pf-online">Online version: <a href={pageUrl}>{pageUrl}</a></p>
+
+    {bodyToc.length > 2 && (
+      <nav class="pf-toc" aria-label="Table of contents">
+        <h4>Table of contents</h4>
+        <ol>
+          {bodyToc.map((h) => (
+            <li><span class="toc-no">{h.no}</span><a href={`#${h.slug}`}>{h.text}</a></li>
+          ))}
+        </ol>
+      </nav>
+    )}
+  </div>
+
   <div class="wrap project-header">
-    <p class="small muted mono no-print" style="margin-bottom:0">
+    <p class="report-band no-print">
+      <span>Project report</span>
+      <span>{data.revision && `${data.revision} · `}{fmt(data.updated ?? data.date)}</span>
+    </p>
+    <p class="small muted no-print report-crumb" style="margin-bottom:0">
       <a href="/#projects" style="color:inherit">Projects</a> / {data.tags[0] ?? 'design'}
     </p>
     <h1>{data.title}</h1>
@@ -151,7 +234,7 @@ const pageUrl = new URL(`/projects/${project.id}/`, SITE.url).href;
 
         {data.bom.length > 0 && (
           <>
-            <h2 id="appendix-bom">Appendix: Bill of materials</h2>
+            <h2 id="appendix-bom" class="is-appendix">Appendix: Bill of materials</h2>
             <div class="spec-table-wrap report-table">
               <table class="spec-table">
                 <thead>
@@ -232,4 +315,34 @@ const pageUrl = new URL(`/projects/${project.id}/`, SITE.url).href;
       )}
     </aside>
   </div>
+  </div>
+
+  {/* ?paged turns this page into the PDF layout: Paged.js paginates it and
+      scripts/export-pdf.mjs prints it once window.__pagedDone is set. */}
+  <script is:inline>
+    if (new URLSearchParams(location.search).has('paged')) {
+      document.documentElement.classList.add('paged');
+      // Lazy images never load off-screen in a headless browser, and Paged.js
+      // waits for every image, so load them all now. Videos cannot print.
+      document.querySelectorAll('img[loading="lazy"]').forEach(function (i) { i.loading = 'eager'; });
+      document.querySelectorAll('video').forEach(function (v) { v.remove(); });
+      // Section numbers as real text, so they also show in the PDF bookmarks.
+      var sec = 0, sub = 0;
+      document.querySelectorAll('.report .prose > h2, .report .prose > h3').forEach(function (h) {
+        var no;
+        if (h.tagName === 'H2') { if (h.classList.contains('is-appendix')) return; sec++; sub = 0; no = String(sec); }
+        else { sub++; no = sec + '.' + sub; }
+        h.insertAdjacentHTML('afterbegin', '<span class="secno">' + no + ' </span>');
+      });
+      window.PagedConfig = { auto: true, after: function () { window.__pagedDone = true; } };
+      var css = document.createElement('link');
+      css.rel = 'stylesheet'; css.href = '/report-paged.css';
+      css.onload = function () {
+        var js = document.createElement('script');
+        js.src = '/vendor/paged.polyfill.js';
+        document.body.appendChild(js);
+      };
+      document.head.appendChild(css);
+    }
+  </script>
 </Base>

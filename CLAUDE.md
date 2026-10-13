@@ -61,8 +61,9 @@ A project page doubles as an engineering report. Optional frontmatter (`revision
 `abstract`, `team`, `dataNote`, `decisions`, `revisions`, `references`, `bom`) feeds the
 template: revision history, references and the BOM appendix render automatically at the
 end; `<DecisionTable rows={frontmatter.decisions} />` and `<Placeholder what=… why=… />`
-go in the body. `npm run pdf -- <slug>` prints the page to PDF through the print rules in
-`components.css` — published projects to `public/uploads/<slug>-report.pdf` (linked
+go in the body. `features` and `applications` fill the PDF front page. `npm run pdf -- <slug>`
+prints the page in TI-datasheet layout (`?paged` + Paged.js, see DESIGN.md "Two
+styles"), with clickable contents and bookmarks; published projects to `public/uploads/<slug>-report.pdf` (linked
 automatically on the next build), drafts to the git-ignored `reports-draft/`. The
 `/report` skill (`~/.claude/skills/report`) holds the section structure and workflow.
 

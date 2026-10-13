@@ -1,0 +1,97 @@
+/* PDF layout for project reports, loaded only with ?paged and paginated by
+   Paged.js. Adapted from the approved "A3 TI" preview: Arial, letter size,
+   running title and page numbers, a datasheet front page and a clickable
+   contents page. Section numbering and table styles come from report.css. */
+
+@page {
+  size: letter; margin: 20mm 16mm 18mm 16mm;
+  @top-left { content: element(rtitle); }
+  @top-right { content: element(rauthor); }
+  @bottom-left { content: "Sao Aphisith Sithisack \00B7  Project report"; font: 7.5pt Arial, Arimo, sans-serif; color: #47535f; }
+  @bottom-right { content: "Page " counter(page) " of " counter(pages); font: 7.5pt Arial, Arimo, sans-serif; color: #47535f; }
+}
+@page :first { margin-top: 12mm; @top-left { content: none; } @top-right { content: none; } }
+
+html.paged {
+  color-scheme: light;
+  --paper: #fff; --panel: #fff; --panel-sunk: #e6e6e6;
+  --ink: #000; --ink-2: #404040; --ink-3: #595959;
+  --rule: #bfbfbf; --rule-strong: #bfbfbf; --signal: #cc0000;
+  font-size: 9pt; line-height: 1.38;
+}
+html.paged body { background: #fff; color: #000; margin: 0; }
+
+/* Web-only chrome off; the PDF front matter on. */
+html.paged :is(.site-header, .site-footer, .skip-link, .no-print, .project-header, .project-rail,
+  .report-abstract, .report-titleblock, .report-toc, .data-badge, .cta-band, .lb, [data-lb], .lb-backdrop, .lb-panel, .section-toggles) { display: none !important; }
+html.paged .paged-only { display: block; }
+html.paged .wrap { width: auto; max-width: none; padding: 0; margin: 0; }
+html.paged .project-layout { display: block; padding: 0 !important; }
+html.paged main { padding: 0; }
+
+.running-title { position: running(rtitle); font: 700 7.5pt Arial, Arimo, sans-serif; color: #000; }
+.running-author { position: running(rauthor); font: 7.5pt Arial, Arimo, sans-serif; color: #47535f; }
+.pagedjs_margin-top { border-bottom: .8pt solid #cc0000; }
+
+/* ---------- front page ---------- */
+.pf-band { display: flex; justify-content: space-between; color: #cc0000;
+  border-top: 3pt solid #cc0000; border-bottom: .6pt solid #bfbfbf;
+  padding: 3pt 0; font: 700 7.5pt Arial, Arimo, sans-serif; letter-spacing: .04em; }
+html.paged .pf-title { font-size: 20pt; font-weight: 700; margin: 10pt 0 2pt; line-height: 1.15; max-width: none; }
+.pf-subtitle { font-size: 10pt; color: #404040; margin: 0 0 8pt; }
+.pf-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14pt; }
+.pf-grid > div:only-child { grid-column: 1 / -1; }
+html.paged .pf-grid h4 { font-size: 11pt; font-weight: 700; margin: 8pt 0 4pt; }
+.pf-grid p { margin: 0 0 6pt; text-align: justify; hyphens: auto; }
+.pf-list { margin: 0 0 6pt; padding-left: 12pt; }
+.pf-list li { margin-bottom: 2pt; }
+.pf-note { font-size: 8pt; color: #404040; }
+.pf-kp { width: 100%; border-collapse: collapse; margin: 8pt 0; font-size: 8.4pt; }
+.pf-kp caption { caption-side: top; text-align: left; font-weight: 700; font-size: 9pt; padding-bottom: 3pt; }
+.pf-kp th { background: #e6e6e6; font-weight: 700; text-align: left; }
+.pf-kp th, .pf-kp td { border: .5pt solid #bfbfbf; padding: 3pt 5pt; vertical-align: top; }
+.pf-kp td:first-child { color: #404040; width: 42%; }
+.pf-status { font-size: 8pt; color: #404040; background: #f2f2f2; padding: 4pt 6pt; border-left: 2pt solid #cc0000; text-align: left !important; }
+.pf-fig { margin: 8pt 0 0; break-inside: avoid; }
+.pf-fig img { max-width: 100%; width: auto; max-height: 68mm; margin: 0 auto; object-fit: contain; border: .6pt solid #bfbfbf; display: block; }
+.pf-fig figcaption { font-size: 8pt; color: #404040; margin-top: 3pt; }
+.pf-online { font-size: 8pt; color: #404040; margin-top: 6pt; }
+.pf-online a { color: #0066cc; }
+
+/* ---------- contents page: numbers match the section headings ---------- */
+.pf-toc { break-before: page; }
+html.paged .pf-toc h4 { font-size: 11pt; font-weight: 700; margin: 0 0 6pt; }
+.pf-toc ol { list-style: none; padding: 0; margin: 0 0 10pt; }
+.pf-toc li { display: flex; border-bottom: .4pt dotted #bfbfbf; padding: 2pt 0; }
+.pf-toc .toc-no { width: 18pt; font-weight: 700; flex: none; }
+html.paged .pf-toc a { color: #000; text-decoration: none; flex: 1; display: flex; }
+.pf-toc a::after { content: target-counter(attr(href), page); margin-left: auto; }
+
+/* ---------- body ---------- */
+html.paged .prose { margin-top: 0 !important; max-width: none; }
+/* Numbers come from .secno spans (see the page script), not CSS counters. */
+html.paged .report .prose > h2::before, html.paged .report .prose > h3::before { content: none; }
+html.paged .prose > * { max-width: none; }
+html.paged .prose p, html.paged .prose li { font-size: 9pt; line-height: 1.38; }
+html.paged .prose p { text-align: justify; hyphens: auto; margin: 0 0 6pt; }
+html.paged .report .prose > h2 { font-size: 13pt; margin: 16pt 0 6pt; border-bottom: 0; padding: 0; break-after: avoid; }
+html.paged .report .prose > h3 { font-size: 10.5pt; margin: 10pt 0 4pt; break-after: avoid; }
+html.paged .report .spec-table { font-size: 8.2pt; }
+html.paged .report .spec-table thead th { font-size: 8.2pt; padding: 3pt 5pt; }
+html.paged .report .spec-table th, html.paged .report .spec-table td { padding: 3pt 5pt; border-width: .5pt; }
+html.paged tr { break-inside: avoid; }
+html.paged .spec-table-wrap { overflow: visible; }
+html.paged .report .chip { font-size: 7.6pt; }
+html.paged .figure, html.paged figure { break-inside: avoid; margin: 8pt 0; }
+html.paged .figure img, html.paged figure img { max-height: 120mm; width: auto; max-width: 100%; height: auto; }
+html.paged .figure figcaption { font-size: 8pt; }
+html.paged .fig-src, html.paged .figure-tools, html.paged .lb-open { display: none !important; }
+html.paged a { color: #0066cc; }
+html.paged .prose a[href^="http"]::after { content: none; }
+html.paged video { display: none; }
+
+/* Front-page figure sized to fit under the description (beats the generic figure rule). */
+html.paged .pf-fig img { max-height: 62mm; width: auto; max-width: 100%; margin: 0 auto; }
+/* Long tables may split across pages (rows stay whole), so no half-empty pages. */
+html.paged :is(table, .spec-table-wrap, .report-table) { break-inside: auto !important; page-break-inside: auto !important; }
+html.paged thead { display: table-header-group; }

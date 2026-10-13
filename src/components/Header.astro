@@ -1,6 +1,5 @@
 ---
 import { SITE } from '../lib/site';
-import { hasAwards, hasDatasets } from '../lib/sections';
 
 /**
  * The site is one scrolling page, so nav items are anchors. They are written
@@ -9,13 +8,9 @@ import { hasAwards, hasDatasets } from '../lib/sections';
  */
 const links = [
   { href: '/#about', label: 'About', section: 'about' },
-  { href: '/#experience', label: 'Experience', section: 'experience' },
   { href: '/#projects', label: 'Projects', section: 'projects' },
-  { href: '/#awards', label: 'Awards', section: 'awards' },
-  { href: '/#skills', label: 'Skills', section: 'skills' },
-  { href: '/#education', label: 'Education', section: 'education' },
-  { href: '/#data', label: 'Data', section: 'data' },
-].filter((l) => (l.section !== 'awards' || hasAwards()) && (l.section !== 'data' || hasDatasets()));
+  { href: '/#experience', label: 'Experience', section: 'experience' },
+];
 ---
 
 <header class="site-header no-print">

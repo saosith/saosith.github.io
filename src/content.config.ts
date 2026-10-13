@@ -65,6 +65,10 @@ const projects = defineCollection({
     revision: z.string().optional(),
     /** Three to five sentences: problem, what was built, the key result. */
     abstract: z.string().optional(),
+    /** Datasheet-style lines for the report front page ("1 Features"). */
+    features: z.array(z.string()).default([]),
+    /** Where it is used ("2 Applications"). */
+    applications: z.array(z.string()).default([]),
     /** Team work: who it was for and what you did. Absent means solo work. */
     team: z.object({ org: z.string(), role: z.string() }).optional(),
     /** Overrides the badge text, e.g. "Simulated in LTspice; no board built yet." */

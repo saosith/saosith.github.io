@@ -272,6 +272,16 @@ content:
         label: Abstract
         type: text
         description: Three to five sentences — the problem, what you built, and the key result (or "not yet built"). Someone who reads only this should know what the project is.
+      - name: features
+        label: Features (PDF front page)
+        type: string
+        list: true
+        description: Short datasheet-style lines for the report's front page, e.g. "INA220 current sensing on every port". Leave empty to skip the Features box.
+      - name: applications
+        label: Applications (PDF front page)
+        type: string
+        list: true
+        description: Where the board is used, one line each. Leave empty to skip.
       - name: team
         label: Team project
         type: object
@@ -558,4 +568,12 @@ content:
         description: Shown in the hero contact row. Leave blank to hide it.
       - { name: github, label: GitHub URL, type: string }
       - { name: linkedin, label: LinkedIn URL, type: string }
+      - name: messageLabel
+        label: Message box label
+        type: string
+        description: The label over the message box in the dark "Open to work" band at the bottom of the home page. Leave blank for "Send me a message".
+      - name: messagePlaceholder
+        label: Message box placeholder
+        type: string
+        description: Grey example text inside the empty message box, e.g. "Hi Sao, I'm a recruiter at …". Leave blank for that default.
       - { name: university, label: University, type: string }

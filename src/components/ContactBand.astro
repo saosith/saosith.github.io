@@ -4,19 +4,100 @@ import { SITE } from '../lib/site';
 /**
  * Closing call to action: a dark full-width band above the footer that gives a
  * recruiter one clear next step. Dark, like the project bands, with a red top line.
+ *
+ * The message box sends nothing anywhere by itself. LinkedIn has no URL that
+ * pre-fills a DM, so "Message me on LinkedIn" copies the text and opens the
+ * profile; "Send by email" builds a mailto link. With JS off both buttons are
+ * plain links (profile / empty mailto).
  */
+const site = SITE as typeof SITE & { messageLabel?: string; messagePlaceholder?: string };
+const label = site.messageLabel?.trim() || 'Send me a message';
+const placeholder = site.messagePlaceholder?.trim() || "Hi Sao, I'm a recruiter at …";
+const subject = 'From your website';
 ---
 
-<section class="cta-band no-print" aria-labelledby="cta-title">
+<section id="contact" class="cta-band no-print" aria-labelledby="cta-title">
   <div class="wrap cta-inner">
     <div>
       <p class="cta-kicker">Open to work</p>
       <h2 id="cta-title" class="cta-title">Looking for a 2027 hardware engineering internship.</h2>
       <p class="cta-sub">If your team builds boards, chips or photonic devices, I'd love to talk.</p>
     </div>
-    <div class="cta-actions">
-      {SITE.resume && <a class="band-btn cta-btn" href={SITE.resume} target="_blank" rel="noopener">{SITE.resumeLabel}</a>}
-      {SITE.email && <a class="cta-btn-outline" href={`mailto:${SITE.email}`}>Email me</a>}
+
+    <div class="cta-message" data-cta-message data-email={SITE.email} data-subject={subject}>
+      <label class="cta-label" for="cta-text">{label}</label>
+      <textarea id="cta-text" class="cta-textarea" rows="4" placeholder={placeholder} data-cta-text></textarea>
+      <div class="cta-actions">
+        {SITE.linkedin && (
+          <a class="band-btn cta-btn" href={SITE.linkedin} target="_blank" rel="noopener" data-cta-linkedin>
+            Message me on LinkedIn
+          </a>
+        )}
+        {SITE.email && (
+          <a class="cta-btn-outline" href={`mailto:${SITE.email}?subject=${encodeURIComponent(subject)}`} data-cta-email>
+            Send by email
+          </a>
+        )}
+        {SITE.resume && (
+          <a class="cta-btn-outline" href={SITE.resume} target="_blank" rel="noopener">{SITE.resumeLabel}</a>
+        )}
+      </div>
+      <p class="cta-status" aria-live="polite" data-cta-status></p>
     </div>
   </div>
 </section>
+
+<script>
+  const box = document.querySelector<HTMLElement>('[data-cta-message]');
+  const text = box?.querySelector<HTMLTextAreaElement>('[data-cta-text]');
+  const status = box?.querySelector<HTMLElement>('[data-cta-status]');
+  const li = box?.querySelector<HTMLAnchorElement>('[data-cta-linkedin]');
+  const mail = box?.querySelector<HTMLAnchorElement>('[data-cta-email]');
+
+  const say = (msg: string) => { if (status) status.textContent = msg; };
+
+  /** Starts the copy synchronously (while the page still has focus and the click's
+      user activation), so the profile tab can open right after it. */
+  function copy(value: string): Promise<boolean> {
+    try {
+      if (navigator.clipboard?.writeText) {
+        return navigator.clipboard.writeText(value).then(() => true, () => fallback());
+      }
+    } catch {}
+    return Promise.resolve(fallback());
+  }
+
+  function fallback(): boolean {
+    try {
+      // Older browsers: copy from the textarea itself.
+      text!.select();
+      const ok = document.execCommand('copy');
+      text!.setSelectionRange(text!.value.length, text!.value.length);
+      return ok;
+    } catch { return false; }
+  }
+
+  li?.addEventListener('click', async (e) => {
+    e.preventDefault();
+    const url = li.href;
+    const value = text?.value.trim() ?? '';
+    if (!value) {
+      window.open(url, '_blank', 'noopener');
+      say('Opened my LinkedIn profile. Your message box was empty, so nothing was copied.');
+      return;
+    }
+    const copied = copy(value);
+    window.open(url, '_blank', 'noopener');
+    say((await copied)
+      ? 'Copied. On my profile, click Message and paste it.'
+      : "Couldn't copy; select your message and copy it, then click Message on my profile.");
+  });
+
+  mail?.addEventListener('click', () => {
+    const email = box?.dataset.email ?? '';
+    const subject = box?.dataset.subject ?? '';
+    const body = text?.value ?? '';
+    mail.href = `mailto:${email}?subject=${encodeURIComponent(subject)}` +
+      (body.trim() ? `&body=${encodeURIComponent(body)}` : '');
+  });
+</script>

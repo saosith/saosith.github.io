@@ -31,6 +31,15 @@ abstract: >-
   A general-purpose TI MSPM0G3507 board that runs from USB-C, shows up on a PC as a
   serial port, and is programmed over SWD. Status: schematic complete in KiCad,
   2-layer PCB routing in progress. Next: fabrication and bring-up.
+features:
+  - 'TI MSPM0G3507 Arm Cortex-M0+ microcontroller'
+  - 'USB-C power: 5 V VBUS, 5.1 kΩ CC sink resistors'
+  - 'SPX3819 3.3 V low-dropout regulator'
+  - 'CH340E USB-to-UART bridge: shows up on a PC as a serial port'
+  - 'USBLC6-2SC6 ESD protection on D+ and D−'
+  - '8 MHz crystal clock'
+  - 'RC-filtered ADC reference'
+  - 'TC2030 Tag-Connect SWD, no header'
 dataNote: 'Status: schematic complete in KiCad and 2-layer PCB routing in progress. Fabrication and bring-up come next, so no values on this page are measured.'
 
 # Design targets (not measurements). Derived from the USB 2.0 limits and the part

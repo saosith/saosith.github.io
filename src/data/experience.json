@@ -17,7 +17,7 @@
       "mediaAlt": "Sample wafer after photolithography and plasma etching in the cleanroom.",
       "bullets": [
         "Fabricate high-aspect-ratio micro- and nanostructures using photolithography, reactive ion etching and pulsed laser deposition.",
-        "Independently own the pulsed laser deposition step, growing LAO films on STO substrates and monitoring growth with RHEED.",
+        "Independently own the pulsed laser deposition step, growing LAO films on STO substrates and monitoring growth with reflection high-energy electron diffraction (RHEED).",
         "Optimize anisotropic plasma etch parameters (gas chemistry, RF power, chamber pressure) and mask selectivity for vertical sidewalls and controlled depth."
       ]
     },
@@ -40,7 +40,9 @@
         "Selected the 3.3 V buck converter and proposed an STM32C092 with CAN to reuse last year's firmware."
       ],
       "evidenceLabel": "Read the Hub write-up",
-      "evidenceHref": "/projects/scr-hub-2027/"
+      "evidenceHref": "/projects/scr-hub-2027/",
+      "media": "/uploads/scr-hub-block-diagram.png",
+      "mediaAlt": "Hub block diagram: 12 V power in, fused and current-sensed out to 7 ports, with CAN and a hardware E-Stop to each."
     },
     {
       "date": "Aug 2025 – present",

@@ -1,0 +1,91 @@
+/* =============================================================
+   Project reports: TI-datasheet style, on screen and in the PDF.
+   Arial (Arimo where Arial is missing), black numbered headings,
+   grey ruled tables, red only as a thin accent. The home page keeps
+   its own type; this file is imported by the project page only.
+   ============================================================= */
+@import url('https://fonts.googleapis.com/css2?family=Arimo:ital,wght@0,400;0,700;1,400&display=swap');
+
+.report {
+  --report-font: Arial, Arimo, 'Liberation Sans', Helvetica, sans-serif;
+  --sans: var(--report-font);
+  --mono: var(--report-font);
+  --display: var(--report-font);
+  font-family: var(--report-font);
+  letter-spacing: 0;
+}
+.report :is(h1, h2, h3, h4) { font-family: var(--report-font); font-weight: 700; letter-spacing: 0; }
+
+.paged-only { display: none; }
+
+/* ---------- header ---------- */
+.report-band {
+  display: flex; justify-content: space-between; gap: 1rem; flex-wrap: wrap;
+  border-top: 3px solid var(--signal); border-bottom: 1px solid var(--rule-strong);
+  padding: 0.3rem 0; margin-bottom: 1.4rem;
+  font-size: 0.8rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase; color: var(--signal);
+}
+.report-crumb { margin-bottom: 0.4rem !important; }
+.report .project-header h1 { font-size: clamp(1.9rem, 1.4rem + 1.6vw, 2.6rem); line-height: 1.15; max-width: 28ch; }
+.report .project-header .lede { color: var(--ink-2); }
+.report .tag { border-radius: 2px; }
+
+/* ---------- numbered sections, like a datasheet ---------- */
+.report .prose { counter-reset: sec; }
+.report .prose > h2 {
+  counter-increment: sec; counter-reset: sub;
+  font-size: 1.45rem; margin-top: 2.2rem; padding-bottom: 0.3rem;
+  border-bottom: 1px solid var(--rule-strong); max-width: none;
+}
+.report .prose > h2::before { content: counter(sec) "\2003"; }
+.report .prose > h2.is-appendix::before { content: none; }
+.report .prose > h3 { counter-increment: sub; font-size: 1.12rem; margin-top: 1.5rem; }
+.report .prose > h3::before { content: counter(sec) "." counter(sub) "\2003"; }
+
+/* ---------- tables: grey header, full grid ---------- */
+.report .spec-table-wrap { border: 0; border-radius: 0; background: none; }
+.report .spec-table { font-size: 0.9rem; border: 1px solid var(--rule-strong); }
+.report .spec-table caption { font-weight: 700; color: var(--ink); text-align: left; padding: 0 0 0.35rem; }
+.report .spec-table thead th {
+  background: var(--panel-sunk); color: var(--ink); font-weight: 700;
+  font-size: 0.85rem; letter-spacing: 0; text-transform: none; white-space: normal;
+  border: 1px solid var(--rule-strong); padding: 0.4rem 0.6rem;
+}
+.report .spec-table th, .report .spec-table td { border: 1px solid var(--rule-strong); padding: 0.4rem 0.6rem; }
+.report .spec-table tbody th { font-weight: 700; }
+.report .spec-table .sym, .report .spec-table td.v { font-size: inherit; color: inherit; }
+
+/* Status words as outlined tags: shape and text, never colour alone. */
+.report .chip {
+  background: none; border: 1px solid currentColor; border-radius: 2px;
+  font-family: var(--report-font); font-size: 0.78rem; font-weight: 700;
+  padding: 0 0.35rem; white-space: nowrap; text-transform: none; letter-spacing: 0;
+}
+.report .chip-good { color: #1a7f37; }
+.report .chip-warning { color: var(--signal); }
+.report .chip-neutral { color: var(--ink-2); }
+.report .chip::before { display: none; }
+
+/* ---------- figures ---------- */
+.report .figure figcaption, .report .figure figcaption .fig-no { font-family: var(--report-font); }
+.report .figure figcaption .fig-no { font-weight: 700; }
+
+/* ---------- rail ---------- */
+.report .rail-block h3 { font-size: 0.85rem; text-transform: none; letter-spacing: 0; color: var(--ink); }
+.report .data-badge { border-radius: 0; border-left: 3px solid var(--signal); }
+
+/* Screen sizes meet the DESIGN.md floors (labels >= 13.5px, read text >= 15px).
+   Print/PDF keeps the datasheet sizes. */
+@media screen {
+  .report-band { font-size: 0.85rem; }
+  .report .spec-table { font-size: 0.95rem; }
+  .report .chip { font-size: 0.85rem; }
+  .report .report-label { font-size: 0.85rem; }
+  /* read text on project pages: 15.2px */
+  .report .project-header .small, .report .data-badge, .report .data-badge strong,
+  .report .figure figcaption, .report .figure figcaption span, .report .fig-src, .report .fig-src a,
+  .report .report-refs li,
+  .report .project-header .btn,
+  .project-rail .small, .project-rail .rail-list span, .project-rail .rail-toc a { font-size: 0.95rem; }
+  .project-rail .rail-list .unit { font-size: inherit; }
+}

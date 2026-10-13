@@ -1,8 +1,6 @@
 ---
 import Base from '../layouts/Base.astro';
 import Portrait from '../components/Portrait.astro';
-import HeroContacts from '../components/HeroContacts.astro';
-import NowLine from '../components/NowLine.astro';
 import AboutSection from '../components/AboutSection.astro';
 import ExperienceSection from '../components/ExperienceSection.astro';
 import ProjectsSection from '../components/ProjectsSection.astro';
@@ -22,13 +20,12 @@ import { SITE } from '../lib/site';
   <section id="top" class="wrap hero">
     <div class="hero-grid">
       <div class="hero-text">
-        <p class="hero-eyebrow">
-          {SITE.role}{SITE.university && <><span class="sep" aria-hidden="true">·</span>{SITE.university}</>}
-        </p>
         <h1 class="hero-greeting">Hi, I'm {SITE.name.split(' ')[0]}.</h1>
         <p class="hero-lede">{SITE.tagline}</p>
-        <HeroContacts />
-        <NowLine />
+        <div class="hero-actions">
+          {SITE.resume && <a class="hero-btn hero-btn-solid" href={SITE.resume} target="_blank" rel="noopener">{SITE.resumeLabel}</a>}
+          <a class="hero-btn hero-btn-outline" href="#contact" data-hero-message>Message me</a>
+        </div>
       </div>
 
       <div class="hero-portrait">
@@ -38,11 +35,25 @@ import { SITE } from '../lib/site';
   </section>
 
   <AboutSection />
-  <ExperienceSection />
   <ProjectsSection />
+  <ExperienceSection />
   <AwardsSection />
   <SkillsSection />
   <EducationSection />
   <DataSection />
   <ContactBand />
 </Base>
+
+<script>
+  // "Message me": scroll to the contact band's message box and put the cursor in it.
+  // Without JS the link is a plain #contact anchor to the band.
+  document.querySelector('[data-hero-message]')?.addEventListener('click', (e) => {
+    const box = document.getElementById('cta-text') as HTMLTextAreaElement | null;
+    if (!box) return;
+    e.preventDefault();
+    const smooth = !matchMedia('(prefers-reduced-motion: reduce)').matches;
+    box.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'center' });
+    box.focus({ preventScroll: true });
+    history.replaceState(null, '', '#contact');
+  });
+</script>

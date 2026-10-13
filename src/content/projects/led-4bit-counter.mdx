@@ -1,8 +1,7 @@
 ---
 title: 4-bit LED counter from logic gates
-summary: Four LEDs, one per bit, driven by AND, OR and NOT gates on a breadboard to show a set sequence of numbers on repeat.
-# TODO(Sao): replace with the month you built it.
-date: 2026-10-13
+summary: Four LEDs, one per bit, driven by TI 74HC-series AND, OR and NOT gates and a 555 timer clock on a breadboard to show a set sequence of numbers on repeat.
+date: 2025-02-01
 order: 20
 featured: false
 draft: false
@@ -15,17 +14,31 @@ coverVideo: /uploads/led-4bit-counter.mp4
 coverAlt: Breadboard with four red LEDs showing a 4-bit number
 
 tags: [digital-logic, breadboard]
-tools: [Breadboard]
+# Part numbers are the standard TI 74HC parts (SN74HC08/32/04 gates, SN74HC74 flip-flops); Sao to confirm exact chips.
+tools: [Breadboard, 74HC logic, D flip-flops, 555 timer]
 
 headline:
-  - { label: 'Bits', value: '4', unit: 'LEDs' }
-  - { label: 'Logic', value: 'AND / OR / NOT' }
+  - { label: 'Logic', value: 'AND / OR / NOT', unit: '74HC' }
+  - { label: 'Clock', value: '555', unit: 'timer' }
 ---
 
 ## What it does
 
-Each of the four LEDs is one bit of a binary number. I wired AND, OR and NOT gates so
-the LEDs step through a set sequence of numbers and then repeat.
+Each of the four LEDs is one bit of a binary number. I wired TI 74HC-series logic chips,
+such as the SN74HC08 (AND), SN74HC32 (OR) and SN74HC04 (NOT), D flip-flops such as the
+SN74HC74 to hold the current number, and a 555 timer as the clock, so the LEDs step
+through a set sequence of numbers and then repeat. The blue Elegoo board in the photo only
+supplies power from my laptop over USB; the 555 sets the timing.
 
-**Status:** built and working on a breadboard. The chip list, the number sequence and
-the clock source will be added here.
+## How it works
+
+The 555 timer runs in astable mode, which means it has no stable state and keeps switching
+on its own. A capacitor charges and discharges through resistors, and each time it crosses
+a threshold the 555 flips its output between high and low. The result is a steady on/off
+pulse signal, and each pulse is one clock tick.
+
+Four D flip-flops, one per LED, hold the current 4-bit number. The gates read that number
+and work out the next number in the sequence. On each clock tick, the flip-flops load the
+next number, the LEDs change, and the gates start working out the one after it.
+
+**Status:** built and working on a breadboard. The number sequence will be added here.

@@ -30,6 +30,21 @@ abstract: >-
   reverse-polarity protection, a 3.3 V buck converter and seven INA220 current sensors
   on a 4-layer board. Status: schematic complete; PCB layout in progress.
 
+features:
+  - '12 V input, 5–8 A total, distributed to seven 6-pin Molex board ports'
+  - 'Power, CAN bus and the hardware E-Stop line on every port'
+  - 'INA220 current and voltage sensing on each port'
+  - 'P-MOSFET reverse-polarity protection (DMP4015SK3Q-13)'
+  - 'AP63301 synchronous buck for the 3.3 V rail, rated to 32 V input'
+  - 'Proposed STM32C092 microcontroller with a MAX3051 CAN transceiver'
+  - '8 MHz Abracon ABLS crystal, ±30 ppm, for CAN timing'
+  - 'SN74AHC244 buffer gives each port its own E-Stop copy'
+  - 'USB-C debug (CH340C), UART header and test points'
+  - '4-layer board, 100 × 100 mm maximum'
+applications:
+  - "Power, CAN and E-Stop distribution on Sooner Competitive Robotics' IGVC 2027 robot"
+  - 'Per-board current and voltage monitoring for the team'
+
 headline:
   - { label: 'Input', value: '12', unit: 'V, 5-8 A total' }
   - { label: 'Board ports', value: '7', unit: 'with current sensing' }
