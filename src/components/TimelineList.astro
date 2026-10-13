@@ -6,8 +6,10 @@ interface Props {
   /** Hrefs that actually resolve, so dead links degrade instead of 404ing. */
   isLive: (href?: string) => boolean;
   emptyText: string;
+  /** Show the right-hand media/highlights column (wide screens only). */
+  withSide?: boolean;
 }
-const { entries, isLive, emptyText } = Astro.props;
+const { entries, isLive, emptyText, withSide = false } = Astro.props;
 
 /**
  * Monogram used when an entry has no logo yet. Takes the first letter of up to
@@ -29,7 +31,7 @@ function monogram(entry: TimelineEntry): string {
 {entries.length === 0 ? (
   <p class="muted">{emptyText}</p>
 ) : (
-  <ol class="timeline">
+  <ol class={`timeline${withSide ? ' timeline-side' : ''}`}>
     {entries.map((t) => (
       <li class="tl-item">
         <div class="tl-date">{t.date}</div>
@@ -51,6 +53,31 @@ function monogram(entry: TimelineEntry): string {
             </div>
           )}
         </div>
+        {withSide && (
+          <div class="tl-side">
+            {t.media && (/\.(mp4|webm)$/i.test(t.media)
+              ? <video class="tl-media" src={t.media} poster={t.media.replace(/\.(mp4|webm)$/i, '.jpg')}
+                  autoplay muted loop playsinline preload="metadata" aria-label={t.mediaAlt ?? ''}></video>
+              : <a class="tl-media" href={t.evidenceHref || t.media} target="_blank" rel="noopener">
+                  <img src={t.media} alt={t.mediaAlt ?? ''} loading="lazy" decoding="async" />
+                </a>)}
+            {t.media && t.mediaAlt && <p class="tl-caption">{t.mediaAlt}</p>}
+            {t.media2 && (
+              <a class="tl-media tl-media-2" href={t.media2} target="_blank" rel="noopener">
+                <img src={t.media2} alt={t.media2Alt ?? ''} loading="lazy" decoding="async" />
+              </a>
+            )}
+            {t.media2 && t.media2Alt && <p class="tl-caption">{t.media2Alt}</p>}
+            {(t.highlights ?? []).length > 0 && (
+              <ul class="tl-highlights" aria-label="Highlights">
+                {(t.highlights ?? []).map((h) => <li class="tag">{h}</li>)}
+              </ul>
+            )}
+            {!t.media && !t.media2 && (t.highlights ?? []).length === 0 && (
+              <div class="tl-side-empty">Add a photo or highlights in the CMS</div>
+            )}
+          </div>
+        )}
       </li>
     ))}
   </ol>

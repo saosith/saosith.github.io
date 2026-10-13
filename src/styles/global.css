@@ -5,26 +5,30 @@
    of an instrument screen.
    ============================================================= */
 
-@import url('https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans:wght@400;450;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&display=swap');
 
 :root {
   color-scheme: light;
 
-  /* --- surfaces & ink --- */
-  --paper:        #eff2f1;
+  /* --- surfaces & ink: neutral, TI-datasheet style --- */
+  --paper:        #ffffff;
   --panel:        #ffffff;
-  --panel-sunk:   #e7ecea;
-  --ink:          #122031;
-  --ink-2:        #4a5a68;
-  --ink-3:        #6d7d89;
-  --rule:         #ccd6d3;
-  --rule-strong:  #9cadaa;
+  --panel-sunk:   #f3f3f3;
+  --ink:          #111111;
+  --ink-2:        #474747;
+  --ink-3:        #737373;
+  --rule:         #e3e3e3;
+  --rule-strong:  #bdbdbd;
 
-  /* --- brand accent: instrument teal --- */
-  --signal:       #0f6d8c;
-  --signal-deep:  #0a4f66;
-  --signal-wash:  #e2eef2;
+  /* --- accent: one red, used sparingly --- */
+  --signal:       #cc0000;
+  --signal-deep:  #a30000;
+  --signal-wash:  #fbeaea;
   --on-signal:    #ffffff;
+
+  /* --- project bands --- */
+  --band-1:       #f3f3f3;
+  --band-2:       #151515;
 
   /* --- status (reserved; never used as a series colour) --- */
   --good:     #0ca30c;
@@ -41,8 +45,8 @@
   --grid-line: #e3e9e7;
 
   /* --- type --- */
-  --sans: 'IBM Plex Sans', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
-  --mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', 'Cascadia Mono', Consolas, monospace;
+  --sans: 'Manrope', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --mono: ui-monospace, 'SF Mono', 'Cascadia Mono', Consolas, monospace;
 
   --t-xs:   0.75rem;
   --t-sm:   0.8125rem;
@@ -66,18 +70,20 @@
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme='light']) {
     color-scheme: dark;
-    --paper:       #0c141b;
-    --panel:       #131c24;
-    --panel-sunk:  #0f1820;
-    --ink:         #eef3f2;
-    --ink-2:       #a9b8bd;
-    --ink-3:       #83929a;
-    --rule:        #26333d;
-    --rule-strong: #405260;
-    --signal:      #58c6e0;
-    --signal-deep: #8fdcef;
-    --signal-wash: #14313d;
-    --on-signal:   #08141a;
+    --paper:       #0e0e0e;
+    --panel:       #171717;
+    --panel-sunk:  #1c1c1c;
+    --ink:         #f2f2f2;
+    --ink-2:       #b5b5b5;
+    --ink-3:       #8a8a8a;
+    --rule:        #2a2a2a;
+    --rule-strong: #444444;
+    --signal:      #ff5c5c;
+    --signal-deep: #ff8080;
+    --signal-wash: #2a1414;
+    --on-signal:   #0e0e0e;
+    --band-1:      #171717;
+    --band-2:      #000000;
     --series-1: #3987e5;
     --series-2: #d95926;
     --series-3: #199e70;
@@ -89,18 +95,20 @@
 
 :root[data-theme='dark'] {
   color-scheme: dark;
-  --paper:       #0c141b;
-  --panel:       #131c24;
-  --panel-sunk:  #0f1820;
-  --ink:         #eef3f2;
-  --ink-2:       #a9b8bd;
-  --ink-3:       #83929a;
-  --rule:        #26333d;
-  --rule-strong: #405260;
-  --signal:      #58c6e0;
-  --signal-deep: #8fdcef;
-  --signal-wash: #14313d;
-  --on-signal:   #08141a;
+  --paper:       #0e0e0e;
+  --panel:       #171717;
+  --panel-sunk:  #1c1c1c;
+  --ink:         #f2f2f2;
+  --ink-2:       #b5b5b5;
+  --ink-3:       #8a8a8a;
+  --rule:        #2a2a2a;
+  --rule-strong: #444444;
+  --signal:      #ff5c5c;
+  --signal-deep: #ff8080;
+  --signal-wash: #2a1414;
+  --on-signal:   #0e0e0e;
+  --band-1:      #171717;
+  --band-2:      #000000;
   --series-1: #3987e5;
   --series-2: #d95926;
   --series-3: #199e70;
@@ -182,6 +190,9 @@ h4 { font-size: var(--t-base); line-height: var(--unit); }
 body > main > section,
 .site-header,
 .site-footer {
+  background-image: none;
+}
+.graticule-legacy {
   background-image:
     linear-gradient(to right, color-mix(in srgb, var(--rule) 40%, transparent) 1px, transparent 1px),
     linear-gradient(to bottom, color-mix(in srgb, var(--rule) 40%, transparent) 1px, transparent 1px);

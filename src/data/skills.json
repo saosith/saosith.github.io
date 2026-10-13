@@ -1,52 +1,24 @@
 {
   "skills": [
     {
-      "group": "Design & simulation",
-      "skill": "LTspice, ngspice"
+      "group": "Hardware design",
+      "skill": "KiCad (schematic capture)"
     },
     {
-      "group": "Design & simulation",
-      "skill": "Xschem"
+      "group": "Hardware design",
+      "skill": "Altium Designer (4-layer PCB)"
     },
     {
-      "group": "Design & simulation",
-      "skill": "Magic VLSI, KLayout"
+      "group": "Hardware design",
+      "skill": "Onshape (wiring layout)"
     },
     {
-      "group": "Design & simulation",
-      "skill": "KiCad, Altium"
+      "group": "Hardware design",
+      "skill": "USB-C, UART, CAN, I²C"
     },
     {
-      "group": "Design & simulation",
-      "skill": "Onshape"
-    },
-    {
-      "group": "Design & simulation",
-      "skill": "LabVIEW"
-    },
-    {
-      "group": "Simulation & verification",
-      "skill": "DC, AC, transient"
-    },
-    {
-      "group": "Simulation & verification",
-      "skill": "Noise & distortion"
-    },
-    {
-      "group": "Simulation & verification",
-      "skill": "Corners & Monte Carlo"
-    },
-    {
-      "group": "Simulation & verification",
-      "skill": "Parasitic extraction"
-    },
-    {
-      "group": "Simulation & verification",
-      "skill": "DRC / LVS"
-    },
-    {
-      "group": "Simulation & verification",
-      "skill": "sky130 open PDK"
+      "group": "Hardware design",
+      "skill": "Power protection (TVS, reverse polarity)"
     },
     {
       "group": "Fabrication & lab",
@@ -58,7 +30,7 @@
     },
     {
       "group": "Fabrication & lab",
-      "skill": "Pulsed laser deposition"
+      "skill": "Pulsed laser deposition, RHEED"
     },
     {
       "group": "Fabrication & lab",
@@ -69,32 +41,16 @@
       "skill": "Optical spectroscopy"
     },
     {
-      "group": "Fabrication & lab",
-      "skill": "AFM / FTIR"
+      "group": "Programming & data",
+      "skill": "Python (NumPy, Pandas, Matplotlib)"
     },
     {
-      "group": "Programming",
-      "skill": "Python (NumPy, Pandas)"
+      "group": "Programming & data",
+      "skill": "C/C++ (firmware)"
     },
     {
-      "group": "Programming",
+      "group": "Programming & data",
       "skill": "MATLAB"
-    },
-    {
-      "group": "Programming",
-      "skill": "C/C++"
-    },
-    {
-      "group": "Programming",
-      "skill": "Verilog / VHDL"
-    },
-    {
-      "group": "Programming",
-      "skill": "Verilog-A / AMS"
-    },
-    {
-      "group": "Programming",
-      "skill": "Git, Linux, Bash"
     }
   ]
 }

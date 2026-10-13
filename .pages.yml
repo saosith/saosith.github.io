@@ -112,6 +112,21 @@ content:
             type: boolean
             default: false
             description: While ticked, this entry renders with a visible "replace this entry" chip.
+          - name: media
+            label: Photo, figure or video (right column)
+            type: file
+            description: Shown beside the entry on wide screens. A lab photo, a poster, a board render, or a short silent MP4 loop (put a .jpg with the same name next to it as the still frame).
+          - { name: mediaAlt, label: Photo caption, type: string, description: 'Shown under the photo and read by screen readers, e.g. "Poster: cloud particle size vs altitude".' }
+          - name: media2
+            label: Second photo (optional)
+            type: image
+            description: A second image under the first, e.g. a sample photo under a process video.
+          - { name: media2Alt, label: Second photo caption, type: string }
+          - name: highlights
+            label: Highlights (right column)
+            type: string
+            list: true
+            description: Two to four short chips, e.g. "Photolithography". Tools and techniques, not sentences. With no photo and no highlights the column shows an "add" slot.
 
   # --------------------------------------------------------- 03  projects
   - name: projects
@@ -157,6 +172,7 @@ content:
             - { value: design, label: Design only — not simulated or built }
             - { value: model, label: Hand model — not simulated }
             - { value: simulated, label: Simulated (ngspice) }
+            - { value: built, label: Built and working, not measured }
             - { value: measured, label: Measured silicon }
 
       - name: conditions
@@ -173,6 +189,10 @@ content:
         label: Thumbnail
         type: image
         description: Shown beside this project in the list on the home page. A schematic, a layout render or a board photo. Displayed in a 2:1 frame, fitted whole rather than cropped — so trim the whitespace before uploading or the picture reads as blank.
+      - name: coverVideo
+        label: Card video (optional)
+        type: file
+        description: A short silent loop (a few seconds, under 1 MB, MP4) shown on the project card instead of the thumbnail. Put a matching .jpg with the same name next to it as the still frame.
       - name: coverAlt
         label: Thumbnail description
         type: string
@@ -516,9 +536,9 @@ content:
         type: string
         description: Small line above your name, e.g. "Norman, OK". Leave blank to hide it.
       - name: photo
-        label: Photo
-        type: image
-        description: Shown beside the hero text. Cropped to 3:2 landscape, so a lab, conference or team photo suits it better than a tight headshot.
+        label: Photo or video
+        type: file
+        description: Shown beside the hero text, cropped to 3:2 landscape. A lab, conference or team photo, or a short silent MP4 loop (upload a .jpg with the same name too, as the still frame).
       - name: photoCaption
         label: Photo caption
         type: text

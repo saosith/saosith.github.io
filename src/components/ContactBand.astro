@@ -1,0 +1,22 @@
+---
+import { SITE } from '../lib/site';
+
+/**
+ * Closing call to action: a dark full-width band above the footer that gives a
+ * recruiter one clear next step. Dark, like the project bands, with a red top line.
+ */
+---
+
+<section class="cta-band no-print" aria-labelledby="cta-title">
+  <div class="wrap cta-inner">
+    <div>
+      <p class="cta-kicker">Open to work</p>
+      <h2 id="cta-title" class="cta-title">Looking for a 2027 hardware engineering internship.</h2>
+      <p class="cta-sub">If your team builds boards, chips or photonic devices, I'd love to talk.</p>
+    </div>
+    <div class="cta-actions">
+      {SITE.resume && <a class="band-btn cta-btn" href={SITE.resume} target="_blank" rel="noopener">{SITE.resumeLabel}</a>}
+      {SITE.email && <a class="cta-btn-outline" href={`mailto:${SITE.email}`}>Email me</a>}
+    </div>
+  </div>
+</section>

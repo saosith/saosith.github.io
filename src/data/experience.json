@@ -1,38 +1,78 @@
 {
   "entries": [
     {
-      "date": "Jan 2026 — present",
-      "title": "Undergraduate Research Assistant — Pulsed Laser Template Engineering (PLATEN)",
+      "date": "Jan 2026 – present",
+      "title": "Undergraduate Research Assistant, Pulsed Laser Template Engineering (PLATEN)",
       "org": "Center for Quantum Research and Technology (CQRT), University of Oklahoma",
       "logo": "/uploads/logo-cqrt.png",
-      "body": "Began in cleanroom semiconductor nanofabrication — photolithography, reactive ion etching and pulsed laser deposition to build and evaluate high-aspect-ratio micro- and nanostructures, tuning anisotropic plasma etch parameters (gas chemistry, RF power, chamber pressure) for vertical sidewalls and controlled feature depth. Now working on the design side in the same group, on optically bistable ring resonators.",
-      "placeholder": false
+      "body": "I started in the cleanroom, using photolithography, reactive ion etching and pulsed laser deposition to build and test high-aspect-ratio micro- and nanostructures. Most of my time went into tuning the plasma etch (gas chemistry, RF power and chamber pressure) to get vertical sidewalls and a controlled feature depth. I also grew LAO on STO by pulsed laser deposition, watching the growth with RHEED. Now I'm starting on the design side in the same group, on optically bistable ring resonators.",
+      "placeholder": false,
+      "highlights": [
+        "Photolithography",
+        "Reactive ion etching",
+        "Pulsed laser deposition",
+        "Ring resonators"
+      ],
+      "media": "/uploads/platen-wafer.jpg",
+      "mediaAlt": "Sample wafer after photolithography and plasma etching in the cleanroom."
     },
     {
-      "date": "Jan 2026 — present",
+      "date": "Jan 2026 – present",
       "title": "Electrical Systems Member",
       "org": "Sooner Competitive Robotics",
       "logo": "/uploads/logo-sooner-competitive-robotics.png",
-      "body": "Developed CAD layouts in Onshape for electrical component placement, wire routing and electromechanical integration, balancing signal integrity against thermal and mechanical constraints, and designed the robot’s power distribution architecture.",
+      "body": "I'm designing the Hub board for our IGVC 2027 robot in Altium: a 4-layer PCB that takes power from the battery and sends 12 V power, the CAN bus and the hardware E-Stop line to seven boards, with a current sensor on every port. I chose the reverse-polarity protection, the 3.3 V buck converter and the microcontroller, and I'm now laying out the board. Before that, I planned the robot's component placement and wire routing in Onshape.",
+      "placeholder": false,
+      "highlights": [
+        "Altium Designer",
+        "4-layer PCB",
+        "Power distribution",
+        "CAN bus",
+        "Onshape CAD"
+      ]
+    },
+    {
+      "date": "Aug 2025 – present",
+      "title": "Peer Learning Assistant",
+      "org": "Student Learning Center, University of Oklahoma",
+      "body": "I mentor 250+ students every semester in Physics I and II, Calculus I to III and General Chemistry I. Most of the job is explaining the same idea in a few different ways until it clicks, and breaking a problem into steps students can repeat on their own.",
+      "highlights": [
+        "250+ students per semester",
+        "Physics I–II",
+        "Calculus I–III",
+        "General Chemistry I"
+      ],
       "placeholder": false
     },
     {
-      "date": "Aug 2025 — Dec 2025",
-      "title": "Research Apprentice — Light–Matter Interaction (Dr. Tischler)",
+      "date": "Aug 2025 – Dec 2025",
+      "title": "Research Apprentice, Light–Matter Interaction (Dr. Tischler)",
       "org": "Center for Quantum Research and Technology (CQRT), University of Oklahoma",
       "logo": "/uploads/logo-cqrt.png",
-      "body": "Conducted systematic literature reviews of quantum optical phenomena in silicon carbide and wide-bandgap semiconductor nanocrystals, building a materials-level foundation for next-generation photonics, and worked alongside the optical spectroscopy systems used to characterise them.",
-      "placeholder": false
+      "body": "I reviewed research papers on quantum optical effects in silicon carbide and other wide-bandgap semiconductor nanocrystals, and learned how the lab's optical spectroscopy setups measure them. This is where I first got interested in photonics.",
+      "placeholder": false,
+      "highlights": [
+        "Silicon carbide",
+        "Photonics",
+        "Optical spectroscopy"
+      ]
     },
     {
-      "date": "Jan 2025 — May 2025",
-      "title": "Research Apprentice — Cloud Microphysics (Dr. McFarquhar)",
+      "date": "Jan 2025 – May 2025",
+      "title": "Research Apprentice, Cloud Microphysics (Dr. McFarquhar)",
       "org": "National Weather Center, University of Oklahoma",
       "logo": "/uploads/logo-national-weather-center.png",
-      "body": "Analysed high-resolution aircraft datasets from the CAESAR campaign — an NSF/NCAR C-130 flying cold-air outbreaks out of Kiruna, Sweden — to characterise how cloud microphysical properties vary with altitude. Compared water content, particle size and condensation-nuclei concentration across several probes over normalised cloud altitude, running end-to-end data processing and visualisation in Python (NumPy, Pandas, Matplotlib).",
+      "body": "I analyzed aircraft data from the CAESAR campaign, where an NSF/NCAR C-130 flew through cold-air outbreaks out of Kiruna, Sweden. My question was how cloud properties change with altitude, so I compared water content, particle size and condensation-nuclei concentration from several probes against normalized cloud height. I did all the data processing and plots in Python (NumPy, Pandas, Matplotlib).",
       "evidenceLabel": "Research poster",
       "placeholder": false,
-      "evidenceHref": "/uploads/poster-caesar-arctic-clouds.jpg"
+      "evidenceHref": "/uploads/poster-caesar-arctic-clouds.jpg",
+      "highlights": [
+        "Python",
+        "NumPy / Pandas",
+        "Matplotlib"
+      ],
+      "media": "/uploads/poster-caesar-arctic-clouds.jpg",
+      "mediaAlt": "Research poster on Arctic cloud microphysics from the CAESAR campaign"
     }
   ]
 }

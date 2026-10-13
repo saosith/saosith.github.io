@@ -32,12 +32,11 @@ Gotchas, both already fixed in the config and both silent when wrong:
 - The media block needs `categories: [image, document]` or the picker refuses
   PDFs.
 
-## Layout rhythm
+## Layout and design
 
-Vertical spacing is a 24px grid (`--unit`), drawn as a faint graticule behind
-the page. Section heights should stay divisible by 24 — that is why fixed sizes
-look like 216px rather than 200px. Measure after changing spacing, and measure
-rule-to-rule rather than text-to-rule.
+Read `DESIGN.md` before any visual change. The 24px graticule and its "every section
+height divisible by 24" rule were retired in the 2026-10 redesign; DESIGN.md has the
+current fonts, colors, section rhythm, minimum text sizes and widths to check.
 
 ## Verifying
 
@@ -46,9 +45,9 @@ npm run build
 npx astro preview --port 4399
 ```
 
-Check in the browser, then close the tab and stop the preview process. Screenshots
-alone miss grid drift — measure with `getBoundingClientRect()` and check
-`height % 24`.
+Check in the browser at 1920, 1366 and 390 px wide, then close the tab and stop the
+preview process. Measure with `getBoundingClientRect()` / `getComputedStyle()` rather
+than trusting screenshots.
 
 ## Content honesty
 
@@ -73,3 +72,12 @@ All site text should sound like Sao wrote it. Read `VOICE.md` (git-ignored, loca
 any prose (reports, About, Now line, captions): first person, plain, no em dashes, no
 AI flourishes. Prefer editing Sao's own notes over writing from scratch, and show a
 before/after of anything rewritten.
+
+## Agents
+
+Four agents live in `.claude/agents/` (local only): **writer** (all text, VOICE.md),
+**designer** (all visuals, DESIGN.md), **hiring-panel** (recruiter + senior-engineer
+review across analog IC, robotics, embedded, applications and controls; suggestions
+go to Sao, never edits; reads `job-postings/`) and **reviewer** (read-only check
+before any push). Order for a bigger update: writer/designer -> hiring-panel -> Sao
+decides -> writer/designer -> reviewer -> push.

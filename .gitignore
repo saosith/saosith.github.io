@@ -11,3 +11,7 @@ VOICE.md
 # SCR Hub (team project): keep these out of git until the captain approves
 # publishing. Remove these three lines and set draft: false in the MDX then.
 public/uploads/scr-hub-*
+# Local agent definitions and design notes (kept out of the public repo)
+.claude/
+job-postings/
+reviews/

@@ -6,14 +6,23 @@ import { SITE } from '../lib/site';
  * avatar, so an empty slot reads as "not filled in yet".
  *
  * Upload in Pages CMS -> Site details -> Photo, and write the line underneath
- * in Photo caption.
+ * in Photo caption. A short silent .mp4 loop also works (with a .jpg of the same
+ * name next to it as the still frame).
  */
 const photo = SITE.photo?.trim();
 const caption = SITE.photoCaption?.trim();
 ---
 
 <figure class="portrait">
-  {photo ? (
+  {photo && /\.(mp4|webm)$/i.test(photo) ? (
+    <video
+      class="portrait-img"
+      src={photo}
+      poster={photo.replace(/\.(mp4|webm)$/i, '.jpg')}
+      autoplay muted loop playsinline preload="metadata"
+      aria-label={caption || `${SITE.name}, ${SITE.role}`}
+    ></video>
+  ) : photo ? (
     <img
       class="portrait-img"
       src={photo}

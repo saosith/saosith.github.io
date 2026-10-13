@@ -1,5 +1,6 @@
 ---
 import { SITE } from '../lib/site';
+import { hasAwards, hasDatasets } from '../lib/sections';
 
 /**
  * The site is one scrolling page, so nav items are anchors. They are written
@@ -14,7 +15,7 @@ const links = [
   { href: '/#skills', label: 'Skills', section: 'skills' },
   { href: '/#education', label: 'Education', section: 'education' },
   { href: '/#data', label: 'Data', section: 'data' },
-];
+].filter((l) => (l.section !== 'awards' || hasAwards()) && (l.section !== 'data' || hasDatasets()));
 ---
 
 <header class="site-header no-print">
@@ -25,7 +26,7 @@ const links = [
         <path d="M4 20V10M20 20V10M4 15h16M12 15V4M2 20h6M16 20h6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
         <circle cx="12" cy="4" r="1.8" fill="currentColor"/>
       </svg>
-      {SITE.brand || SITE.name}
+      {SITE.name}
     </a>
 
     <nav class="site-nav" aria-label="Primary">

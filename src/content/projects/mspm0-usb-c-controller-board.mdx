@@ -1,6 +1,6 @@
 ---
 title: MSPM0 USB-C controller board
-summary: A USB-C powered MSPM0G3507 board I designed in KiCad to control my amplifier project and send its data to a PC over USB.
+summary: A general-purpose USB-C powered MSPM0G3507 board I designed in KiCad, with a USB-to-UART bridge for talking to a PC and SWD for programming.
 date: 2026-09-10
 order: 1
 featured: true
@@ -23,10 +23,11 @@ headline:
 links:
   - { label: 'Schematic (PDF)', href: '/uploads/mspm0g3507schem.pdf' }
   - { label: 'Schematic (PNG)', href: '/uploads/schematic-mspm0-usb-board.png' }
+  - { label: 'KiCad project files (ZIP)', href: '/uploads/mspm0-usb-c-board-kicad.zip' }
 updated: 2026-10-12
 revision: Rev A (schematic)
 abstract: >-
-  This board controls my amplifier project and sends its measurements to a PC. It runs
+  This is a general-purpose microcontroller board for my projects. It runs
   from a laptop's USB-C port, appears to the PC as a serial port, and can be
   reprogrammed on the bench without extra hardware. The design centres on a TI
   MSPM0G3507 microcontroller with a CH340E USB-to-UART bridge, USB ESD protection, a
@@ -34,11 +35,27 @@ abstract: >-
   complete in KiCad. Next: layout, fabrication and bring-up.
 dataNote: 'Status: schematic complete in KiCad. Layout, fabrication and bring-up come next, so no values on this page are measured.'
 
+# Design targets (not measurements). Derived from the USB 2.0 limits and the part
+# datasheets; the "Simulated"/"Measured" columns fill in once there are results.
+conditions: 'VBUS = 4.75 to 5.25 V (USB 2.0 range), room temperature'
+specs:
+  - { param: '3.3 V rail', symbol: 'V_3V3', target: '3.3 ± 3%', unit: 'V', status: na }
+  - { param: 'Total 3.3 V load current', symbol: 'I_load', target: '≤ 100', unit: 'mA', status: na, note: '1' }
+  - { param: 'LDO dissipation at full load', symbol: 'P_LDO', target: '≤ 0.2', unit: 'W', status: na, note: '2' }
+  - { param: 'UART baud-rate error (115200)', target: '< 1', unit: '%', status: na }
+  - { param: 'ADC reference noise', target: '< 1 LSB (0.8 mV)', unit: '', status: na, note: '3' }
+  - { param: 'USB ESD, D+ and D−', target: '±8 kV contact', unit: '', status: na, note: '4' }
+footnotes:
+  - { ref: '1', text: 'One USB 2.0 unit load, so the board works on any port before enumeration.' }
+  - { ref: '2', text: 'P = (5.25 V − 3.3 V) × 0.1 A ≈ 0.2 W, the worst case for the SPX3819 LDO.' }
+  - { ref: '3', text: '12-bit ADC with a 3.3 V reference: 3.3 V / 4096 ≈ 0.8 mV per step.' }
+  - { ref: '4', text: 'IEC 61000-4-2 contact discharge, the level the USBLC6-2 array is rated for.' }
+
 decisions:
   - topic: Clock source
     options: Internal oscillator, or an external 8 MHz crystal
     choice: 8 MHz crystal (two 15 pF load caps)
-    reason: A crystal is typically accurate to tens of ppm, while an on-chip RC oscillator is usually off by around a percent. I chose the crystal so the UART baud rate and the timing of the amplifier measurements do not depend on that error.
+    reason: A crystal is typically accurate to tens of ppm, while an on-chip RC oscillator is usually off by around a percent. I chose the crystal so the UART baud rate and any timing-critical measurements do not depend on that error.
   - topic: Programming connector
     options: Soldered pin header, or a TC2030 Tag-Connect footprint
     choice: TC2030 Tag-Connect
@@ -93,8 +110,7 @@ import StatusTable from '../../components/StatusTable.astro';
 
 ## Introduction
 
-For my amplifier project, I needed a board that could control the amplifier and
-read its output. I wanted it to run off my laptop's USB-C port, send data to the
+I wanted a general-purpose microcontroller board I could reuse across projects. I wanted it to run off my laptop's USB-C port, send data to the
 PC over a serial port, and be reprogrammed on the bench without extra hardware.
 So I designed this board around a TI MSPM0G3507 (Arm Cortex-M0+) [1]. It has
 USB-C power, a USB-to-UART bridge, a crystal, an SWD debug pad and a filtered ADC
@@ -108,9 +124,9 @@ No values on this page are measured.
 - **Power** from a laptop's USB-C port, with no separate bench supply.
 - **Serial link** to a PC for logging, with no extra adapter.
 - **Reprogramming** on the bench without extra hardware on the board.
-- **Clean ADC reference**, because the board reads the amplifier's outputs.
+- **Clean ADC reference**, so analog measurements are not limited by reference noise.
 
-No numeric targets (current budget, ADC noise, board size) are set yet.
+The table at the top lists the numeric targets. They come from the USB 2.0 limits and the part datasheets; nothing is measured yet.
 
 ## System overview
 

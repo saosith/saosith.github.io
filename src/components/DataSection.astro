@@ -41,6 +41,7 @@ const kb = (n: number) => `${(n / 1024).toFixed(0)} kB`;
 const SOURCE_LABEL: Record<string, string> = { simulated: 'simulated', measured: 'measured' };
 ---
 
+{files.length > 0 && (
 <section id="data" class="wrap section rule-top">
   <div class="section-head">
     <h2>Data</h2>
@@ -48,17 +49,12 @@ const SOURCE_LABEL: Record<string, string> = { simulated: 'simulated', measured:
 
   {files.length === 0 ? (
     <div class="panel panel-pad" style="max-width:62ch">
-      <h3>No datasets published yet</h3>
+      <h3>No datasets yet</h3>
       <p class="muted">
-        Once a project has real simulation or measurement results, the file
-        behind every plot is listed here as a direct download, with the
-        conditions it was taken under.
+        When a project has simulation or measurement results, the data behind each
+        plot will be here to download, with the conditions it was taken under.
       </p>
-      <p class="muted">
-        Convert an ngspice run with
-        <span class="mono">scripts/raw-to-json.mjs</span> and it appears on the
-        next build. Nothing to configure.
-      </p>
+      {/* Owner note: convert an ngspice run with scripts/raw-to-json.mjs and it appears on the next build. */}
     </div>
   ) : (
     <>
@@ -97,3 +93,4 @@ const SOURCE_LABEL: Record<string, string> = { simulated: 'simulated', measured:
     </>
   )}
 </section>
+)}

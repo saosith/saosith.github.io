@@ -1,7 +1,10 @@
 ---
 import { getCollection } from 'astro:content';
 
-const projects = (await getCollection('projects', ({ data }) => !data.draft))
+// REPORT_DRAFTS=1 (local draft builds only, never set by the deploy workflow)
+// also lists drafts, marked as such, so they can be checked in context.
+const withDrafts = process.env.REPORT_DRAFTS === '1';
+const projects = (await getCollection('projects', ({ data }) => withDrafts || !data.draft))
   .sort((a, b) => a.data.order - b.data.order || +b.data.date - +a.data.date);
 
 const tags = [...new Set(projects.flatMap((p) => p.data.tags))].sort();
@@ -12,18 +15,6 @@ const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month:
   <div class="section-head">
     <h2>Projects</h2>
   </div>
-
-  {projects.length > 0 && (
-  <div class="filter-bar no-print" data-filter>
-    <label class="visually-hidden" for="q">Search projects</label>
-    <input class="filter-search" id="q" type="search" placeholder="Search title, tag, or tool" data-q />
-    {tags.map((t) => (
-      <button class="filter-chip" type="button" data-tag={t} aria-pressed="false">{t}</button>
-    ))}
-    <button class="filter-chip" type="button" data-clear hidden>Clear</button>
-    <span class="count" data-count>{projects.length} of {projects.length}</span>
-  </div>
-  )}
 
   {projects.length === 0 ? (
     <div class="panel panel-pad" style="max-width:60ch">
@@ -39,38 +30,39 @@ const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month:
       </div>
     </div>
   ) : (
-  <ul class="project-list" data-list>
-    {projects.map((p) => (
+  <ul class="project-bands" data-list>
+    {projects.map((p, i) => (
       <li
-        class="project-row"
+        class={`band band-${i % 2 === 0 ? 'light' : 'dark'}`}
         data-item
         data-tags={p.data.tags.join('|')}
         data-text={`${p.data.title} ${p.data.summary} ${p.data.tags.join(' ')} ${p.data.tools.join(' ')}`.toLowerCase()}
       >
-        <a class={`project-link${p.data.cover ? ' has-thumb' : ''}`} href={`/projects/${p.id}/`}>
-          {p.data.cover && (
-            <div class="project-thumb">
-              <img src={p.data.cover} alt={p.data.coverAlt ?? ''} loading="lazy" decoding="async" />
-            </div>
-          )}
-          <div>
-            <div class="project-title">{p.data.title}</div>
-            <p class="project-sub">{p.data.summary}</p>
+        <div class="wrap band-inner">
+          <a class="band-media" href={`/projects/${p.id}/`} tabindex="-1" aria-hidden="true">
+            {p.data.coverVideo
+              ? <video src={p.data.coverVideo} poster={p.data.cover} autoplay muted loop playsinline preload="metadata"></video>
+              : p.data.cover
+                ? <img src={p.data.cover} alt="" loading="lazy" decoding="async" />
+                : <span class="band-media-empty">{p.data.title}</span>}
+          </a>
+          <div class="band-text">
+            <p class="band-kicker">
+              {p.data.tools[0] ?? p.data.tags[0]}<span aria-hidden="true"> · </span>{fmt(p.data.date)}
+              {p.data.draft && <span class="chip chip-warning" style="margin-left:0.6rem">draft, local only</span>}
+            </p>
+            <h3 class="band-title">{p.data.title}</h3>
+            <p class="band-sub">{p.data.summary}</p>
             {p.data.headline.length > 0 && (
-              <div class="project-figures">
-                {p.data.headline.map((h) => (
-                  <div>{h.label} <b>{h.value}{h.unit ? ` ${h.unit}` : ''}</b></div>
+              <dl class="band-figures">
+                {p.data.headline.slice(0, 3).map((h) => (
+                  <div><dt>{h.label}</dt><dd>{h.value}{h.unit ? ` ${h.unit}` : ''}</dd></div>
                 ))}
-              </div>
+              </dl>
             )}
+            <a class="band-btn" href={`/projects/${p.id}/`}>Read more<span class="visually-hidden"> about {p.data.title}</span></a>
           </div>
-          <div>
-            <div class="project-meta">
-              {p.data.tags.map((t) => <span class="tag">{t}</span>)}
-            </div>
-            <div class="small muted">{fmt(p.data.date)}</div>
-          </div>
-        </a>
+        </div>
       </li>
     ))}
   </ul>

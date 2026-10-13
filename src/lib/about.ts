@@ -37,6 +37,17 @@ export interface TimelineEntry {
   evidenceLabel?: string;
   evidenceHref?: string;
   placeholder?: boolean;
+  /**
+   * Right-hand column on wide screens (Experience only): a photo or figure from
+   * the work, and/or a few short highlight chips. Fills the space the 62ch text
+   * measure leaves empty, without stretching the text itself.
+   */
+  media?: string;
+  mediaAlt?: string;
+  /** Second, smaller image under the first (e.g. a sample photo under a process video). */
+  media2?: string;
+  media2Alt?: string;
+  highlights?: string[];
 }
 
 export interface SkillRow {

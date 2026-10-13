@@ -2,14 +2,17 @@
 import { awards } from '../lib/about';
 import { livePredicate } from '../lib/published';
 import TimelineList from './TimelineList.astro';
+import { hasAwards } from '../lib/sections';
 
 const isLive = await livePredicate();
 ---
 
+{hasAwards() && (
 <section id="awards" class="wrap section rule-top">
   <div class="section-head">
     <h2>Awards</h2>
   </div>
 
-  <TimelineList entries={awards()} isLive={isLive} emptyText="Nothing listed yet." />
+  <TimelineList entries={awards().filter((a) => !a.placeholder)} isLive={isLive} emptyText="Nothing listed yet." />
 </section>
+)}

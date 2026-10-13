@@ -324,6 +324,21 @@ details.data-table thead th { color: var(--ink-3); font-family: var(--mono); fon
 .tl-body { color: var(--ink-2); font-size: var(--t-cap); max-width: 62ch; }
 .tl-evidence { display: flex; flex-wrap: wrap; gap: 0.6rem; font-size: var(--t-cap); }
 
+/* Experience side column. Below the breakpoint it sits under the text, aligned
+   with it; above, it takes the space the 62ch measure leaves on the right. The
+   photo frame is a fixed five rows tall, short enough that the text column, not
+   the photo, sets each row height, so entries stay on the 24px grid. */
+.tl-side { grid-column: 2 / -1; display: grid; gap: calc(var(--unit) / 2); align-content: start; margin-top: calc(var(--unit) / 2); }
+@media (min-width: 44rem) { .tl-side { grid-column: 3; } }
+@media (min-width: 72rem) {
+  .timeline-side .tl-item { grid-template-columns: 10.5rem 3rem minmax(0, 1fr) 15rem; }
+  .tl-side { grid-column: 4; margin-top: 0; }
+}
+.tl-media { display: block; height: calc(var(--unit) * 5); border: 1px solid var(--rule); border-radius: 3px; background: #fff; overflow: hidden; cursor: zoom-in; }
+.tl-media img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.tl-highlights { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: 0.4rem; line-height: 1.3; }
+.tl-side-empty { height: calc(var(--unit) * 3); border: 1px dashed var(--rule-strong); border-radius: 3px; display: grid; place-items: center; font-size: var(--t-xs); color: var(--ink-3); text-align: center; padding: 0 0.6rem; }
+
 /* The last row in a list draws no rule of its own: the section boundary already
    draws one directly under it, and two lines a band apart read as a mistake.
    The outer rows also drop their outer padding — the heading's own margin above
@@ -737,3 +752,218 @@ a.data-dl:hover { border-color: var(--ink); background: var(--panel-sunk); }
   .prose a[href^="http"]::after { content: " (" attr(href) ")"; font-size: 8pt; color: var(--ink-3); overflow-wrap: anywhere; }
   .fig-src { display: none; }
 }
+
+/* Wide monitors: let the page grow from 1180px to 1360px so the margins are not
+   a third of the screen. Laptops are unaffected; text keeps its own measure. */
+
+/* The portrait is 3:2 and fluid, so a wider page would make the hero taller and
+   push it off the 24px grid. On wide monitors it keeps the 580px it has at the
+   1180px page width, and the extra room goes to the text column instead. */
+
+
+/* =============================================================
+   2026-10 redesign: neutral TI-style palette, Manrope, no graticule,
+   big type, project bands. Overrides the rules above; layout and
+   section order are unchanged.
+   ============================================================= */
+html { overflow-x: clip; }
+body { line-height: 1.6; letter-spacing: -0.005em; }
+h1, h2, h3, h4 { font-weight: 700; letter-spacing: -0.025em; }
+
+/* Header: your name on the left, plain links, a black resume button. */
+.site-header { box-shadow: inset 0 -1px 0 var(--rule); }
+.brand { font-size: 1.05rem; font-weight: 700; letter-spacing: -0.02em; }
+.brand-mark { display: none; }
+.site-nav a { font-size: 0.95rem; color: var(--ink); }
+.site-nav a[aria-current] { border-bottom-color: var(--ink); }
+.btn { border-radius: 8px; font-weight: 600; }
+.btn-primary { background: var(--ink); border-color: var(--ink); color: var(--paper); }
+.btn-primary:hover { background: var(--signal); border-color: var(--signal); color: #fff; }
+.theme-toggle { border-radius: 8px; }
+
+/* Hero: a big greeting, name and role above it. */
+.hero { padding-block: clamp(3rem, 7vw, 6rem) clamp(2rem, 5vw, 4rem); }
+.hero-eyebrow { font-size: 0.95rem; font-weight: 600; color: var(--ink-2); margin-bottom: 0.4rem; }
+.hero-eyebrow .sep { margin-inline: 0.55rem; color: var(--signal); }
+.hero h1.hero-greeting {
+  font-size: clamp(3rem, 1.6rem + 4.6vw, 5.4rem); line-height: 1.02;
+  font-weight: 600; letter-spacing: -0.045em; text-wrap: balance; margin: 0 0 1.2rem;
+}
+.hero-lede { font-size: 1.15rem; line-height: 1.6; color: var(--ink-2); max-width: 44ch; margin-bottom: 1.5rem; }
+.portrait-img { border-radius: 14px; border: 0; }
+
+/* Sections: big headings, more air, no boxed rules. */
+.section { padding-block: clamp(3rem, 6vw, 5rem) 0; }
+.rule-top::before { display: none; }
+.section-head { box-shadow: none; margin-bottom: 1.75rem; }
+.section-head h2, .section-head .section-toggle { font-size: clamp(2rem, 1.4rem + 1.8vw, 2.9rem); line-height: 1.1; padding-top: 0; margin-bottom: 0; }
+
+/* Quieter small labels: sans, not monospace. */
+.tag, .chip, .filter-chip { font-family: var(--sans); border-radius: 999px; }
+.tag { padding: 0.15rem 0.6rem; background: var(--panel-sunk); border-color: transparent; color: var(--ink-2); font-size: 0.78rem; }
+.now-label, .rail-block h3, .report-label, .spec-table thead th, .site-footer h3 { font-family: var(--sans); letter-spacing: 0; }
+.now { border-left: 3px solid var(--signal); }
+
+/* Timeline: more room, media column a little wider, captions under media. */
+.tl-item { padding-block: 1.75rem; }
+.tl-title { font-size: 1.08rem; font-weight: 700; }
+.tl-body { font-size: 0.95rem; line-height: 1.65; }
+.tl-logo { border-radius: 10px; }
+@media (min-width: 72rem) {
+  .timeline-side .tl-item { grid-template-columns: 10rem 3rem minmax(0, 1fr) 18rem; }
+}
+.tl-media { height: auto; aspect-ratio: 16 / 9; border-radius: 12px; border: 0; background: var(--panel-sunk); width: 100%; object-fit: cover; }
+.tl-media img { border-radius: 12px; }
+.tl-media-2 { aspect-ratio: 4 / 3; }
+.tl-caption { font-size: 0.78rem; line-height: 1.4; color: var(--ink-3); margin-top: -0.35rem; }
+
+/* Projects: full-width bands, big media card left, text and a black button right. */
+.project-bands { list-style: none; padding: 0; margin: 0 calc(50% - 50vw); width: 100vw; }
+.band { padding-block: clamp(2.5rem, 6vw, 4.5rem); }
+.band[hidden] { display: none; }
+.band-light { background: var(--band-1); color: var(--ink); }
+.band-dark { background: var(--band-2); color: #f2f2f2; }
+.band-inner { display: grid; gap: clamp(1.5rem, 4vw, 4rem); align-items: center; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 56rem) { .band-inner { grid-template-columns: minmax(0, 1.1fr) minmax(0, 1fr); } }
+.band-dark .band-inner { direction: rtl; }
+.band-dark .band-inner > * { direction: ltr; }
+.band-media {
+  display: block; aspect-ratio: 4 / 3; border-radius: 16px; overflow: hidden;
+  background: #fff; box-shadow: 0 18px 40px -22px rgba(0, 0, 0, 0.45);
+}
+.band-media img, .band-media video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.band-media-empty { display: grid; place-items: center; height: 100%; font-weight: 700; font-size: 1.6rem; color: #111; padding: 2rem; text-align: center; }
+.band-kicker { font-size: 0.85rem; font-weight: 600; color: var(--signal); margin-bottom: 0.6rem; }
+.band-dark .band-kicker { color: #ff6b6b; }
+.band-title { font-size: clamp(1.8rem, 1.2rem + 1.8vw, 2.7rem); line-height: 1.1; margin-bottom: 1rem; }
+.band-sub { font-size: 1.05rem; line-height: 1.65; opacity: 0.85; max-width: 46ch; }
+.band-figures { display: flex; flex-wrap: wrap; gap: 1.5rem; margin: 1.4rem 0 0; }
+.band-figures dt { font-size: 0.78rem; opacity: 0.65; }
+.band-figures dd { margin: 0; font-weight: 700; font-size: 1.05rem; }
+.band-btn {
+  display: inline-flex; align-items: center; justify-content: center; margin-top: 1.8rem;
+  min-width: 14rem; padding: 0.95rem 1.6rem; border-radius: 10px;
+  background: #111; color: #fff; font-weight: 600; text-decoration: none;
+}
+.band-btn:hover { background: var(--signal); color: #fff; }
+.band-dark .band-btn { background: #fff; color: #111; }
+.band-dark .band-btn:hover { background: #ff5c5c; color: #111; }
+.band-media:hover { box-shadow: 0 22px 48px -20px rgba(0, 0, 0, 0.55); }
+.band-media img { object-position: center 30%; }
+
+/* The collapse animation clips its body; let open sections spill so the project
+   bands can run edge to edge. Collapsed sections still clip. */
+.section:not(.is-collapsed) > .section-panel > .section-body { overflow: visible; }
+
+/* Remaining monospace UI labels go to the sans; mono stays for code and data. */
+.hero-eyebrow, .now-label, .now-meta, .tl-date, .project-header .small.mono,
+.site-footer, .rail-list .v, .data-badge, .filter-bar .count { font-family: var(--sans); }
+.now-meta { font-size: 0.78rem; }
+
+/* ---- redesign round 2: fill the screen, larger text, name once ---- */
+
+/* Fluid page: about 92% of the screen, up to 1440px. */
+:root { --max: 1440px; --gutter: clamp(1.25rem, 4vw, 4rem); }
+
+/* Bigger reading sizes; nothing important under 15px. */
+body { font-size: 1.0625rem; }
+.site-nav a { font-size: 1rem; }
+.brand { font-size: 1.1rem; }
+.hero-eyebrow { font-size: 1rem; }
+.hero-lede { font-size: 1.3rem; line-height: 1.5; max-width: 34ch; }
+.hero-contacts, .hero-contacts a { font-size: 1rem; }
+.now-text { font-size: 1rem; line-height: 1.6; }
+.now-label { font-size: 0.85rem; }
+.now-meta { font-size: 0.85rem; }
+.portrait figcaption { font-size: 0.95rem; }
+.prose, .prose p { font-size: 1.0625rem; line-height: 1.7; }
+.tl-date { font-size: 1rem; }
+.tl-title { font-size: 1.15rem; }
+.tl-org { font-size: 0.98rem; }
+.tl-body { font-size: 1.02rem; line-height: 1.7; max-width: 64ch; }
+.tl-evidence { font-size: 0.98rem; }
+.tl-caption { font-size: 0.88rem; }
+.tag { font-size: 0.85rem; }
+.band-sub { font-size: 1.12rem; }
+.band-figures dt { font-size: 0.85rem; }
+.band-kicker { font-size: 0.92rem; }
+.site-footer { font-size: 0.95rem; }
+.site-footer h3 { font-size: 0.85rem; }
+
+/* Hero: photo takes more of the width and sits level with the greeting. */
+@media (min-width: 62rem) {
+  .hero-grid { grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr); align-items: center; gap: clamp(2rem, 4vw, 4.5rem); }
+}
+
+/* About: a larger photo right next to the text instead of floating far right. */
+@media (min-width: 52rem) {
+  .about-grid { grid-template-columns: minmax(0, 62ch) minmax(16rem, 26rem); gap: clamp(2rem, 4vw, 4rem); align-items: start; }
+  .about-photo { justify-self: start; }
+}
+.about-photo { width: 100%; }
+.about-photo-img { width: 100%; height: auto; aspect-ratio: 1 / 1; object-fit: cover; border-radius: 16px; border: 0; }
+/* Experience: text fills its column; the media column is wider, so no gap opens between them. */
+.timeline-side .tl-body { max-width: none; }
+@media (min-width: 72rem) {
+  .timeline-side .tl-item { grid-template-columns: 10rem 3rem minmax(0, 1fr) 22rem; gap: 0 1.75rem; }
+}
+.tl-caption { font-size: 0.94rem; }
+/* About photo: larger. */
+@media (min-width: 52rem) {
+  .about-grid { grid-template-columns: minmax(0, 60ch) minmax(20rem, 34rem); }
+}
+
+/* ---- redesign round 3: colour rhythm. White -> grey -> black bands -> white -> dark. ---- */
+
+/* Alternate sections on light grey, full width (box-shadow + clip-path bleed). */
+#experience, #awards, #education {
+  background: var(--band-1);
+  box-shadow: 0 0 0 100vmax var(--band-1);
+  clip-path: inset(0 -100vmax);
+  padding-bottom: clamp(3rem, 6vw, 5rem);
+}
+#experience .tl-logo, #awards .tl-logo, #education .tl-logo { background: #fff; }
+
+/* Dark project bands get a thin red line on top. */
+.band-dark { box-shadow: inset 0 3px 0 var(--signal); }
+
+/* Closing call to action: dark, full width. */
+.cta-band {
+  margin-top: clamp(3rem, 6vw, 5rem);
+  background: var(--band-2); color: #f2f2f2;
+  box-shadow: inset 0 3px 0 var(--signal);
+  padding-block: clamp(3rem, 7vw, 5.5rem);
+}
+.cta-inner { display: grid; gap: 2rem; align-items: center; grid-template-columns: minmax(0, 1fr); }
+@media (min-width: 56rem) { .cta-inner { grid-template-columns: minmax(0, 1fr) auto; } }
+.cta-kicker { font-size: 0.92rem; font-weight: 600; color: #ff6b6b; margin-bottom: 0.6rem; }
+.cta-title { font-size: clamp(2rem, 1.3rem + 2.2vw, 3.2rem); line-height: 1.08; letter-spacing: -0.035em; max-width: 22ch; }
+.cta-sub { font-size: 1.15rem; opacity: 0.8; margin-top: 0.9rem; }
+.cta-actions { display: flex; flex-wrap: wrap; gap: 0.9rem; }
+.cta-btn { margin-top: 0; background: #fff; color: #111; }
+.cta-btn:hover { background: #ff5c5c; color: #111; }
+.cta-btn-outline {
+  display: inline-flex; align-items: center; justify-content: center; min-width: 11rem;
+  padding: 0.95rem 1.6rem; border-radius: 10px; border: 1.5px solid rgba(255,255,255,0.6);
+  color: #fff; font-weight: 600; text-decoration: none;
+}
+.cta-btn-outline:hover { border-color: #fff; background: rgba(255,255,255,0.08); color: #fff; }
+
+/* Dark footer, continuing the band above. */
+.site-footer {
+  margin-top: 0; background: #0b0b0b; color: #b5b5b5; box-shadow: none;
+  border-top: 1px solid #222;
+}
+.site-footer h3 { color: #8a8a8a; }
+.site-footer a { color: #e6e6e6; }
+.site-footer a:hover { color: #ff6b6b; }
+
+/* Red accent on the Now bar, section dates and link hovers. */
+:where(a):hover { color: var(--signal); }
+.tl-date { color: var(--ink); }
+/* The original 216px cap on the About photo kept it small; let it fill its column. */
+.about-photo-img { max-width: none; width: 100%; max-height: 32rem; }
+
+/* Air below every section, so white sections don't run into the grey band below. */
+.section { padding-bottom: clamp(3rem, 6vw, 5rem); }
+#projects { padding-bottom: 0; }

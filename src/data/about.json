@@ -1,8 +1,8 @@
 {
   "paragraphs": [
-    "I am an electrical engineering student at the University of Oklahoma, working on analog and mixed-signal integrated circuit design and silicon photonics. I came to electrical engineering from physics, so I have a strong physics background. I started in my lab fabricating semiconductor materials with pulsed laser deposition. Starting Fall 2026 I work on the design side instead, on optically bistable ring resonators.",
-    "This site documents my electronics and IC design projects. Each one covers the design flow, the specification it had to meet, the results, and what I would do differently. The About page has my skills, coursework, and timeline. The data behind each project is downloadable, and my resume and contact details are at the top."
+    "I'm an electrical engineering student at the University of Oklahoma, working on analog and mixed-signal IC design and silicon photonics. I grew up in Laos, finished high school at Li Po Chun United World College in Hong Kong, and started at OU in engineering physics, so I came to circuits with a strong physics background. In my lab I first fabricated semiconductor materials with pulsed laser deposition. Now I'm starting on the design side, on optically bistable ring resonators.",
+    "This site is where I write up my projects: what each board or circuit had to do, the choices I made, what worked and what I'd change. Most of them are still in progress, so every page says where it stands. My resume and contact details are at the top and the bottom of the page."
   ],
   "photo": "/uploads/WhatsApp Image 2026-09-10 at 2.13.17 PM-1.jpeg",
-  "photoAlt": "This is me!"
+  "photoAlt": "Sao Aphisith Sithisack"
 }
