@@ -10,14 +10,13 @@
       "highlights": [
         "Photolithography",
         "Reactive ion etching",
-        "Pulsed laser deposition",
-        "RHEED"
+        "Pulsed laser deposition"
       ],
       "media": "/uploads/platen-wafer.jpg",
       "mediaAlt": "Sample wafer after photolithography and plasma etching in the cleanroom.",
       "bullets": [
         "Fabricate high-aspect-ratio micro- and nanostructures using photolithography, reactive ion etching and pulsed laser deposition.",
-        "Independently own the pulsed laser deposition step, growing LAO films on STO substrates and monitoring growth with reflection high-energy electron diffraction (RHEED).",
+        "Independently own the pulsed laser deposition step, growing LAO films on STO substrates.",
         "Optimize anisotropic plasma etch parameters (gas chemistry, RF power, chamber pressure) and mask selectivity for vertical sidewalls and controlled depth."
       ]
     },
