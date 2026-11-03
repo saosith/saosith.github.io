@@ -16,7 +16,7 @@
       "mediaAlt": "Sample wafer after photolithography and plasma etching in the cleanroom.",
       "bullets": [
         "Fabricate high-aspect-ratio micro- and nanostructures using photolithography, reactive ion etching and pulsed laser deposition.",
-        "Independently own the pulsed laser deposition step, growing LAO films on STO substrates.",
+        "Deposit multiple functional oxide films by pulsed laser deposition (PLD) and characterize them by XRD to explore IC fabrication beyond costly EUV lithography.",
         "Optimize anisotropic plasma etch parameters (gas chemistry, RF power, chamber pressure) and mask selectivity for vertical sidewalls and controlled depth."
       ]
     },
