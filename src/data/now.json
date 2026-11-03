@@ -1,7 +1,7 @@
 {
   "show": true,
-  "status": "Laying out the Hub board for our IGVC 2027 robot in Altium: 4 layers, 7 ports, current sensing on each.",
-  "updated": "2026-10-13",
+  "status": "Laying out the central power and communications board for our IGVC 2027 robot in Altium: 4 layers, 7 ports, current sensing on each.",
+  "updated": "2026-11-03",
   "href": "/projects/scr-hub-2027/",
-  "hrefLabel": "See the Hub board"
+  "hrefLabel": "See the board"
 }
