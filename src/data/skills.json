@@ -37,16 +37,12 @@
       "skill": "Cleanroom processing"
     },
     {
-      "group": "Fabrication & lab",
-      "skill": "Raman spectroscopy"
-    },
-    {
       "group": "Programming & data",
       "skill": "Python (NumPy, Pandas, Matplotlib)"
     },
     {
       "group": "Programming & data",
-      "skill": "C/C++ (firmware)"
+      "skill": "C/C++"
     },
     {
       "group": "Programming & data",
