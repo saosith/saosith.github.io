@@ -15,13 +15,12 @@
       "media": "/uploads/platen-wafer.jpg",
       "mediaAlt": "Sample wafer after photolithography and plasma etching in the cleanroom.",
       "bullets": [
-        "Fabricate high-aspect-ratio micro- and nanostructures using photolithography, reactive ion etching and pulsed laser deposition.",
-        "Deposit multiple functional oxide films by pulsed laser deposition (PLD) and characterize them by XRD to explore IC fabrication beyond costly EUV lithography.",
-        "Optimize anisotropic plasma etch parameters (gas chemistry, RF power, chamber pressure) and mask selectivity for vertical sidewalls and controlled depth."
+        "Fabricate high-aspect-ratio micro- and nanostructures using photolithography, reactive ion etching and pulsed laser deposition (PLD).",
+        "Deposit functional oxide films by PLD and run XRD on multiple oxides, for research into IC fabrication without costly EUV lithography."
       ]
     },
     {
-      "date": "Jan 2026 – present",
+      "date": "Aug 2026 – present",
       "title": "Electrical Systems Engineer, Power Distribution",
       "org": "Sooner Competitive Robotics",
       "logo": "/uploads/logo-sooner-competitive-robotics.png",
@@ -56,7 +55,7 @@
       ],
       "placeholder": false,
       "bullets": [
-        "Mentor 250+ students per semester in Physics I–II, Calculus I–III and General Chemistry I.",
+        "Tutor 250+ students per semester in Physics I–II, Calculus I–III and General Chemistry I.",
         "Teach structured, step-by-step problem-solving methods that students can repeat on their own."
       ]
     },
