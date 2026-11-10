@@ -112,18 +112,14 @@ supply, and USB debugging. I did the schematic, part selection and layout.
 
 ## Architecture and components
 
-Battery power passes an XT60, a 10 A fuse, a TVS diode and a P-MOSFET for
-reverse-polarity protection, then feeds the seven ports. An AP63301 buck converter makes
-the 3.3 V rail for the chips on the board.
-
-Each port has its own fuse, a 20 mΩ shunt and an INA220 that reads the port's current
-and voltage over I²C, down to 0.5 mA.
-
-An STM32C092 runs the board and talks to the robot's CAN bus through a MAX3051
-transceiver, with an 8 MHz crystal for accurate CAN timing.
-
-An SN74AHC244 buffer copies the E-Stop line to every port without going through the
-microcontroller. USB-C with a CH340C handles debugging.
+- **XT60, 10 A fuse, SMBJ15A TVS:** battery input and surge protection
+- **DMP4015SK3Q-13 P-MOSFET:** reverse-polarity protection
+- **AP63301 buck converter:** 12 V to 3.3 V for the chips on the board
+- **INA220 + 20 mΩ shunt (x7):** current and voltage on each port, over I²C
+- **STM32C092 + MAX3051:** microcontroller and CAN transceiver, 8 MHz crystal
+- **SN74AHC244:** copies the E-Stop line to every port, no firmware in the path
+- **CH340C + USB-C:** USB-to-UART debugging
+- **6-pin Molex (x7):** board ports, each with its own fuse and status LED
 
 ## Requirements
 

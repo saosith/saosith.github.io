@@ -47,15 +47,14 @@ I designed it in KiCad around a TI MSPM0G3507 (Arm Cortex-M0+).
 
 ## Architecture and components
 
-A USB-C charger keeps VBUS off until it sees a device, so two 5.1 kΩ resistors on CC1
-and CC2 tell it the board wants power. An SPX3819 LDO then drops the 5 V to 3.3 V.
-
-D+ and D− go through a USBLC6-2SC6 ESD array to a CH340E USB-to-UART bridge, which
-shows up on the PC as a serial port.
-
-An 8 MHz crystal keeps the UART timing accurate, and an RC filter cleans the ADC
-reference. A TC2030 Tag-Connect footprint is used for programming, so the cable presses
-onto pads and no header is needed.
+- **MSPM0G3507:** Arm Cortex-M0+ microcontroller
+- **USB-C + 5.1 kΩ CC resistors:** 5 V power from a laptop or charger
+- **SPX3819 LDO:** 5 V to 3.3 V
+- **USBLC6-2SC6:** ESD protection on D+ and D−
+- **CH340E:** USB-to-UART, shows up on the PC as a serial port
+- **8 MHz crystal:** accurate UART timing
+- **RC filter:** clean ADC reference
+- **TC2030 Tag-Connect:** SWD programming with no header
 
 ## Requirements
 

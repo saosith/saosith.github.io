@@ -46,12 +46,10 @@ a 555 timer. The blue Elegoo board in the photo only supplies power from my lapt
 
 ## Architecture and components
 
-The 555 timer runs in astable mode, so it keeps switching on its own and each pulse is
-one clock tick.
-
-Four 74HC D flip-flops hold the current number, one per LED. 74HC AND, OR and NOT
-gates read that number and work out the next one. On
-each tick the flip-flops load it and the LEDs change.
+- **555 timer (astable):** the clock, one pulse per step
+- **74HC D flip-flops (x4):** hold the current number, one bit per LED
+- **74HC AND, OR and NOT gates:** work out the next number in the sequence
+- **4 LEDs:** show the number in binary
 
 ## Status
 
