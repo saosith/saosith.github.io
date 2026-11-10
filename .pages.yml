@@ -293,6 +293,11 @@ content:
         fields:
           - { name: org, label: Team or organisation, type: string, description: 'e.g. "Sooner Competitive Robotics (IGVC 2027)"' }
           - { name: role, label: Your role, type: string, description: 'Say what you owned, e.g. "Designed the Hub board: schematic, layout, part selection."' }
+      - name: showDataBadge
+        label: Show status badge
+        type: boolean
+        default: true
+        description: Untick to hide the status box at the top of the project page (for example on a simple overview page).
       - name: dataNote
         label: Badge text (optional)
         type: string

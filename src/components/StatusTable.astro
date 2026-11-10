@@ -8,6 +8,7 @@ interface Props {
   rows: Stage[];
 }
 const { rows = [] } = Astro.props;
+const hasPlan = rows.some((r) => r.plan);
 
 /**
  * Project status: one row per stage, from schematic to bring-up. It replaces
@@ -27,7 +28,7 @@ const MAP = {
   <div class="spec-table-wrap report-table">
     <table class="spec-table status-table">
       <thead>
-        <tr><th scope="col">Stage</th><th scope="col">Status</th><th scope="col">Plan</th></tr>
+        <tr><th scope="col">Stage</th><th scope="col">Status</th>{hasPlan && <th scope="col">Plan</th>}</tr>
       </thead>
       <tbody>
         {rows.map((r) => {
@@ -36,7 +37,7 @@ const MAP = {
             <tr>
               <th scope="row">{r.stage}</th>
               <td><span class={`chip ${m.cls}`}>{m.label}</span></td>
-              <td>{r.plan ?? '—'}</td>
+              {hasPlan && <td>{r.plan ?? '—'}</td>}
             </tr>
           );
         })}

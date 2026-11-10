@@ -45,6 +45,8 @@ const projects = defineCollection({
      * `design` covers work that is captured but not yet built or simulated —
      * a schematic, a layout, a board — where there are no numbers to defend.
      */
+    /** Set false to hide the data-status note box at the top of the page. */
+    showDataBadge: z.boolean().default(true),
     dataStatus: z.enum(['design', 'model', 'simulated', 'built', 'measured']).default('model'),
     /** Test conditions footer, e.g. "VDD = 1.8 V, T = 27 °C, CL = 2 pF". */
     conditions: z.string().optional(),

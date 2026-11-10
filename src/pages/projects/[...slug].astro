@@ -168,7 +168,7 @@ const cover = data.cover && !/\.(mp4|webm)$/i.test(data.cover) && !project.body?
         </dl>
       </div>
 
-      <DataBadge status={data.dataStatus} conditions={data.conditions} note={data.dataNote} />
+      {data.showDataBadge && <DataBadge status={data.dataStatus} conditions={data.conditions} note={data.dataNote} />}
 
       {data.abstract && (
         <section class="report-abstract" aria-label="Abstract">

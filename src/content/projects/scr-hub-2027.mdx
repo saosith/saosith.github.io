@@ -10,6 +10,14 @@ draft: false
 
 dataStatus: design
 dataNote: 'Status: schematic, layout and design review done; PCB not ordered yet. No values on this page are measured.'
+showDataBadge: false
+
+stages:
+  - { stage: Schematic, status: done }
+  - { stage: Layout routed, status: done }
+  - { stage: Design review, status: done }
+  - { stage: Order PCB, status: planned }
+  - { stage: Testing, status: planned }
 revision: Rev A
 team:
   org: Sooner Competitive Robotics (IGVC 2027)
@@ -86,8 +94,8 @@ decisions:
 ---
 
 import ImageFigure from '../../components/ImageFigure.astro';
-import DecisionTable from '../../components/DecisionTable.astro';
 import Model3D from '../../components/Model3D.astro';
+import StatusTable from '../../components/StatusTable.astro';
 
 ## Introduction
 
@@ -129,10 +137,6 @@ which a buffer copies to every port with no firmware in the path.
 - **Debug:** USB-C through a CH340C USB-to-UART bridge, a UART header as a backup, and
   test points on the power rails, CAN, I²C and E-Stop.
 
-### Choices I made
-
-<DecisionTable rows={frontmatter.decisions} />
-
 ## Requirements
 
 - Power, CAN and the E-Stop line to every board through 6-pin Molex connectors.
@@ -146,11 +150,7 @@ which a buffer copies to every port with no firmware in the path.
 
 ## Status
 
-- ✅ Schematic
-- ✅ Layout routed
-- ✅ Design review
-- ⬜ Order PCB
-- ⬜ Testing
+<StatusTable rows={frontmatter.stages} />
 
 ## Board and schematics
 
