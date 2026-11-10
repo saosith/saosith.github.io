@@ -98,14 +98,10 @@ import StatusTable from '../../components/StatusTable.astro';
 
 ## Introduction
 
-The Hub is the board in the middle of our robot. Every other board plugs into it, and it
-gives each one 12 V power, the CAN bus and the E-Stop line. Last year's Hub only passed
-those along. For 2027 the team also wanted to know how much current each board draws, so
-I added current and voltage sensing on every port.
-
-I started from last year's design and kept what worked, like the Molex ports and the
-STM32 with its CAN transceiver. I redesigned the power input, the 3.3 V supply, the
-sensing and the debug access, and I did the schematic, part selection and layout.
+Every board on our robot plugs into the Hub for 12 V power, the CAN bus and the E-Stop
+line. For 2027 the team also wanted to see how much current each board draws, so I
+redesigned last year's Hub with sensing on every port, a new power input and 3.3 V
+supply, and USB debugging. I did the schematic, part selection and layout.
 
 <Model3D
   src="/uploads/scr-hub-3d.glb"
@@ -116,49 +112,35 @@ sensing and the debug access, and I did the schematic, part selection and layout
 
 ## Architecture and components
 
-Power comes in from the battery through an XT60 connector, a 10 A fuse, a TVS diode and
-a reverse-polarity MOSFET. After that it becomes a 12 V bus that feeds the seven board
-ports and the 3.3 V supply for the chips on the Hub.
+Battery power passes an XT60, a 10 A fuse, a TVS diode and a reverse-polarity MOSFET,
+then feeds the seven ports and the 3.3 V supply.
 
-Normally, our team uses a Schottky diode for reverse-polarity protection. However, at
-8 A a Schottky drops about 0.45 V and turns about 3.6 W into heat. I used a P-MOSFET
-(DMP4015SK3Q-13) instead. Its on-resistance is 11 mΩ, so it loses about 0.7 W at the
-same current. If the battery is plugged in backwards, the MOSFET stays off and blocks it.
+Normally our team uses a Schottky diode for reverse protection. At 8 A it would drop
+0.45 V and waste about 3.6 W, so I used a P-MOSFET (DMP4015SK3Q-13), which wastes about
+0.7 W.
 
-Last year's Hub made 3.3 V with an LDO, which turns the whole drop from 12 V to 3.3 V
-into heat. At best an LDO is 3.3 / 12 = 28% efficient here. I switched to an AP63301
-buck converter, which the datasheet puts at about 55-70% at our light load, and it also
-accepts up to 32 V in.
+Last year's LDO turned the 12 V to 3.3 V drop into heat (28% efficient at best). I
+replaced it with an AP63301 buck converter, about 55-70% efficient at our load.
 
-Each of the seven 6-pin Molex ports has its own fuse, a 20 mΩ shunt resistor and an
-INA220 sensor. The INA220 measures the small voltage across the shunt to get the
-current, and it also reads the port voltage. At 2.5 A the shunt only drops 50 mV, and
-the sensor resolves steps of 0.5 mA. All seven sensors share one I²C bus to the
-microcontroller.
+Each port has its own fuse, a 20 mΩ shunt and an INA220 that reads the port's current
+and voltage over I²C, down to 0.5 mA.
 
-The microcontroller is an STM32C092 with a MAX3051 CAN transceiver. I chose this pair
-because last year's Hub and the Safety Lights board use it too, so we can reuse their
-firmware. The chip's internal clock can drift about 1% with temperature, which is enough
-to break CAN timing between two boards, so I added an 8 MHz crystal (±30 ppm).
+I kept last year's STM32C092 and MAX3051 CAN transceiver so we can reuse the firmware,
+and added an 8 MHz crystal because the internal clock can drift enough to break CAN
+timing.
 
-The E-Stop line is hardware only. It comes in on one port, and an SN74AHC244 buffer
-sends a separate copy to the other six. The microcontroller is not in this path, so
-firmware can't affect it.
-
-For debugging, a USB-C port goes through a CH340C USB-to-UART chip to the
-microcontroller, so one cable is enough. There is also a UART header as a backup, and
-test points on the power rails, CAN, I²C and E-Stop.
+An SN74AHC244 buffer copies the E-Stop line to every port without going through the
+microcontroller. USB-C with a CH340C handles debugging.
 
 ## Requirements
 
-- Power, CAN and the E-Stop line to every board through 6-pin Molex connectors.
-- Current and voltage sensing for every board.
-- About 5-8 A total for the boards the Hub feeds, not counting the motors.
-- The E-Stop path must be hardware only, never through firmware.
-- Input protection in this order: fuse, then a TVS diode, then reverse-polarity
-  protection.
-- A 4-layer board no bigger than 100 x 100 mm.
-- Surface-mount, hand-solderable parts stocked at DigiKey or LCSC.
+- Power, CAN and E-Stop to every board through 6-pin Molex connectors
+- Current and voltage sensing per board
+- 5-8 A total, not counting the motors
+- Hardware-only E-Stop path
+- Fuse, then TVS, then reverse protection at the input
+- 4 layers, 100 x 100 mm max
+- Hand-solderable SMD parts from DigiKey or LCSC
 
 ## Status
 
@@ -166,9 +148,8 @@ test points on the power rails, CAN, I²C and E-Stop.
 
 ## Board and schematics
 
-The board has 4 layers: signals on the top and bottom, a ground plane on layer 2 and a
-12 V plane on layer 3. I outlined and labeled each circuit block on the silkscreen, so
-the top view works as a map of the board.
+4 layers: signals on top and bottom, ground on layer 2, 12 V on layer 3. Each block is
+labeled on the silkscreen.
 
 <ImageFigure
   src="/uploads/scr-hub-3d-top.webp"
@@ -177,7 +158,7 @@ the top view works as a map of the board.
   height={1800}
   href="/uploads/scr-hub-3d-top.webp"
   figNo="Fig. 1"
-  caption="Top view. The Molex ports sit around the edges, the battery input and buck converter are on the right, and the microcontroller is in the center."
+  caption="Top view."
 />
 
 <ImageFigure
