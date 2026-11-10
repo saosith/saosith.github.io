@@ -39,6 +39,8 @@
 }
 .report .prose > h2::before { content: counter(sec) "\2003"; }
 .report .prose > h2.is-appendix::before { content: none; }
+/* The first section starts level with the top of the side rail. */
+.report .prose > h2:first-child { margin-top: 0; }
 .report .prose > h3 { counter-increment: sub; font-size: 1.12rem; margin-top: 1.5rem; }
 .report .prose > h3::before { content: counter(sec) "." counter(sub) "\2003"; }
 

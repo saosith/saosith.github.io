@@ -122,23 +122,19 @@ const cover = data.cover && !/\.(mp4|webm)$/i.test(data.cover) && !project.body?
   </div>
 
   <div class="wrap project-header">
-    <p class="report-band no-print">
-      <span>Project report</span>
-      <span>{data.revision && `${data.revision} · `}{fmt(data.updated ?? data.date)}</span>
-    </p>
     <p class="small muted no-print report-crumb" style="margin-bottom:0">
       <a href="/#projects" style="color:inherit">Projects</a> / {data.tags[0] ?? 'design'}
     </p>
     <h1>{data.title}</h1>
     <p class="lede">{data.summary}</p>
+    <p class="small muted project-date">
+      {fmt(data.date)}{data.updated && ` · updated ${fmt(data.updated)}`}
+    </p>
 
     <div class="meta-row">
       {data.revision && <span class="tag tag-rev">{data.revision}</span>}
       {data.process && <span class="tag">{data.process}</span>}
       {data.tags.map((t) => <span class="tag">{t}</span>)}
-      <span class="small muted" style="margin-left:auto">
-        {fmt(data.date)}{data.updated && ` · updated ${fmt(data.updated)}`}
-      </span>
     </div>
     {data.team && (
       <p class="small muted team-line">
@@ -196,7 +192,8 @@ const cover = data.cover && !/\.(mp4|webm)$/i.test(data.cover) && !project.body?
         </div>
       )}
 
-      <div class="prose" style="margin-top:calc(var(--unit) * 2)">
+      {/* Nothing above the body on the web: start it level with the rail. */}
+      <div class="prose" style={`margin-top:${data.showDataBadge || data.abstract || data.specs.length > 0 ? 'calc(var(--unit) * 2)' : '0'}`}>
         <Content />
 
         {data.revisions.length > 0 && (
