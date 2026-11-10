@@ -323,3 +323,15 @@ main section[id] { scroll-margin-top: var(--header-h); }
 .section-head .section-toggle::before { content: ''; width: 18px; height: 18px; border-radius: 50%; border: 4px solid var(--cu); flex: none; }
 .cta-title::before { border-color: #f0a14a; align-self: center; }
 .section-head h2, .section-head .section-toggle, .cta-title { font-weight: 800 !important; letter-spacing: -.03em; }
+
+/* ---------- phones ---------- */
+@media (max-width: 40rem) {
+  /* No decorative traces on phones: there is no margin to put them in. */
+  .traces { display: none; }
+  /* Menu: one row that scrolls sideways instead of wrapping onto 3 lines. */
+  .site-nav { flex-wrap: nowrap !important; overflow-x: auto; scrollbar-width: none; gap: .9rem !important; }
+  .site-nav::-webkit-scrollbar { display: none; }
+  .site-nav > * { flex: none; }
+  .hero-cu-title { font-size: 3rem; }
+}
+@media (max-width: 40rem) { :root { --header-h: 92px; } }
