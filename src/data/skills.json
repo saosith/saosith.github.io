@@ -30,7 +30,7 @@
     },
     {
       "group": "Circuit design & simulation",
-      "skill": "SPICE (ngspice, LTspice, Multisim)"
+      "skill": "SPICE simulation: DC, AC, transient (ngspice, LTspice, Multisim)"
     },
     {
       "group": "Circuit design & simulation",
@@ -39,14 +39,6 @@
     {
       "group": "Circuit design & simulation",
       "skill": "SkyWater sky130 PDK"
-    },
-    {
-      "group": "Circuit design & simulation",
-      "skill": "DC, AC and transient analysis"
-    },
-    {
-      "group": "Circuit design & simulation",
-      "skill": "Op-amp and filter circuits"
     },
     {
       "group": "Fabrication & lab",
@@ -65,14 +57,6 @@
       "skill": "X-ray diffraction (XRD)"
     },
     {
-      "group": "Fabrication & lab",
-      "skill": "High-aspect-ratio structures"
-    },
-    {
-      "group": "Fabrication & lab",
-      "skill": "Cleanroom processing"
-    },
-    {
       "group": "Bench instruments",
       "skill": "Oscilloscope"
     },
@@ -87,10 +71,6 @@
     {
       "group": "Bench instruments",
       "skill": "Bench power supply"
-    },
-    {
-      "group": "Bench instruments",
-      "skill": "Prototyping and circuit debug"
     },
     {
       "group": "Programming & tools",
