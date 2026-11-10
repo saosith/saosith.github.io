@@ -2,6 +2,7 @@
 import { education, COURSES } from '../lib/about';
 import { livePredicate } from '../lib/published';
 import TimelineList from './TimelineList.astro';
+import eduData from '../data/education.json';
 
 /**
  * Education, with coursework as a subsection rather than a section of its own.
@@ -12,6 +13,9 @@ import TimelineList from './TimelineList.astro';
  * subheading so older links still land in the right place.
  */
 const isLive = await livePredicate();
+const ED = eduData as { honors?: string[]; leadership?: { title: string; org?: string; date?: string }[] };
+const honors = (ED.honors ?? []).filter(Boolean);
+const leadership = (ED.leadership ?? []).filter((l) => l.title);
 ---
 
 <section id="education" class="wrap section rule-top">
@@ -20,6 +24,27 @@ const isLive = await livePredicate();
   </div>
 
   <TimelineList entries={education()} isLive={isLive} emptyText="Nothing listed yet." />
+
+  {(honors.length > 0 || leadership.length > 0) && (
+    <div class="edu-extra">
+      {honors.length > 0 && (
+        <div class="edu-card">
+          <h3>Honors &amp; scholarships</h3>
+          <ul>{honors.map((h) => <li>{h}</li>)}</ul>
+        </div>
+      )}
+      {leadership.length > 0 && (
+        <div class="edu-card">
+          <h3>Leadership</h3>
+          <ul>
+            {leadership.map((l) => (
+              <li><b>{l.title}</b>{l.org && <span>, {l.org}</span>}{l.date && <small>{l.date}</small>}</li>
+            ))}
+          </ul>
+        </div>
+      )}
+    </div>
+  )}
 
   {COURSES.length > 0 && (
     <div class="subsection">

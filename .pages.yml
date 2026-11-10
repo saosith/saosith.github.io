@@ -461,6 +461,20 @@ content:
     path: src/data/education.json
     format: json
     fields:
+      - name: honors
+        label: Honors & scholarships
+        type: string
+        list: true
+        description: 'One per line, short, e.g. "Davis UWC Scholar (full tuition, 4 years)". Only verified awards.'
+      - name: leadership
+        label: Leadership
+        type: object
+        list: true
+        description: Titles only, no descriptions.
+        fields:
+          - { name: title, label: Title, type: string, description: 'e.g. "Co-President & Alumni Coordinator"' }
+          - { name: org, label: Organization, type: string }
+          - { name: date, label: Dates, type: string, description: 'e.g. "2024 – present"' }
       - name: entries
         label: Degrees and diplomas
         type: object

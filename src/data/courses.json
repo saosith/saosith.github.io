@@ -1,7 +1,22 @@
 {
   "courses": [
     {
-      "title": "Introduction to Electronics | Digital Design | Digital Signal Processing & Filtering | Circuits Lab | Microcontroller Systems | Electricity & Magnetism"
+      "title": "Introduction to Electronics"
+    },
+    {
+      "title": "Digital Design"
+    },
+    {
+      "title": "Digital Signal Processing & Filtering"
+    },
+    {
+      "title": "Circuits Lab"
+    },
+    {
+      "title": "Microcontroller Systems"
+    },
+    {
+      "title": "Electricity & Magnetism"
     }
   ]
 }

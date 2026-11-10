@@ -286,3 +286,27 @@ model-viewer[data-loaded] .cu-3d-loading { display: none; }
 #about { display: grid; align-content: center; }
 #contact { display: grid; align-content: center; }
 main section[id] { scroll-margin-top: var(--header-h); }
+
+/* Education extras: honors and leadership cards; coursework as tags. */
+.edu-extra { display: grid; gap: 16px; margin: 1.25rem 0 0; grid-template-columns: repeat(auto-fit, minmax(min(100%, 360px), 1fr)); }
+.edu-card { background: var(--panel); border: 1px solid var(--rule); border-radius: 16px; padding: 16px 20px 18px; }
+.edu-card h3 { display: flex; align-items: center; gap: 10px; font-size: 1.05rem; font-weight: 700; margin: 0 0 10px; box-shadow: none; }
+.edu-card h3::before { content: ''; width: 10px; height: 10px; border-radius: 50%; border: 3px solid var(--cu); flex: none; }
+.edu-card ul { list-style: none; padding: 0; margin: 0; display: grid; gap: 8px; }
+.edu-card li { font-size: 15px; color: var(--ink-2); line-height: 1.45; }
+.edu-card li b { color: var(--ink); font-weight: 600; }
+.edu-card li small { display: block; color: var(--ink-3); font-size: 13px; }
+#education .timeline .tl-item { padding: 14px 0; }
+#education .subsection { margin-top: 1.25rem; }
+#education .course-list { display: flex !important; flex-wrap: wrap; gap: 8px; }
+#education .course-item { padding: 6px 12px !important; border-radius: 999px; background: var(--panel); border: 1px solid var(--rule); box-shadow: none !important; }
+#education .course-title { font-size: 15px; color: var(--ink-2); }
+#education #courses { font-size: 1.05rem; font-weight: 700; margin-bottom: 10px; box-shadow: none; }
+/* Education fits one screen with honors, leadership and coursework. */
+#education.section { padding-top: clamp(1.25rem, 2.5vw, 1.75rem); padding-bottom: clamp(1.25rem, 2.5vw, 1.75rem); }
+#education .timeline .tl-item { padding: 10px 0; }
+#education .edu-extra { margin-top: .9rem; }
+#education .subsection { margin-top: .9rem; }
+#education .course-list { gap: 6px; }
+#education .course-item { padding: 5px 11px !important; }
+#education .course-item { flex: 0 0 auto; width: auto !important; min-width: 0 !important; display: block; }

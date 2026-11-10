@@ -15,5 +15,21 @@
       "logo": "/uploads/logo-uwc-li-po-chun.webp",
       "placeholder": false
     }
+  ],
+  "honors": [
+    "Davis UWC Scholar (full tuition, 4 years)",
+    "Robert Vinton Clapp Scholarship"
+  ],
+  "leadership": [
+    {
+      "title": "Co-President & Alumni Coordinator",
+      "org": "UWC Lao PDR National Committee",
+      "date": "2024 – present"
+    },
+    {
+      "title": "Sponsorship & Volunteering Chair",
+      "org": "ASEAN at OU",
+      "date": "2024 – 2026"
+    }
   ]
 }
