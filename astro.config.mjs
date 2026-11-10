@@ -9,7 +9,10 @@ export default defineConfig({
   site: 'https://saosith.github.io',
   base: '/',
   integrations: [mdx(), sitemap()],
-  build: { format: 'directory' },
+  // CSS is inlined into every page. With a separate hashed file, a browser holding
+  // a cached page (GitHub Pages caches HTML for 10 min) asks for a stylesheet the
+  // next deploy already deleted, and the page renders unstyled.
+  build: { format: 'directory', inlineStylesheets: 'always' },
   markdown: {
     shikiConfig: { theme: 'github-light', wrap: true },
   },
