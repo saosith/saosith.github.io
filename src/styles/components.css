@@ -396,6 +396,8 @@ details.data-table thead th { color: var(--ink-3); font-family: var(--mono); fon
 /* ---------------- one-page sections ---------------- */
 /* Anchors must clear the sticky header when jumped to. */
 section[id] { scroll-margin-top: 74px; }
+/* Headings jumped to from "On this page" stop below the sticky site header. */
+.prose :is(h2, h3, h4)[id] { scroll-margin-top: 96px; }
 
 .site-intro {
   margin-top: clamp(2rem, 4vw, 3rem);
