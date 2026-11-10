@@ -7,38 +7,52 @@ featured: false
 draft: false
 
 dataStatus: built
-dataNote: Built on a breadboard and working. No measurements are recorded on this page.
-
 cover: /uploads/led-4bit-counter.jpg
 coverVideo: /uploads/led-4bit-counter.mp4
 coverAlt: Breadboard with four red LEDs showing a 4-bit number
 
-tags: [digital-logic, breadboard]
+tags: [Digital logic, Breadboard]
 # Part numbers are the standard TI 74HC parts (SN74HC08/32/04 gates, SN74HC74 flip-flops); Sao to confirm exact chips.
 tools: [Breadboard, 74HC logic, D flip-flops, 555 timer]
 
 headline:
   - { label: 'Logic', value: 'AND / OR / NOT', unit: '74HC' }
   - { label: 'Clock', value: '555', unit: 'timer' }
+showDataBadge: false
+stages:
+  - { stage: Design, status: done }
+  - { stage: Build on breadboard, status: done }
+  - { stage: Record the number sequence, status: planned }
+
 ---
 
-## What it does
+import ImageFigure from '../../components/ImageFigure.astro';
+import StatusTable from '../../components/StatusTable.astro';
 
-Each of the four LEDs is one bit of a binary number. I wired TI 74HC-series logic chips,
-such as the SN74HC08 (AND), SN74HC32 (OR) and SN74HC04 (NOT), D flip-flops such as the
-SN74HC74 to hold the current number, and a 555 timer as the clock, so the LEDs step
-through a set sequence of numbers and then repeat. The blue Elegoo board in the photo only
-supplies power from my laptop over USB; the 555 sets the timing.
+## Introduction
 
-## How it works
+Each of the four LEDs is one bit of a binary number, and the circuit steps through a
+set sequence of numbers on repeat. I built it on a breadboard from 74HC logic chips and
+a 555 timer. The blue Elegoo board in the photo only supplies power from my laptop.
 
-The 555 timer runs in astable mode, which means it has no stable state and keeps switching
-on its own. A capacitor charges and discharges through resistors, and each time it crosses
-a threshold the 555 flips its output between high and low. The result is a steady on/off
-pulse signal, and each pulse is one clock tick.
+<ImageFigure
+  src="/uploads/led-4bit-counter.jpg"
+  alt="Breadboard with four red LEDs showing a 4-bit number, 74HC logic chips and a 555 timer."
+  width={1024}
+  height={576}
+  figNo="Fig. 1"
+  caption="The counter on the breadboard."
+/>
 
-Four D flip-flops, one per LED, hold the current 4-bit number. The gates read that number
-and work out the next number in the sequence. On each clock tick, the flip-flops load the
-next number, the LEDs change, and the gates start working out the one after it.
+## Architecture and components
 
-**Status:** built and working on a breadboard. The number sequence will be added here.
+The 555 timer runs in astable mode, so it keeps switching on its own and each pulse is
+one clock tick.
+
+Four 74HC D flip-flops hold the current number, one per LED. 74HC AND, OR and NOT
+gates read that number and work out the next one. On
+each tick the flip-flops load it and the LEDs change.
+
+## Status
+
+<StatusTable rows={frontmatter.stages} />

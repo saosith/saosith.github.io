@@ -7,23 +7,43 @@ featured: false
 draft: false
 
 dataStatus: built
-dataNote: Built during the hackathon and demoed live. No measurements are recorded on this page.
-
 cover: /uploads/hacklahoma-climb.jpg
 coverAlt: Sao holding a phone running the Climb app at Hacklahoma 2026
 
-tags: [app, hackathon]
+tags: [App, Hackathon]
 tools: [Expo, React Native, TypeScript]
 
 links:
   - { label: 'Code on GitHub', href: 'https://github.com/saosith/Climb-App' }
+showDataBadge: false
+stages:
+  - { stage: Build, status: done }
+  - { stage: Demo at Hacklahoma 2026, status: done }
+
 ---
 
-## What it is
+import ImageFigure from '../../components/ImageFigure.astro';
+import StatusTable from '../../components/StatusTable.astro';
 
-Climb is a Pomodoro focus app my team built at Hacklahoma 2026. It rewards focused work
-sessions and adds a penalty when you spend time in distracting apps. We built it with Expo,
-React Native and TypeScript, and I built both the backend and the frontend. The photo is from the demo, with the app running on a phone and
-the code on the laptop.
+## Introduction
 
-**Status:** built and demoed at Hacklahoma 2026. The code is on GitHub.
+Climb is a Pomodoro focus app my team built at Hacklahoma 2026. It rewards focused
+work sessions and adds a penalty for time spent in distracting apps.
+
+<ImageFigure
+  src="/uploads/hacklahoma-climb.jpg"
+  alt="Sao holding a phone running the Climb app at Hacklahoma 2026, with the code on a laptop."
+  width={768}
+  height={1024}
+  figNo="Fig. 1"
+  caption="Demo at Hacklahoma, with the app on the phone and the code on the laptop."
+/>
+
+## Architecture and components
+
+Expo and React Native with TypeScript, so one codebase runs on phones. The code is on
+GitHub.
+
+## Status
+
+<StatusTable rows={frontmatter.stages} />
