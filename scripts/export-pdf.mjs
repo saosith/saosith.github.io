@@ -158,6 +158,10 @@ for (const slug of slugs) {
   });
   if (!pdf.result?.data) { console.error(`Failed: ${slug}`); failed++; continue; }
   writeFileSync(out, Buffer.from(pdf.result.data, 'base64'));
+  // Optional: shrink images (needs Python with PyMuPDF; skipped if missing).
+  const shrink = spawnSync('python', [path.join(root, 'scripts', 'shrink-pdf.py'), out], { encoding: 'utf8' });
+  if (shrink.status === 0) process.stdout.write(shrink.stdout);
+  else console.log('  (PDF not shrunk: python or PyMuPDF missing)');
   console.log(`${draft ? 'DRAFT ' : ''}${path.relative(root, out)}  (${Math.round(statSync(out).size / 1024)} KB)`);
 }
 ws.close();
