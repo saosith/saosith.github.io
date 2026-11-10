@@ -6,10 +6,13 @@ import { SITE } from '../lib/site';
  * absolute (`/#about`, not `#about`) so they also work from a project or note
  * detail page — the browser goes home first, then jumps to the section.
  */
+// In page order (copper redesign): hero, projects, about, experience ... contact.
 const links = [
-  { href: '/#about', label: 'About', section: 'about' },
+  { href: '/#top', label: 'Home', section: 'top' },
   { href: '/#projects', label: 'Projects', section: 'projects' },
+  { href: '/#about', label: 'About', section: 'about' },
   { href: '/#experience', label: 'Experience', section: 'experience' },
+  { href: '/#contact', label: 'Contact', section: 'contact' },
 ];
 ---
 
