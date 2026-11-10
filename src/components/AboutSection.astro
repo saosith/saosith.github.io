@@ -11,7 +11,13 @@ import Traces from './Traces.astro';
  */
 const photo = ABOUT_PHOTO.src;
 const alt = ABOUT_PHOTO.alt || `${SITE.name}, ${SITE.role}`;
-const facts = ((aboutData as { facts?: { value: string; label: string }[] }).facts ?? []).filter((f) => f.value);
+const facts = ((aboutData as { facts?: { icon?: string; value: string; label: string }[] }).facts ?? []).filter((f) => f.value);
+// Line icons, drawn in copper (24 px grid, 1.8 px stroke).
+const ICONS: Record<string, string> = {
+  school: 'M3 21h18M4 10h16M12 3 3 8h18zM6 10v8M10 10v8M14 10v8M18 10v8',
+  major: 'M8 8h8v8H8zM10 2v3M14 2v3M10 19v3M14 19v3M2 10h3M2 14h3M19 10h3M19 14h3',
+  graduation: 'M12 4 2 9l10 5 10-5zM6 11v5c0 1.5 2.7 3 6 3s6-1.5 6-3v-5M22 9v6',
+};
 ---
 
 <section id="about" class="about-cu">
@@ -32,7 +38,17 @@ const facts = ((aboutData as { facts?: { value: string; label: string }[] }).fac
       </div>
       {facts.length > 0 && (
         <dl class="cu-facts">
-          {facts.map((f) => <div><dt>{f.label}</dt><dd>{f.value}</dd></div>)}
+          {facts.map((f) => (
+            <div>
+              {f.icon && ICONS[f.icon] && (
+                <svg class="cu-fact-icon" viewBox="0 0 24 24" width="24" height="24" aria-hidden="true">
+                  <path d={ICONS[f.icon]} fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+              )}
+              <dt>{f.label}</dt>
+              <dd>{f.value}</dd>
+            </div>
+          ))}
         </dl>
       )}
     </div>

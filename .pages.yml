@@ -81,9 +81,19 @@ content:
         label: Fact tiles
         type: object
         list: true
-        description: 'Short facts shown as tiles under the About text, 3 or 4 of them. Only true, checkable facts, e.g. value "3.88" with label "GPA, EE (Honors)".'
+        description: 'Short facts shown as tiles under the About text, e.g. School / Major / Graduation. Only true, checkable facts.'
         fields:
-          - { name: value, label: Value, type: string, description: 'The big text, a few characters, e.g. "250+".' }
+          - name: icon
+            label: Icon
+            type: select
+            description: The small copper icon on the tile.
+            options:
+              values:
+                - { value: school, label: School (building) }
+                - { value: major, label: Major (chip) }
+                - { value: graduation, label: Graduation (cap) }
+                - { value: none, label: No icon }
+          - { name: value, label: Value, type: string, description: 'The main text, short, e.g. "Electrical Engineering".' }
           - { name: label, label: Label, type: string, description: 'What the value means, a few words, e.g. "Students tutored / semester".' }
 
   # ------------------------------------------------------- 02  experience

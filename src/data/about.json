@@ -7,20 +7,19 @@
   "photoAlt": "Sao Aphisith Sithisack",
   "facts": [
     {
-      "value": "3.88",
-      "label": "GPA, EE (Honors)"
+      "icon": "school",
+      "value": "University of Oklahoma",
+      "label": "School"
     },
     {
-      "value": "2028",
+      "icon": "major",
+      "value": "Electrical Engineering",
+      "label": "Major"
+    },
+    {
+      "icon": "graduation",
+      "value": "May 2028",
       "label": "Graduation"
-    },
-    {
-      "value": "250+",
-      "label": "Students tutored / semester"
-    },
-    {
-      "value": "Norman",
-      "label": "Oklahoma"
     }
   ]
 }
