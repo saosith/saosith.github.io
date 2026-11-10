@@ -1,6 +1,6 @@
 ---
 title: MSPM0 USB-C controller board
-summary: A general-purpose USB-C powered MSPM0G3507 board I designed in KiCad, with a USB-to-UART bridge for talking to a PC and SWD for programming.
+summary: General-purpose MSPM0G3507 board with USB-C power, USB-to-UART and SWD, designed in KiCad.
 date: 2026-09-10
 order: 1
 featured: true
@@ -41,9 +41,8 @@ import StatusTable from '../../components/StatusTable.astro';
 
 ## Introduction
 
-I wanted one microcontroller board I could reuse across projects. It runs from my
-laptop's USB-C port, talks to the PC over serial and can be reprogrammed on the bench.
-I designed it in KiCad around a TI MSPM0G3507 (Arm Cortex-M0+).
+One microcontroller board I can reuse across projects, powered and debugged from my
+laptop.
 
 ## Architecture and components
 
@@ -58,9 +57,9 @@ I designed it in KiCad around a TI MSPM0G3507 (Arm Cortex-M0+).
 
 ## Requirements
 
-- Power from a laptop's USB-C port
-- Serial link to a PC with no extra adapter
-- Reprogramming on the bench with no header on the board
+- USB-C power from a laptop
+- Serial link to a PC, no adapter
+- Programming with no header
 - Clean ADC reference
 
 ## Status
@@ -76,5 +75,5 @@ I designed it in KiCad around a TI MSPM0G3507 (Arm Cortex-M0+).
   height={1526}
   href="/uploads/mspm0g3507schem.pdf"
   figNo="Fig. 1"
-  caption="Full schematic: power on the left, USB-to-UART in the middle, microcontroller on the right."
+  caption="Schematic: power (left), USB-to-UART (middle), microcontroller (right)"
 />

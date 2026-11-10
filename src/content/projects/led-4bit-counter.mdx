@@ -1,6 +1,6 @@
 ---
 title: 4-bit LED counter from logic gates
-summary: Four LEDs, one per bit, driven by TI 74HC-series AND, OR and NOT gates and a 555 timer clock on a breadboard to show a set sequence of numbers on repeat.
+summary: '4-bit counter on a breadboard: 74HC logic and a 555 clock step four LEDs through a set number sequence.'
 date: 2025-02-01
 order: 20
 featured: false
@@ -31,9 +31,7 @@ import StatusTable from '../../components/StatusTable.astro';
 
 ## Introduction
 
-Each of the four LEDs is one bit of a binary number, and the circuit steps through a
-set sequence of numbers on repeat. I built it on a breadboard from 74HC logic chips and
-a 555 timer. The blue Elegoo board in the photo only supplies power from my laptop.
+Each LED is one bit of a binary number. The blue Elegoo board only supplies USB power.
 
 <ImageFigure
   src="/uploads/led-4bit-counter.jpg"
@@ -41,7 +39,7 @@ a 555 timer. The blue Elegoo board in the photo only supplies power from my lapt
   width={1024}
   height={576}
   figNo="Fig. 1"
-  caption="The counter on the breadboard."
+  caption="On the breadboard"
 />
 
 ## Architecture and components

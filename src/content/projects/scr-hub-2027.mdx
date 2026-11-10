@@ -1,6 +1,6 @@
 ---
 title: SCR Hub board (IGVC 2027)
-summary: The power, CAN and E-Stop distribution board for Sooner Competitive Robotics' IGVC 2027 robot, with current sensing on every port, designed in Altium.
+summary: Power, CAN and E-Stop distribution board for Sooner Competitive Robotics' IGVC 2027 robot, designed in Altium.
 date: 2026-09-24
 updated: 2026-11-10
 order: 0
@@ -62,16 +62,14 @@ import StatusTable from '../../components/StatusTable.astro';
 
 ## Introduction
 
-Every board on our robot plugs into the Hub for 12 V power, the CAN bus and the E-Stop
-line. For 2027 the team also wanted to see how much current each board draws, so the
-Hub measures current and voltage on every port. I did the schematic, part selection and
-layout.
+Every board on our robot plugs into the Hub. It passes on 12 V power, CAN and E-Stop,
+and measures each board's current and voltage.
 
 <Model3D
   src="/uploads/scr-hub-3d.glb"
   poster="/uploads/scr-hub-cover.webp"
   alt="Interactive 3D model of the routed Hub board"
-  caption="The routed Hub board in 3D."
+  caption="3D model"
 />
 
 ## Architecture and components
@@ -91,7 +89,7 @@ layout.
 - Current and voltage sensing per board
 - 5-8 A total, not counting the motors
 - Hardware-only E-Stop path
-- Fuse, then TVS, then reverse protection at the input
+- Input order: fuse, TVS, reverse protection
 - 4 layers, 100 x 100 mm max
 - Hand-solderable SMD parts from DigiKey or LCSC
 
@@ -101,8 +99,8 @@ layout.
 
 ## Board and schematics
 
-4 layers: signals on top and bottom, ground on layer 2, 12 V on layer 3. Each block is
-labeled on the silkscreen.
+- **Stack-up:** signal / ground / 12 V / signal
+- **Silkscreen:** each circuit block outlined and labeled
 
 <ImageFigure
   src="/uploads/scr-hub-3d-top.webp"
@@ -111,7 +109,7 @@ labeled on the silkscreen.
   height={1800}
   href="/uploads/scr-hub-3d-top.webp"
   figNo="Fig. 1"
-  caption="Top view."
+  caption="Top view"
 />
 
 <ImageFigure
@@ -121,7 +119,7 @@ labeled on the silkscreen.
   height={2550}
   href="/uploads/scr-hub-schematic.pdf#page=6"
   figNo="Fig. 2"
-  caption="Routing: top copper in red, bottom copper in blue."
+  caption="Routing (red: top, blue: bottom)"
 />
 
 <ImageFigure
@@ -131,7 +129,7 @@ labeled on the silkscreen.
   height={1800}
   href="/uploads/scr-hub-3d-bottom.webp"
   figNo="Fig. 3"
-  caption="Bottom view."
+  caption="Bottom view"
 />
 
 <ImageFigure
@@ -141,7 +139,7 @@ labeled on the silkscreen.
   height={2550}
   href="/uploads/scr-hub-schematic.pdf#page=3"
   figNo="Fig. 4"
-  caption="Power schematic: buck converter, battery input and protection, E-Stop buffers."
+  caption="Power: buck converter, input protection, E-Stop buffers"
 />
 
 <ImageFigure
@@ -151,7 +149,7 @@ labeled on the silkscreen.
   height={2550}
   href="/uploads/scr-hub-schematic.pdf#page=4"
   figNo="Fig. 5"
-  caption="Current sensor schematic: one fuse, shunt and INA220 per port."
+  caption="Current sensing: fuse, shunt and INA220 per port"
 />
 
 <ImageFigure
@@ -161,7 +159,7 @@ labeled on the silkscreen.
   height={2550}
   href="/uploads/scr-hub-schematic.pdf#page=2"
   figNo="Fig. 6"
-  caption="Microcontroller schematic: STM32C092, crystal, CAN transceiver and USB debug."
+  caption="Microcontroller, crystal, CAN and USB debug"
 />
 
 <ImageFigure
@@ -171,7 +169,7 @@ labeled on the silkscreen.
   height={2550}
   href="/uploads/scr-hub-schematic.pdf#page=5"
   figNo="Fig. 7"
-  caption="Connectors schematic: the seven Molex ports and status LEDs."
+  caption="Molex ports and status LEDs"
 />
 
 <ImageFigure
@@ -181,5 +179,5 @@ labeled on the silkscreen.
   height={2550}
   href="/uploads/scr-hub-schematic.pdf#page=1"
   figNo="Fig. 8"
-  caption="Top sheet: how the four schematic sheets connect."
+  caption="Top sheet"
 />
