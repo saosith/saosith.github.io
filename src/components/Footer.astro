@@ -1,21 +1,14 @@
 ---
 import { SITE } from '../lib/site';
+/**
+ * One slim copyright line (copper redesign, 2026-11-10). No contact links here:
+ * the Contact section has them, and the menu's Contact link reaches it from any page.
+ */
+const year = new Date().getFullYear();
 ---
 
 <footer class="site-footer no-print">
-  <div class="wrap site-footer-grid">
-    <div>
-      <h3>Contact</h3>
-      <ul>
-        <li><a href={`mailto:${SITE.email}`}>{SITE.email}</a></li>
-        <li><a href={SITE.linkedin} rel="me noopener" target="_blank">LinkedIn</a></li>
-        <li><a href={SITE.github} rel="me noopener" target="_blank">GitHub</a></li>
-      </ul>
-    </div>
-    <div>
-      <h3>Use</h3>
-      <p style="max-width:34ch">{SITE.footerNote}</p>
-      <p>© {SITE.name}</p>
-    </div>
+  <div class="wrap site-footer-line">
+    <p>© {year} {SITE.name}{SITE.footerNote && <span class="site-footer-note"> · {SITE.footerNote.replace(/\.$/, '')}</span>}</p>
   </div>
 </footer>

@@ -269,3 +269,12 @@ model-viewer[data-loaded] .cu-3d-loading { display: none; }
 .cta-link-main { display: inline-flex; align-items: center; gap: 12px; }
 .cta-link-main svg { flex: none; color: #f0a14a; }
 .cta-link.is-primary .cta-link-main svg { color: #fff; }
+
+/* Footer: one slim line. */
+.site-footer { padding-block: 18px !important; background: #141210 !important; }
+.site-footer-line { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; gap: 10px 24px; }
+.site-footer-line p { margin: 0; color: #a8998a; font-size: 14px; }
+.site-footer-links { list-style: none; display: flex !important; flex-direction: row !important; gap: 20px !important; margin: 0; padding: 0; }
+.site-footer-links li { margin: 0 !important; }
+.site-footer-links a { color: #e8dccd; font-size: 14px; text-decoration: none; }
+.site-footer-links a:hover { color: #f0a14a; }
