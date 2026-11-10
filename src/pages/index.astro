@@ -73,16 +73,3 @@ const featured = (await getCollection('projects', ({ data }) => !data.draft && !
 
 <script is:inline type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@3.5.0/dist/model-viewer.min.js"></script>
 
-<script>
-  // "Message me": scroll to the contact band's message box and put the cursor in it.
-  // Without JS the link is a plain #contact anchor to the band.
-  document.querySelector('[data-hero-message]')?.addEventListener('click', (e) => {
-    const box = document.getElementById('cta-text') as HTMLTextAreaElement | null;
-    if (!box) return;
-    e.preventDefault();
-    const smooth = !matchMedia('(prefers-reduced-motion: reduce)').matches;
-    box.scrollIntoView({ behavior: smooth ? 'smooth' : 'auto', block: 'center' });
-    box.focus({ preventScroll: true });
-    history.replaceState(null, '', '#contact');
-  });
-</script>

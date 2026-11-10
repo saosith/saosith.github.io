@@ -599,12 +599,16 @@ content:
         description: Shown in the hero contact row. Leave blank to hide it.
       - { name: github, label: GitHub URL, type: string }
       - { name: linkedin, label: LinkedIn URL, type: string }
-      - name: messageLabel
-        label: Message box label
+      - name: ctaKicker
+        label: Contact band kicker
         type: string
-        description: The label over the message box in the dark "Open to work" band at the bottom of the home page. Leave blank for "Send me a message".
-      - name: messagePlaceholder
-        label: Message box placeholder
+        description: Small line above the contact band title at the bottom of the home page, e.g. "Open to work".
+      - name: ctaTitle
+        label: Contact band title
         type: string
-        description: Grey example text inside the empty message box, e.g. "Hi Sao, I'm a recruiter at …". Leave blank for that default.
+        description: The big line in the contact band, your one clear ask, e.g. "Looking for a 2027 hardware engineering internship."
+      - name: ctaSub
+        label: Contact band subtitle
+        type: string
+        description: One or two short sentences under the title. Leave blank to hide it.
       - { name: university, label: University, type: string }

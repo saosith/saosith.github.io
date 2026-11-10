@@ -253,3 +253,19 @@ model-viewer[data-loaded] .cu-3d-loading { display: none; }
 
 /* Hero fills the first screen below the menu bar, so the next section starts below the fold. */
 .hero-cu { min-height: calc(100svh - var(--header-h, 64px)); display: grid; align-content: center; }
+
+/* Contact links (replace the old message box). */
+@media (min-width: 56rem) { .cta-band .cta-inner { grid-template-columns: minmax(0, 1fr) minmax(0, 30rem); align-items: center; } }
+.cta-band .cta-sub { color: #cbbfae; opacity: 1; max-width: 48ch; line-height: 1.6; font-size: 1.1rem; }
+.cta-links { list-style: none; padding: 0; margin: 0; display: grid; gap: 12px; }
+.cta-link { display: flex; justify-content: space-between; align-items: center; gap: 16px; padding: 17px 22px; border-radius: 14px;
+  border: 1px solid #3a332b; background: #24201b; color: #fff; text-decoration: none; font-weight: 600; }
+.cta-link small { color: #a8998a; font-weight: 400; font-size: 14px; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.cta-link:hover { border-color: var(--cu); color: #fff; }
+.cta-link.is-primary { background: var(--cu); border-color: var(--cu); }
+.cta-link.is-primary small { color: #fbe3cc; }
+.cta-link.is-primary:hover { background: #d97b31; }
+.cta-link:focus-visible { outline: 3px solid #fff; outline-offset: 3px; }
+.cta-link-main { display: inline-flex; align-items: center; gap: 12px; }
+.cta-link-main svg { flex: none; color: #f0a14a; }
+.cta-link.is-primary .cta-link-main svg { color: #fff; }
