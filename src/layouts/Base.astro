@@ -67,5 +67,12 @@ const ogImage = existsSync(ogPath) ? new URL('/og.png', SITE.url).href : null;
     <Footer />
     <SectionToggles />
     <Lightbox />
+    <script is:inline>
+      // Hide each 3D viewer's "Loading 3D model" label once its model is ready.
+      document.addEventListener('load', function (e) {
+        var t = e.target;
+        if (t && t.tagName === 'MODEL-VIEWER') t.setAttribute('data-loaded', '');
+      }, true);
+    </script>
   </body>
 </html>

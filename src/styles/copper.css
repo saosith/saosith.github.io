@@ -190,3 +190,7 @@ html .report .prose .cu-step::before { display: none; }
 }
 
 @media print { .traces, .hero-cu-hint { display: none !important; } }
+
+/* Shown in place of the 3D model while it downloads; hidden once it loads (no still image). */
+.cu-3d-loading { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 14px; font-weight: 600; color: var(--ink-3); }
+model-viewer[data-loaded] .cu-3d-loading { display: none; }

@@ -39,7 +39,6 @@ const featured = (await getCollection('projects', ({ data }) => !data.draft && !
           <div class="hero-cu-glow" aria-hidden="true"></div>
           <model-viewer
             src={featured.data.model3d}
-            poster={featured.data.cover}
             alt={`Interactive 3D model of the ${featured.data.title}`}
             camera-controls
             auto-rotate
@@ -55,7 +54,7 @@ const featured = (await getCollection('projects', ({ data }) => !data.draft && !
             loading="eager"
             touch-action="pan-y"
             style="display:block;width:100%;height:100%;background:transparent;--poster-color:transparent"
-          ></model-viewer>
+          ><span slot="progress-bar" class="cu-3d-loading">Loading 3D model…</span></model-viewer>
           <a class="hero-cu-hint" href={`/projects/${featured.id}/`}>{featured.data.title} · drag to rotate</a>
         </div>
       )}
