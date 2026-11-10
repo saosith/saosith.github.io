@@ -53,10 +53,9 @@ and CC2 tell it the board wants power. An SPX3819 LDO then drops the 5 V to 3.3 
 D+ and D− go through a USBLC6-2SC6 ESD array to a CH340E USB-to-UART bridge, which
 shows up on the PC as a serial port.
 
-I used an 8 MHz crystal because the internal oscillator can be off by about 1%, which
-is enough to disturb UART timing. An RC filter cleans the ADC reference, since noise
-on it shows up in every reading. For programming I used a TC2030 Tag-Connect
-footprint, so the cable presses onto pads and no header is needed.
+An 8 MHz crystal keeps the UART timing accurate, and an RC filter cleans the ADC
+reference. A TC2030 Tag-Connect footprint is used for programming, so the cable presses
+onto pads and no header is needed.
 
 ## Requirements
 

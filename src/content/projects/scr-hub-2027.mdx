@@ -112,22 +112,15 @@ supply, and USB debugging. I did the schematic, part selection and layout.
 
 ## Architecture and components
 
-Battery power passes an XT60, a 10 A fuse, a TVS diode and a reverse-polarity MOSFET,
-then feeds the seven ports and the 3.3 V supply.
-
-Normally our team uses a Schottky diode for reverse protection. At 8 A it would drop
-0.45 V and waste about 3.6 W, so I used a P-MOSFET (DMP4015SK3Q-13), which wastes about
-0.7 W.
-
-Last year's LDO turned the 12 V to 3.3 V drop into heat (28% efficient at best). I
-replaced it with an AP63301 buck converter, about 55-70% efficient at our load.
+Battery power passes an XT60, a 10 A fuse, a TVS diode and a P-MOSFET for
+reverse-polarity protection, then feeds the seven ports. An AP63301 buck converter makes
+the 3.3 V rail for the chips on the board.
 
 Each port has its own fuse, a 20 mΩ shunt and an INA220 that reads the port's current
 and voltage over I²C, down to 0.5 mA.
 
-I kept last year's STM32C092 and MAX3051 CAN transceiver so we can reuse the firmware,
-and added an 8 MHz crystal because the internal clock can drift enough to break CAN
-timing.
+An STM32C092 runs the board and talks to the robot's CAN bus through a MAX3051
+transceiver, with an 8 MHz crystal for accurate CAN timing.
 
 An SN74AHC244 buffer copies the E-Stop line to every port without going through the
 microcontroller. USB-C with a CH340C handles debugging.
