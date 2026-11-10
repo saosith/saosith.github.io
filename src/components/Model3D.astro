@@ -29,18 +29,37 @@ const { src, poster, alt, caption } = Astro.props;
       shadow-intensity="0.6"
       exposure="1.0"
       camera-orbit="20deg 55deg 70%"
-      loading="lazy"
+      loading="eager"
       reveal="auto"
       style="display:block;width:100%;height:min(75vw,560px);background:#fff;--poster-color:#fff"
-    ></model-viewer>
+    >
+      <div slot="progress-bar" class="model3d-loading" aria-live="polite">Loading 3D model…</div>
+    </model-viewer>
   </div>
   <figcaption>
     <span>{caption ?? 'Interactive 3D model.'} Drag to rotate, scroll or pinch to zoom.</span>
   </figcaption>
 </figure>
 
+<script is:inline>
+  document.querySelectorAll('.model3d model-viewer').forEach((mv) => {
+    const label = mv.querySelector('.model3d-loading');
+    mv.addEventListener('progress', (e) => {
+      const p = Math.round(e.detail.totalProgress * 100);
+      if (label) label.textContent = p < 100 ? `Loading 3D model… ${p}%` : '';
+      if (label && p >= 100) label.hidden = true;
+    });
+    mv.addEventListener('load', () => { if (label) label.hidden = true; });
+  });
+</script>
+
 <script is:inline type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@3.5.0/dist/model-viewer.min.js"></script>
 
 <style>
+  .model3d-loading {
+    position: absolute; left: 50%; bottom: 1rem; transform: translateX(-50%);
+    padding: 0.4rem 0.9rem; border-radius: 999px;
+    background: rgba(0, 0, 0, 0.72); color: #fff; font-size: 0.85rem; pointer-events: none;
+  }
   .model3d-body { background: #fff; padding: 0; }
 </style>
