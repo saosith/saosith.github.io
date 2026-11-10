@@ -229,3 +229,24 @@ model-viewer[data-loaded] .cu-3d-loading { display: none; }
 .pcard-text { gap: 4px; padding: 14px 18px 18px; }
 .pcard-title { font-size: 1.15rem; line-height: 1.25; }
 .pcard-sub { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
+
+/* ---------- fit sections to one screen (laptop ~620 px below the menu) ---------- */
+.about-cu { padding-block: clamp(2.25rem, 4.5vw, 3.25rem); }
+@media (min-width: 56rem) { .about-cu-grid { grid-template-columns: minmax(220px, 300px) minmax(0, 1fr); gap: 3.5rem; } }
+.about-cu-photo { max-width: 300px; }
+.about-cu-text p { margin-bottom: .8rem; }
+.cu-facts { margin-top: 1.25rem; }
+
+#skills.section, #experience.section, #education.section { padding-top: clamp(2rem, 4vw, 3rem); padding-bottom: clamp(2rem, 4vw, 3rem); }
+#skills .section-head, #experience .section-head, #education .section-head { margin-bottom: 1rem; }
+.skill-group { padding: 16px 18px 18px; }
+.skill-group h3 { margin-bottom: 10px !important; }
+.skill-group ul { gap: 6px !important; }
+.skill-group li { padding: 5px 11px !important; }
+
+/* Experience: tighter entries, smaller picture, caption moved off (it stays as the image alt text). */
+#experience .tl-item { padding: 18px 0; }
+#experience .tl-media { height: 150px; }
+#experience .tl-caption { display: none; }
+#experience .tl-bullets { margin-top: .4rem; }
+@media (min-width: 60rem) { #experience .timeline-side .tl-item { grid-template-columns: 9rem 2.75rem minmax(0, 1fr) 16rem; } }
