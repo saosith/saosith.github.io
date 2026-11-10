@@ -93,7 +93,8 @@ a.hero-cu-hint:hover { background: var(--cu); color: #fff; }
   overflow: hidden; text-decoration: none; color: inherit; box-shadow: 0 10px 30px rgba(60,35,10,.08); transition: transform .2s, box-shadow .2s; }
 .pcard-link:hover { transform: translateY(-4px); box-shadow: 0 16px 36px rgba(60,35,10,.14); color: inherit; }
 .pcard-media { display: block; aspect-ratio: 16 / 10; background: var(--panel-sunk); overflow: hidden; }
-.pcard-media img, .pcard-media video { width: 100%; height: 100%; object-fit: cover; display: block; }
+/* Whole picture, never cropped: letterboxed on a warm panel. */
+.pcard-media img, .pcard-media video { width: 100%; height: 100%; object-fit: contain; display: block; }
 .pcard-media.is-fit { background: #fff; }
 .pcard-media.is-fit img { object-fit: contain; padding: 12px; }
 .pcard-text { display: grid; gap: 6px; padding: 18px 20px 22px; }
@@ -106,8 +107,7 @@ a.hero-cu-hint:hover { background: var(--cu); color: #fff; }
 .about-cu-grid { position: relative; z-index: 1; display: grid; gap: 3rem; align-items: center; }
 @media (min-width: 56rem) { .about-cu-grid { grid-template-columns: minmax(260px, 380px) minmax(0, 1fr); gap: 4rem; } }
 .about-cu-photo { position: relative; max-width: 380px; }
-.about-cu-photo::before { content: ''; position: absolute; inset: 18px -18px -18px 18px; border: 2px solid var(--cu-trace); border-radius: 22px; }
-.about-cu-photo img { position: relative; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 22px; display: block; }
+.about-cu-photo img { position: relative; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 22px; display: block; box-shadow: 0 18px 40px rgba(60,35,10,.16); }
 .about-cu-text p { font-size: 1.1rem; line-height: 1.7; color: var(--ink-2); max-width: 60ch; margin: 0 0 1rem; }
 .cu-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 14px; margin: 1.75rem 0 0; }
 .cu-facts div { display: flex; flex-direction: column-reverse; border: 1px solid var(--rule); border-radius: 14px; padding: 14px 16px; background: var(--paper); }
@@ -194,3 +194,6 @@ html .report .prose .cu-step::before { display: none; }
 /* Shown in place of the 3D model while it downloads; hidden once it loads (no still image). */
 .cu-3d-loading { position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%); font-size: 14px; font-weight: 600; color: var(--ink-3); }
 model-viewer[data-loaded] .cu-3d-loading { display: none; }
+
+/* Experience images: show the whole picture, never cropped. */
+.tl-media img, video.tl-media { object-fit: contain !important; background: var(--panel-sunk); }
