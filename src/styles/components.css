@@ -267,7 +267,16 @@ details.data-table thead th { color: var(--ink-3); font-family: var(--mono); fon
   grid-template-columns: minmax(0, 1fr); }
 @media (min-width: 64rem) { .project-layout { grid-template-columns: minmax(0, 1fr) 19rem; } }
 .project-rail { display: grid; gap: 1.1rem; align-content: start; }
-@media (min-width: 64rem) { .project-rail { position: sticky; top: 76px; } }
+@media (min-width: 64rem) {
+  /* Starts level with the breadcrumb, and scrolls on its own when taller than the screen. */
+  .project-rail {
+    position: sticky; top: 76px; margin-top: clamp(1.75rem, 4vw, 2.75rem);
+    max-height: calc(100vh - 92px); overflow-y: auto; overscroll-behavior: contain;
+  }
+}
+.project-rail .unit { color: inherit; }
+.rail-toc a { color: var(--ink) !important; border-left: 2px solid transparent; padding-left: 0.5rem; margin-left: -0.5rem; }
+.rail-toc a.is-active { border-left-color: var(--signal); font-weight: 600; }
 .rail-block { border: 1px solid var(--rule); border-radius: 3px; background: var(--panel); }
 .rail-block h3 {
   font-size: var(--t-xs); font-family: var(--mono); font-weight: 500; color: var(--ink-3);

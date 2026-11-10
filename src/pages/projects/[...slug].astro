@@ -121,35 +121,35 @@ const cover = data.cover && !/\.(mp4|webm)$/i.test(data.cover) && !project.body?
     )}
   </div>
 
-  <div class="wrap project-header">
-    <p class="small muted no-print report-crumb" style="margin-bottom:0">
-      <a href="/#projects" style="color:inherit">Projects</a> / {data.tags[0] ?? 'design'}
-    </p>
-    <h1>{data.title}</h1>
-    <p class="lede">{data.summary}</p>
-    <p class="small muted project-date">
-      {fmt(data.date)}{data.updated && ` · updated ${fmt(data.updated)}`}
-    </p>
-
-    <div class="meta-row">
-      {data.revision && <span class="tag tag-rev">{data.revision}</span>}
-      {data.process && <span class="tag">{data.process}</span>}
-      {data.tags.map((t) => <span class="tag">{t}</span>)}
-    </div>
-    {data.team && (
-      <p class="small muted team-line">
-        Team project with {data.team.org}. My role: {data.team.role}
-      </p>
-    )}
-    {pdfHref && (
-      <p class="no-print" style="margin-top:var(--unit)">
-        <a class="btn" href={pdfHref} target="_blank" rel="noopener">Download the report (PDF)</a>
-      </p>
-    )}
-  </div>
-
   <div class="wrap project-layout" style="padding-bottom:calc(var(--unit) * 2)">
     <div>
+      <div class="project-header">
+        <p class="small muted no-print report-crumb" style="margin-bottom:0">
+          <a href="/#projects" style="color:inherit">Projects</a> / {data.tags[0] ?? 'design'}
+        </p>
+        <h1>{data.title}</h1>
+        <p class="lede">{data.summary}</p>
+        <p class="small muted project-date">
+          {fmt(data.date)}{data.updated && ` · updated ${fmt(data.updated)}`}
+        </p>
+
+        <div class="meta-row">
+          {data.revision && <span class="tag tag-rev">{data.revision}</span>}
+          {data.process && <span class="tag">{data.process}</span>}
+          {data.tags.map((t) => <span class="tag">{t}</span>)}
+        </div>
+        {data.team && (
+          <p class="small muted team-line">
+            Team project with {data.team.org}. My role: {data.team.role}
+          </p>
+        )}
+        {pdfHref && (
+          <p class="no-print" style="margin-top:var(--unit)">
+            <a class="btn" href={pdfHref} target="_blank" rel="noopener">Download the report (PDF)</a>
+          </p>
+        )}
+      </div>
+
       {/* The rail is hidden on paper, so its facts are repeated here as a title block. */}
       <div class="print-only report-titleblock">
         <dl>
@@ -342,4 +342,21 @@ const cover = data.cover && !/\.(mp4|webm)$/i.test(data.cover) && !project.body?
       document.head.appendChild(css);
     }
   </script>
+
+<script is:inline>
+  // Highlight the section you are reading in the "On this page" box.
+  (() => {
+    const links = [...document.querySelectorAll('.rail-toc a[href^="#"]')];
+    const targets = links.map((a) => document.getElementById(decodeURIComponent(a.hash.slice(1)))).filter(Boolean);
+    if (!targets.length) return;
+    const set = (id) => links.forEach((a) => a.classList.toggle('is-active', a.hash === '#' + id));
+    const onScroll = () => {
+      let current = targets[0].id;
+      for (const t of targets) if (t.getBoundingClientRect().top < 140) current = t.id;
+      set(current);
+    };
+    addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  })();
+</script>
 </Base>
