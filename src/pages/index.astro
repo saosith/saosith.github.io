@@ -1,6 +1,7 @@
 ---
 import Base from '../layouts/Base.astro';
-import Portrait from '../components/Portrait.astro';
+import Traces from '../components/Traces.astro';
+import { getCollection } from 'astro:content';
 import AboutSection from '../components/AboutSection.astro';
 import ExperienceSection from '../components/ExperienceSection.astro';
 import ProjectsSection from '../components/ProjectsSection.astro';
@@ -10,6 +11,10 @@ import SkillsSection from '../components/SkillsSection.astro';
 import DataSection from '../components/DataSection.astro';
 import ContactBand from '../components/ContactBand.astro';
 import { SITE } from '../lib/site';
+
+// The hero shows the first published project that has a 3D model (the Hub).
+const featured = (await getCollection('projects', ({ data }) => !data.draft && !!data.model3d))
+  .sort((a, b) => a.data.order - b.data.order)[0];
 ---
 
 <Base
@@ -17,25 +22,48 @@ import { SITE } from '../lib/site';
   bareTitle
   description={SITE.tagline}
 >
-  <section id="top" class="wrap hero">
-    <div class="hero-grid">
-      <div class="hero-text">
-        <h1 class="hero-greeting">Hi, I'm {SITE.name.split(' ')[0]}.</h1>
-        <p class="hero-lede">{SITE.tagline}</p>
-        <div class="hero-actions">
-          {SITE.resume && <a class="hero-btn hero-btn-solid" href={SITE.resume} target="_blank" rel="noopener">{SITE.resumeLabel}</a>}
-          <a class="hero-btn hero-btn-outline" href="#contact" data-hero-message>Message me</a>
+  <section id="top" class="hero-cu">
+    <Traces variant="hero" />
+    <div class="wrap hero-cu-grid">
+      <div class="hero-cu-text">
+        <p class="cu-kicker"><i aria-hidden="true"></i>Electrical engineering · {SITE.university}</p>
+        <h1 class="hero-cu-title">Hi, I'm <em>{SITE.name.split(' ')[0]}.</em></h1>
+        <p class="hero-cu-lede">{SITE.tagline}</p>
+        <div class="hero-cu-actions">
+          <a class="cu-btn" href="#projects">See my work</a>
+          {SITE.resume && <a class="cu-btn cu-btn-ghost" href={SITE.resume} target="_blank" rel="noopener">{SITE.resumeLabel}</a>}
         </div>
       </div>
-
-      <div class="hero-portrait">
-        <Portrait />
-      </div>
+      {featured && (
+        <div class="hero-cu-board">
+          <div class="hero-cu-glow" aria-hidden="true"></div>
+          <model-viewer
+            src={featured.data.model3d}
+            poster={featured.data.cover}
+            alt={`Interactive 3D model of the ${featured.data.title}`}
+            camera-controls
+            auto-rotate
+            auto-rotate-delay="1500"
+            rotation-per-second="10deg"
+            camera-orbit="20deg 55deg 82%"
+            tone-mapping="aces"
+            min-camera-orbit="auto 15deg auto"
+            max-camera-orbit="auto 80deg auto"
+            interaction-prompt="none"
+            shadow-intensity="0"
+            exposure="0.95"
+            loading="eager"
+            touch-action="pan-y"
+            style="display:block;width:100%;height:100%;background:transparent;--poster-color:transparent"
+          ></model-viewer>
+          <a class="hero-cu-hint" href={`/projects/${featured.id}/`}>{featured.data.title} · drag to rotate</a>
+        </div>
+      )}
     </div>
   </section>
 
-  <AboutSection />
   <ProjectsSection />
+  <AboutSection />
   <ExperienceSection />
   <AwardsSection />
   <SkillsSection />
@@ -43,6 +71,8 @@ import { SITE } from '../lib/site';
   <DataSection />
   <ContactBand />
 </Base>
+
+<script is:inline type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@3.5.0/dist/model-viewer.min.js"></script>
 
 <script>
   // "Message me": scroll to the contact band's message box and put the cursor in it.

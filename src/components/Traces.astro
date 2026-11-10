@@ -1,0 +1,49 @@
+---
+/**
+ * Decorative copper PCB traces behind a section (copper redesign, 2026-11-10).
+ *
+ * Each group is its own small SVG pinned to a corner at its natural pixel size,
+ * so the 45-degree bends and round vias keep their shape whatever the section's
+ * height. (One stretched SVG squashed them when a section got shorter.)
+ * Purely visual: aria-hidden, no pointer events. Kept to the edges, away from text.
+ * The parent needs `position: relative; overflow: hidden`.
+ */
+interface Props {
+  variant?: 'hero' | 'about' | 'contact' | 'header';
+}
+const { variant = 'hero' } = Astro.props;
+
+type Piece = { corner: 'tl' | 'tr' | 'bl' | 'br'; w: number; h: number; lines: string[]; vias: [number, number, number][]; pads?: [number, number, number, number][]; off?: string };
+const P: Record<string, Piece[]> = {
+  hero: [
+    { corner: 'tl', w: 380, h: 80, lines: ['M0 14 H200 L230 44 H360', 'M0 28 H186 L214 56 H300', 'M0 42 H172 L198 68 H240'], vias: [[360, 44, 6], [300, 56, 5], [240, 68, 5]] },
+    { corner: 'tr', w: 270, h: 280, lines: ['M150 0 V60 L110 100 H10', 'M180 0 V80 L130 130 H70', 'M270 150 H210 L170 190 V260'], vias: [[10, 100, 6], [70, 130, 5], [170, 260, 5]], pads: [[40, 245, 14, 22]] },
+    { corner: 'bl', w: 320, h: 340, lines: ['M26 340 V200 L12 186 V10', 'M0 300 H150 L190 260 H300', 'M0 316 H160 L200 276 H250'], vias: [[12, 10, 5], [300, 260, 6], [250, 276, 5]] },
+    { corner: 'br', w: 300, h: 300, lines: ['M300 0 H150 L110 40 H10', 'M300 50 H170 L130 90 V300', 'M300 100 H200 L170 130 V300'], vias: [[10, 40, 6]] },
+  ],
+  about: [
+    { corner: 'tr', w: 270, h: 80, lines: ['M270 10 H120 L80 50 H20', 'M270 26 H132 L92 66 H50'], vias: [[20, 50, 5], [50, 66, 4]], off: 'top:48px' },
+    { corner: 'bl', w: 250, h: 70, lines: ['M0 60 H120 L160 20 H240'], vias: [[240, 20, 5]], off: 'bottom:32px' },
+  ],
+  contact: [
+    { corner: 'tl', w: 370, h: 120, lines: ['M0 50 H200 L240 90 H360', 'M0 66 H188 L228 106 H300'], vias: [[360, 90, 5], [300, 106, 4]] },
+    { corner: 'br', w: 370, h: 80, lines: ['M370 20 H150 L110 60 H10'], vias: [[10, 60, 5]], off: 'bottom:24px' },
+  ],
+  header: [
+    { corner: 'tl', w: 390, h: 80, lines: ['M0 24 H220 L250 54 H380', 'M0 38 H206 L236 68 H320'], vias: [[380, 54, 6], [320, 68, 5]] },
+    { corner: 'bl', w: 50, h: 290, lines: ['M40 290 V160 L10 130 V20'], vias: [[10, 20, 5]] },
+    { corner: 'br', w: 310, h: 100, lines: ['M310 70 H150 L110 30 H10'], vias: [[10, 30, 6]] },
+  ],
+};
+const pieces = P[variant] ?? [];
+---
+
+<div class={`traces traces-${variant}`} aria-hidden="true">
+  {pieces.map((p) => (
+    <svg class={`tr-corner tr-${p.corner}`} width={p.w} height={p.h} viewBox={`0 0 ${p.w} ${p.h}`} style={p.off} focusable="false">
+      <g class="tr-line">{p.lines.map((d) => <path d={d} />)}</g>
+      {p.pads && <g class="tr-pad">{p.pads.map(([x, y, w, h]) => <rect x={x} y={y} width={w} height={h} rx="2" />)}</g>}
+      <g class="tr-via">{p.vias.map(([cx, cy, r]) => <circle cx={cx} cy={cy} r={r} />)}</g>
+    </svg>
+  ))}
+</div>

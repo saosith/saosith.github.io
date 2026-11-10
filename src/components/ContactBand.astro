@@ -1,5 +1,6 @@
 ---
 import { SITE } from '../lib/site';
+import Traces from './Traces.astro';
 
 /**
  * Closing call to action: a dark full-width band above the footer that gives a
@@ -17,6 +18,7 @@ const subject = 'From your website';
 ---
 
 <section id="contact" class="cta-band no-print" aria-labelledby="cta-title">
+  <Traces variant="contact" />
   <div class="wrap cta-inner">
     <div>
       <p class="cta-kicker">Open to work</p>

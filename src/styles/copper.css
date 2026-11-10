@@ -1,0 +1,192 @@
+/* Copper redesign (2026-11-10, mockup B6 in reviews/mockups/site-redesign).
+   Loaded last, so it overrides the tokens and the red-and-white styles.
+   Backup of the previous design: git tag backup-red-white-2026-11-10. */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+:root {
+  --display: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --sans: 'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --paper: #f6f3ee;
+  --panel: #ffffff;
+  --panel-sunk: #efe9e0;
+  --ink: #1d1a16;
+  --ink-2: #4f473d;
+  --ink-3: #7a6f62;
+  --rule: #e8dfd2;
+  --rule-strong: #d6c7b3;
+  --signal: #a2561a;
+  --signal-deep: #8a4715;
+  --signal-wash: #f6e9dc;
+  --on-signal: #ffffff;
+  --brand-red: #a2561a;
+  --band-1: #efe9e0;
+  --band-2: #1d1a16;
+  --cu: #c46a22;
+  --cu-trace: #d9a877;
+  --cu-trace-soft: #e6cfb4;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme='light']) {
+    --paper: #14110e; --panel: #1d1915; --panel-sunk: #231e19;
+    --ink: #f2ebe1; --ink-2: #cbbfae; --ink-3: #a0937f;
+    --rule: #2f2821; --rule-strong: #4a3f33;
+    --signal: #f0a14a; --signal-deep: #f5bd7d; --signal-wash: #2a1d10; --on-signal: #14110e;
+    --brand-red: #c46a22; --band-1: #1d1915; --band-2: #0f0d0b;
+    --cu-trace: #6b4a2a; --cu-trace-soft: #4a3520;
+  }
+}
+:root[data-theme='dark'] {
+  --paper: #14110e; --panel: #1d1915; --panel-sunk: #231e19;
+  --ink: #f2ebe1; --ink-2: #cbbfae; --ink-3: #a0937f;
+  --rule: #2f2821; --rule-strong: #4a3f33;
+  --signal: #f0a14a; --signal-deep: #f5bd7d; --signal-wash: #2a1d10; --on-signal: #14110e;
+  --brand-red: #c46a22; --band-1: #1d1915; --band-2: #0f0d0b;
+  --cu-trace: #6b4a2a; --cu-trace-soft: #4a3520;
+}
+
+body { background: var(--paper); color: var(--ink); font-family: var(--sans); }
+h1, h2, h3, h4 { font-family: var(--display); }
+.site-header { background: var(--paper); }
+.site-nav a[aria-current] { border-bottom-color: var(--cu); }
+:where(a):hover { color: var(--signal); }
+
+/* ---------- shared pieces ---------- */
+.traces { position: absolute; inset: 0; pointer-events: none; z-index: 0; opacity: .6; overflow: hidden; }
+.tr-corner { position: absolute; overflow: visible; }
+.tr-tl { top: 0; left: 0; } .tr-tr { top: 0; right: 0; } .tr-bl { bottom: 0; left: 0; } .tr-br { bottom: 0; right: 0; }
+/* On phones only the top-left group shows, so traces never sit behind text. */
+@media (max-width: 56rem) { .tr-tr, .tr-bl, .tr-br { display: none; } }
+.traces .tr-line { fill: none; stroke: var(--cu-trace); stroke-width: 2; stroke-linejoin: round; }
+.traces .tr-via { fill: var(--paper); stroke: var(--cu); stroke-width: 3; }
+.traces .tr-pad { fill: var(--cu-trace); }
+.cu-kicker { display: inline-flex; align-items: center; gap: 8px; margin: 0; font-size: 14px; font-weight: 600; color: var(--signal); }
+.cu-kicker i { width: 10px; height: 10px; border-radius: 50%; border: 3px solid var(--cu); flex: none; }
+.cu-h2 { font-size: clamp(2rem, 1.4rem + 1.8vw, 2.9rem); font-weight: 800; letter-spacing: -.03em; margin: .5rem 0 1.25rem; }
+.cu-btn { display: inline-flex; align-items: center; padding: 13px 22px; border-radius: 999px; background: var(--ink); color: var(--paper);
+  font-weight: 600; text-decoration: none; border: 1.5px solid var(--ink); }
+.cu-btn:hover { background: var(--cu); border-color: var(--cu); color: #fff; }
+.cu-btn-ghost { background: transparent; color: var(--ink); }
+.cu-via { position: absolute; width: 16px; height: 16px; border-radius: 50%; border: 3px solid var(--cu); background: var(--paper); z-index: 2; }
+
+/* ---------- hero ---------- */
+.hero-cu { position: relative; overflow: hidden; }
+.hero-cu-grid { position: relative; z-index: 1; display: grid; gap: 2rem; align-items: center;
+  padding-top: clamp(1.5rem, 3vw, 2.5rem); padding-bottom: clamp(1.5rem, 3vw, 2.5rem); }
+@media (min-width: 64rem) { .hero-cu-grid { grid-template-columns: minmax(0, .9fr) minmax(0, 1.25fr); } }
+.hero-cu-title { font-size: clamp(3rem, 2rem + 4vw, 5.2rem); font-weight: 800; letter-spacing: -.04em; line-height: 1; margin: 1rem 0 1.2rem; }
+.hero-cu-title em { font-style: normal; color: var(--cu); }
+.hero-cu-lede { font-size: 1.2rem; line-height: 1.65; color: var(--ink-2); max-width: 44ch; }
+.hero-cu-actions { display: flex; gap: 10px; flex-wrap: wrap; margin-top: 1.8rem; }
+.hero-cu-board, .project-hero-media { position: relative; aspect-ratio: 4 / 3; max-height: min(66vh, 600px); width: 100%; }
+@media (min-width: 64rem) { .hero-cu-board, .project-hero-media { aspect-ratio: auto; height: min(66vh, 600px); } }
+@media (min-width: 64rem) { .hero-cu-board { margin-right: calc(-1 * var(--gutter)); } }
+.hero-cu-glow { position: absolute; inset: 12% 10%; background: radial-gradient(circle, rgba(196,106,34,.26), transparent 65%); filter: blur(12px); pointer-events: none; }
+.hero-cu-board model-viewer, .project-hero-media model-viewer { position: relative; }
+.hero-cu-hint { position: absolute; bottom: 4%; left: 50%; transform: translateX(-50%); white-space: nowrap; z-index: 2;
+  font-size: 13px; font-weight: 600; background: rgba(29,26,22,.86); color: #fff; padding: 7px 13px; border-radius: 999px; text-decoration: none; }
+a.hero-cu-hint:hover { background: var(--cu); color: #fff; }
+
+/* ---------- project cards ---------- */
+#projects { position: relative; }
+.pcards { list-style: none; padding: 0; margin: 1.5rem 0 0; display: grid; gap: 24px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); }
+.pcard-link { display: flex; flex-direction: column; height: 100%; background: var(--panel); border: 1px solid var(--rule); border-radius: 18px;
+  overflow: hidden; text-decoration: none; color: inherit; box-shadow: 0 10px 30px rgba(60,35,10,.08); transition: transform .2s, box-shadow .2s; }
+.pcard-link:hover { transform: translateY(-4px); box-shadow: 0 16px 36px rgba(60,35,10,.14); color: inherit; }
+.pcard-media { display: block; aspect-ratio: 16 / 10; background: var(--panel-sunk); overflow: hidden; }
+.pcard-media img, .pcard-media video { width: 100%; height: 100%; object-fit: cover; display: block; }
+.pcard-media.is-fit { background: #fff; }
+.pcard-media.is-fit img { object-fit: contain; padding: 12px; }
+.pcard-text { display: grid; gap: 6px; padding: 18px 20px 22px; }
+.pcard-kicker { font-size: 14px; font-weight: 600; color: var(--signal); }
+.pcard-title { font-size: 1.3rem; font-weight: 700; letter-spacing: -.01em; }
+.pcard-sub { font-size: 15px; line-height: 1.55; color: var(--ink-2); }
+
+/* ---------- about ---------- */
+.about-cu { position: relative; overflow: hidden; background: var(--panel); padding-block: clamp(4rem, 8vw, 6rem); }
+.about-cu-grid { position: relative; z-index: 1; display: grid; gap: 3rem; align-items: center; }
+@media (min-width: 56rem) { .about-cu-grid { grid-template-columns: minmax(260px, 380px) minmax(0, 1fr); gap: 4rem; } }
+.about-cu-photo { position: relative; max-width: 380px; }
+.about-cu-photo::before { content: ''; position: absolute; inset: 18px -18px -18px 18px; border: 2px solid var(--cu-trace); border-radius: 22px; }
+.about-cu-photo img { position: relative; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; border-radius: 22px; display: block; }
+.about-cu-text p { font-size: 1.1rem; line-height: 1.7; color: var(--ink-2); max-width: 60ch; margin: 0 0 1rem; }
+.cu-facts { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 14px; margin: 1.75rem 0 0; }
+.cu-facts div { display: flex; flex-direction: column-reverse; border: 1px solid var(--rule); border-radius: 14px; padding: 14px 16px; background: var(--paper); }
+.cu-facts dd { margin: 0; font-size: 1.4rem; font-weight: 800; }
+.cu-facts dt { font-size: 14px; color: var(--ink-3); }
+
+/* ---------- contact band ---------- */
+.cta-band { position: relative; overflow: hidden; background: #1d1a16 !important; box-shadow: none !important; }
+.cta-band .cta-inner { position: relative; z-index: 1; }
+.cta-band .cta-kicker { color: #f0a14a !important; }
+.cta-band .traces { opacity: .35; }
+.cta-band .traces .tr-line { stroke: var(--cu); }
+.cta-band .traces .tr-via { fill: #1d1a16; }
+.cta-band .cta-btn { background: var(--cu) !important; color: #fff !important; border-color: var(--cu) !important; }
+.cta-band .cta-btn:hover { background: #d97b31 !important; }
+.cta-band .cta-textarea { background: #24201b; border-color: #3a332b; color: #f6f3ee; }
+
+/* ---------- project page ---------- */
+.project-hero { position: relative; overflow: hidden; }
+.project-hero-grid { position: relative; z-index: 1; display: grid; gap: 2rem; align-items: center;
+  padding-top: clamp(2rem, 4vw, 3.5rem); padding-bottom: clamp(1.5rem, 3vw, 2.5rem); }
+@media (min-width: 64rem) {
+  .project-hero-grid { grid-template-columns: minmax(0, .9fr) minmax(0, 1.1fr); }
+  .project-hero-media { margin-right: calc(-1 * var(--gutter)); }
+}
+.project-hero-media img { position: relative; width: 100%; height: 100%; object-fit: contain; }
+.project-hero .project-header { padding: 0; }
+html .report .project-header h1 { font-family: var(--display); font-size: clamp(2.4rem, 1.6rem + 2.6vw, 3.8rem); font-weight: 800; letter-spacing: -.03em; line-height: 1.04; }
+html .report .project-header .lede { font-size: 1.15rem; line-height: 1.6; }
+.report-crumb a { color: var(--signal) !important; }
+html .report .tag { border-radius: 999px; background: var(--panel); border: 1px solid var(--rule); color: var(--ink); font-weight: 600; font-family: var(--sans); }
+@media (min-width: 64rem) { .project-rail { margin-top: 0; top: 88px; } }
+.rail-block { background: var(--panel); border-color: var(--rule); border-radius: 16px; overflow: hidden; }
+html .report .rail-block h3 { color: var(--signal); }
+.rail-toc a.is-active { border-left-color: var(--cu); }
+
+/* Body type: Inter instead of the report's Arial. */
+.report, html .report .prose, html .report .prose p, html .report .prose li { font-family: var(--sans); }
+
+/* Section headings: a via, the title, then a trace to the edge. No numbers. */
+html .report .prose > h2 { display: flex; align-items: center; gap: 12px; border-bottom: 0 !important; padding-bottom: 0;
+  font-size: 1.75rem; font-weight: 800; letter-spacing: -.02em; max-width: none; }
+html .report .prose > h2::before { content: '' !important; width: 14px; height: 14px; border-radius: 50%; border: 3px solid var(--cu); flex: none; }
+html .report .prose > h2::after { content: ''; flex: 1; height: 2px; background: var(--cu-trace-soft); }
+html .report .prose > h3::before { content: none !important; }
+
+/* Bullets as small copper rings. */
+html .report .prose > ul { list-style: none; padding-left: 0; }
+html .report .prose > ul > li { position: relative; padding-left: 26px; }
+html .report .prose > ul > li::before { content: ''; position: absolute; left: 2px; top: .55em; width: 9px; height: 9px; border-radius: 50%; border: 2.5px solid var(--cu); }
+
+/* Architecture and components: each part becomes a small card. */
+html .report .prose > h2#architecture-and-components + ul { display: grid; gap: 12px; max-width: none; grid-template-columns: repeat(auto-fill, minmax(min(100%, 300px), 1fr)); }
+html .report .prose > h2#architecture-and-components + ul > li { padding: 14px 16px; margin: 0; background: var(--panel); border: 1px solid var(--rule); border-radius: 14px; color: var(--ink-2); font-size: 15px; }
+html .report .prose > h2#architecture-and-components + ul > li::before { display: none; }
+html .report .prose > h2#architecture-and-components + ul > li strong { display: block; color: var(--ink); font-size: 16px; }
+
+/* Figures as white cards. */
+html .report .figure-body { border-radius: 16px; border-color: var(--rule); }
+
+/* Status: a copper trace through one via per stage. */
+html .report .prose > .cu-status, .cu-status { max-width: none; }
+.cu-status { position: relative; list-style: none; padding: 8px 0 0; margin: 0; display: grid; grid-template-columns: repeat(var(--n), minmax(0, 1fr)); }
+.cu-status::before { content: ''; position: absolute; top: 23px; left: calc(50% / var(--n)); right: calc(50% / var(--n)); height: 3px;
+  background: linear-gradient(90deg, var(--cu) 0 var(--done), var(--cu-trace-soft) var(--done)); }
+.cu-step { position: relative; display: grid; justify-items: center; gap: 2px; text-align: center; padding: 0 6px; }
+html .report .prose .cu-step::before { display: none; }
+.cu-step i { width: 20px; height: 20px; margin: 4px 0 10px; border-radius: 50%; border: 3px solid var(--cu); background: var(--cu); position: relative; }
+.cu-step.is-next i { background: var(--paper); box-shadow: inset 0 0 0 3px var(--cu-trace); }
+.cu-step.is-planned i { background: var(--paper); border-color: var(--cu-trace); }
+.cu-step-name { font-weight: 700; font-size: 15px; }
+.cu-step-state { font-size: 13px; color: var(--ink-3); }
+.cu-step.is-done .cu-step-state { color: var(--signal); }
+.cu-step-plan { font-size: 13px; color: var(--ink-3); margin-top: 4px; }
+@media (max-width: 40rem) {
+  .cu-status { grid-template-columns: 1fr; gap: 14px; }
+  .cu-status::before { top: 12px; bottom: 12px; left: 9px; right: auto; width: 3px; height: auto; background: var(--cu-trace-soft); }
+  .cu-step { grid-template-columns: 20px 1fr; justify-items: start; text-align: left; column-gap: 12px; }
+  .cu-step i { grid-row: span 3; margin: 0; }
+}
+
+@media print { .traces, .hero-cu-hint { display: none !important; } }

@@ -1,48 +1,41 @@
 ---
 import { ABOUT, ABOUT_PHOTO } from '../lib/about';
 import { SITE } from '../lib/site';
+import aboutData from '../data/about.json';
+import Traces from './Traces.astro';
 
 /**
- * About: prose on the left, a square profile photo on the right.
- *
- * The photo column is a fixed 216px — nine grid rows — rather than a fraction
- * of the width. A percentage column would give a 1:1 image an arbitrary height
- * that almost never lands on the 24px graticule, and the section below it would
- * inherit the error.
+ * About (copper redesign, 2026-11-10): photo on the left with an offset copper
+ * frame and two "via" dots, text on the right, then a row of fact tiles from
+ * about.json `facts` (editable in Pages CMS).
  */
 const photo = ABOUT_PHOTO.src;
 const alt = ABOUT_PHOTO.alt || `${SITE.name}, ${SITE.role}`;
+const facts = ((aboutData as { facts?: { value: string; label: string }[] }).facts ?? []).filter((f) => f.value);
 ---
 
-<section id="about" class="wrap section">
-  <div class="section-head">
-    <h2>About</h2>
-  </div>
-
-  <div class="about-grid">
-    <div class="prose">
-      {ABOUT.map((p) => <p>{p}</p>)}
-    </div>
-
-    <div class="about-photo">
+<section id="about" class="about-cu">
+  <Traces variant="about" />
+  <div class="wrap about-cu-grid">
+    <div class="about-cu-photo">
       {photo ? (
-        <img
-          class="about-photo-img"
-          src={photo}
-          alt={alt}
-          width="432"
-          height="432"
-          loading="lazy"
-          decoding="async"
-        />
+        <img src={photo} alt={alt} width="480" height="600" loading="lazy" decoding="async" />
       ) : (
-        <div class="about-photo-empty">
-          <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
-            <circle cx="16" cy="11" r="5.5" stroke="currentColor" stroke-width="2" />
-            <path d="M5 29c0-5.5 4.9-9.5 11-9.5S27 23.5 27 29" stroke="currentColor" stroke-width="2" stroke-linecap="round" />
-          </svg>
-          <p>Add a square photo in <span class="mono">About → Profile photo</span>.</p>
-        </div>
+        <div class="about-photo-empty"><p>Add a photo in <span class="mono">About → Profile photo</span>.</p></div>
+      )}
+      <span class="cu-via" style="top:-8px;right:44px" aria-hidden="true"></span>
+      <span class="cu-via" style="bottom:36px;left:-8px" aria-hidden="true"></span>
+    </div>
+    <div>
+      <p class="cu-kicker"><i aria-hidden="true"></i>About</p>
+      <h2 class="cu-h2">About me</h2>
+      <div class="about-cu-text">
+        {ABOUT.map((p) => <p>{p}</p>)}
+      </div>
+      {facts.length > 0 && (
+        <dl class="cu-facts">
+          {facts.map((f) => <div><dt>{f.label}</dt><dd>{f.value}</dd></div>)}
+        </dl>
       )}
     </div>
   </div>

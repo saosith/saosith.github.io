@@ -32,64 +32,45 @@ const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month:
       </div>
     </div>
   ) : (
-  <ul class="project-bands" data-list>
-    {projects.map((p, i) => (
+  <ul class="pcards" data-list>
+    {projects.map((p) => (
       <li
-        class={`band band-${i === 0 ? 'accent' : i % 2 === 0 ? 'dark' : 'light'}${i % 2 === 1 ? ' band-flip' : ''}`}
+        class="pcard"
         data-item
         data-tags={p.data.tags.join('|')}
         data-text={`${p.data.title} ${p.data.summary} ${p.data.tags.join(' ')} ${p.data.tools.join(' ')}`.toLowerCase()}
       >
-        <div class="wrap band-inner">
-          {p.data.model3d ? (
-          <div class="band-media band-media-3d">
-            <model-viewer
-              src={p.data.model3d}
-              poster={p.data.cover}
-              alt={`Interactive 3D model of ${p.data.title}`}
-              camera-controls
-              auto-rotate
-              auto-rotate-delay="1500"
-              rotation-per-second="12deg"
-              camera-orbit="20deg 55deg 70%"
-              min-camera-orbit="auto 15deg auto"
-              max-camera-orbit="auto 80deg auto"
-              shadow-intensity="0.6"
-              interaction-prompt="none"
-              loading="eager"
-              touch-action="pan-y"
-              style="display:block;width:100%;height:100%;background:#fff;--poster-color:#fff"
-            >
-              <div slot="progress-bar" class="band-3d-loading">Loading 3D model…</div>
-            </model-viewer>
-            <span class="band-3d-hint" aria-hidden="true">Drag to rotate · scroll to zoom</span>
-          </div>
-          ) : (
-          <a class="band-media" href={`/projects/${p.id}/`} tabindex="-1" aria-hidden="true">
-            {p.data.coverVideo
+        <a class="pcard-link" href={`/projects/${p.id}/`}>
+          <span class={`pcard-media${/schem|thumb/.test(p.data.cover ?? '') ? ' is-fit' : ''}`}>
+            {p.data.model3d
+              ? <model-viewer
+                  src={p.data.model3d}
+                  alt={`3D model of ${p.data.title}`}
+                  auto-rotate
+                  auto-rotate-delay="0"
+                  rotation-per-second="18deg"
+                  camera-orbit="20deg 55deg 82%"
+                  tone-mapping="aces"
+                  interaction-prompt="none"
+                  disable-zoom
+                  loading="lazy"
+                  style="display:block;width:100%;height:100%;background:transparent;pointer-events:none"
+                ></model-viewer>
+              : p.data.coverVideo
               ? <video src={p.data.coverVideo} poster={p.data.cover} autoplay muted loop playsinline preload="metadata"></video>
               : p.data.cover
                 ? <img src={p.data.cover} alt="" loading="lazy" decoding="async" />
                 : <span class="band-media-empty">{p.data.title}</span>}
-          </a>
-          )}
-          <div class="band-text">
-            <p class="band-kicker">
-              {p.data.tools[0] ?? p.data.tags[0]}<span aria-hidden="true"> · </span>{fmt(p.data.date)}
+          </span>
+          <span class="pcard-text">
+            <small class="pcard-kicker">
+              {p.data.tools[0] ?? p.data.tags[0]} · {fmt(p.data.date)}
               {p.data.draft && <span class="chip chip-warning" style="margin-left:0.6rem">draft, local only</span>}
-            </p>
-            <h3 class="band-title">{p.data.title}</h3>
-            <p class="band-sub">{p.data.summary}</p>
-            {p.data.headline.length > 0 && (
-              <dl class="band-figures">
-                {p.data.headline.slice(0, 3).map((h) => (
-                  <div><dt>{h.label}</dt><dd>{h.value}{h.unit ? ` ${h.unit}` : ''}</dd></div>
-                ))}
-              </dl>
-            )}
-            <a class="band-btn" href={`/projects/${p.id}/`}>Read more<span class="visually-hidden"> about {p.data.title}</span></a>
-          </div>
-        </div>
+            </small>
+            <span class="pcard-title">{p.data.title}</span>
+            <span class="pcard-sub">{p.data.summary}</span>
+          </span>
+        </a>
       </li>
     ))}
   </ul>
@@ -161,18 +142,3 @@ const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month:
   }
 </script>
 
-{projects.some((p) => p.data.model3d) && (
-  <>
-    <script is:inline>
-      document.querySelectorAll('.band-media-3d model-viewer').forEach((mv) => {
-        const label = mv.querySelector('.band-3d-loading');
-        mv.addEventListener('progress', (e) => {
-          const p = Math.round(e.detail.totalProgress * 100);
-          if (label) { label.textContent = `Loading 3D model… ${p}%`; label.hidden = p >= 100; }
-        });
-        mv.addEventListener('load', () => { if (label) label.hidden = true; });
-      });
-    </script>
-    <script is:inline type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@3.5.0/dist/model-viewer.min.js"></script>
-  </>
-)}

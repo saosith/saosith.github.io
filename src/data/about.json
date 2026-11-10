@@ -3,6 +3,24 @@
     "I'm an electrical engineering student at the University of Oklahoma. I grew up in Laos, went to Li Po Chun United World College in Hong Kong, and switched from engineering physics to EE because I like learning how devices like MOSFETs work.",
     "I design the power distribution board for our robotics team and fabricate micro- and nanostructures in the PLATEN lab."
   ],
-  "photo": "/uploads/WhatsApp Image 2026-09-10 at 2.13.17 PM-1.jpeg",
-  "photoAlt": "Sao Aphisith Sithisack"
+  "photo": "/uploads/about-photo-sao.jpg",
+  "photoAlt": "Sao Aphisith Sithisack",
+  "facts": [
+    {
+      "value": "3.88",
+      "label": "GPA, EE (Honors)"
+    },
+    {
+      "value": "2028",
+      "label": "Graduation"
+    },
+    {
+      "value": "250+",
+      "label": "Students tutored / semester"
+    },
+    {
+      "value": "Norman",
+      "label": "Oklahoma"
+    }
+  ]
 }

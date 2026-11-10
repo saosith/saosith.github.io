@@ -8,42 +8,32 @@ interface Props {
   rows: Stage[];
 }
 const { rows = [] } = Astro.props;
-const hasPlan = rows.some((r) => r.plan);
 
 /**
- * Project status: one row per stage, from schematic to bring-up. It replaces
- * empty "Not yet" sections, so a report is only as long as the work actually
- * done while still showing the plan for what comes next. Status is shown as a
- * symbol plus a word, never colour alone, so it survives black-and-white print.
- * `frontmatter` in MDX is raw YAML, so a missing status falls back to 'planned'.
+ * Project status as a copper trace through one via per stage (copper redesign,
+ * 2026-11-10): filled via = complete, ringed = in progress, hollow = planned.
+ * Each step also carries a word, so status never depends on colour alone.
+ * The trace is copper up to the last finished stage.
  */
-const MAP = {
-  done: { cls: 'chip-good', label: '✓ Complete' },
-  next: { cls: 'chip-warning', label: '▶ In progress' },
-  planned: { cls: 'chip-neutral', label: '○ Planned' },
-} as const;
+const LABEL = { done: 'Complete', next: 'In progress', planned: 'Planned' } as const;
+const lastDone = rows.reduce((n, r, i) => (r.status === 'done' ? i : n), -1);
+const pct = rows.length > 1 && lastDone >= 0 ? (lastDone / (rows.length - 1)) * 100 : 0;
 ---
 
 {rows.length > 0 ? (
-  <div class="spec-table-wrap report-table">
-    <table class="spec-table status-table">
-      <thead>
-        <tr><th scope="col">Stage</th><th scope="col">Status</th>{hasPlan && <th scope="col">Plan</th>}</tr>
-      </thead>
-      <tbody>
-        {rows.map((r) => {
-          const m = MAP[r.status ?? 'planned'] ?? MAP.planned;
-          return (
-            <tr>
-              <th scope="row">{r.stage}</th>
-              <td><span class={`chip ${m.cls}`}>{m.label}</span></td>
-              {hasPlan && <td>{r.plan ?? '—'}</td>}
-            </tr>
-          );
-        })}
-      </tbody>
-    </table>
-  </div>
+  <ol class="cu-status" style={`--n:${rows.length};--done:${pct}%`}>
+    {rows.map((r) => {
+      const s = r.status ?? 'planned';
+      return (
+        <li class={`cu-step is-${s}`}>
+          <i aria-hidden="true"></i>
+          <span class="cu-step-name">{r.stage}</span>
+          <span class="cu-step-state">{LABEL[s] ?? LABEL.planned}</span>
+          {r.plan && <span class="cu-step-plan">{r.plan}</span>}
+        </li>
+      );
+    })}
+  </ol>
 ) : (
   <p class="report-empty">No stages recorded yet. Add them under "Project status" in the CMS.</p>
 )}

@@ -72,11 +72,19 @@ content:
       - name: photo
         label: Profile photo
         type: image
-        description: Square, like a LinkedIn profile picture — it is displayed 1:1, so a portrait or landscape crop will be cut off. Leave empty and the slot shows a placeholder.
+        description: Portrait (4:5) works best; it is cropped to 4:5 with a copper frame behind it. Leave empty and the slot shows a placeholder.
       - name: photoAlt
         label: Photo description
         type: string
         description: For screen readers and for when the image fails to load. Leave blank to use your name and role.
+      - name: facts
+        label: Fact tiles
+        type: object
+        list: true
+        description: 'Short facts shown as tiles under the About text, 3 or 4 of them. Only true, checkable facts, e.g. value "3.88" with label "GPA, EE (Honors)".'
+        fields:
+          - { name: value, label: Value, type: string, description: 'The big text, a few characters, e.g. "250+".' }
+          - { name: label, label: Label, type: string, description: 'What the value means, a few words, e.g. "Students tutored / semester".' }
 
   # ------------------------------------------------------- 02  experience
   - name: experience
