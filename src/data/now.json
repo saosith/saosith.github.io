@@ -1,7 +1,7 @@
 {
   "show": true,
-  "status": "Laying out the central power and communications board for our IGVC 2027 robot in Altium: 4 layers, 7 ports, current sensing on each.",
-  "updated": "2026-11-03",
+  "status": "IGVC 2027 Hub board: design review done, PCB order next.",
+  "updated": "2026-11-10",
   "href": "/projects/scr-hub-2027/",
   "hrefLabel": "See the board"
 }
