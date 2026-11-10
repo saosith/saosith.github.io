@@ -250,3 +250,6 @@ model-viewer[data-loaded] .cu-3d-loading { display: none; }
 #experience .tl-caption { display: none; }
 #experience .tl-bullets { margin-top: .4rem; }
 @media (min-width: 60rem) { #experience .timeline-side .tl-item { grid-template-columns: 9rem 2.75rem minmax(0, 1fr) 16rem; } }
+
+/* Hero fills the first screen below the menu bar, so the next section starts below the fold. */
+.hero-cu { min-height: calc(100svh - var(--header-h, 64px)); display: grid; align-content: center; }
