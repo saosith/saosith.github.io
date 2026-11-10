@@ -1,0 +1,46 @@
+---
+interface Props {
+  /** A .glb file, e.g. /uploads/board.glb (export from Blender with Draco compression). */
+  src: string;
+  /** Still image shown while the model loads. */
+  poster?: string;
+  alt: string;
+  caption?: string;
+}
+const { src, poster, alt, caption } = Astro.props;
+/*
+ * An interactive 3D model: drag to rotate, scroll or pinch to zoom.
+ * Web only. The PDF cannot show 3D, so the figure is hidden there and the still
+ * renders that follow it carry the figure numbers.
+ */
+---
+
+<figure class="figure model3d no-print">
+  <div class="figure-body model3d-body">
+    <model-viewer
+      src={src}
+      poster={poster}
+      alt={alt}
+      camera-controls
+      auto-rotate
+      auto-rotate-delay="2000"
+      rotation-per-second="12deg"
+      interaction-prompt="auto"
+      shadow-intensity="0.6"
+      exposure="1.0"
+      camera-orbit="20deg 55deg 70%"
+      loading="lazy"
+      reveal="auto"
+      style="display:block;width:100%;height:min(75vw,560px);background:#fff;--poster-color:#fff"
+    ></model-viewer>
+  </div>
+  <figcaption>
+    <span>{caption ?? 'Interactive 3D model.'} Drag to rotate, scroll or pinch to zoom.</span>
+  </figcaption>
+</figure>
+
+<script is:inline type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@3.5.0/dist/model-viewer.min.js"></script>
+
+<style>
+  .model3d-body { background: #fff; padding: 0; }
+</style>

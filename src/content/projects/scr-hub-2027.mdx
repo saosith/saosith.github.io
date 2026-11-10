@@ -16,7 +16,7 @@ team:
   role: schematic, part selection and PCB layout of the Hub.
 ip: Team project for Sooner Competitive Robotics. This page covers my part of the design.
 
-cover: /uploads/scr-hub-3d-angle.webp
+cover: /uploads/scr-hub-cover.webp
 coverAlt: 3D render of the Hub board, tilted to show the Molex connectors, fuse holder and USB-C port
 
 tags: [pcb, power, can, altium]
@@ -144,6 +144,7 @@ bom:
 import ImageFigure from '../../components/ImageFigure.astro';
 import DecisionTable from '../../components/DecisionTable.astro';
 import StatusTable from '../../components/StatusTable.astro';
+import Model3D from '../../components/Model3D.astro';
 
 ## Introduction
 
@@ -320,6 +321,13 @@ microcontroller is in the center with the crystal at its pins, the USB-C connect
 on the bottom edge, and the buck converter is in the bottom-right corner, away from the
 crystal and the USB lines. The 10 A input path is drawn as wide pours on the outer
 layers.
+
+<Model3D
+  src="/uploads/scr-hub-3d.glb"
+  poster="/uploads/scr-hub-cover.webp"
+  alt="Interactive 3D model of the routed Hub board"
+  caption="Interactive 3D model of the routed board, exported from Altium through Blender."
+/>
 
 <ImageFigure
   src="/uploads/scr-hub-3d-angle.webp"
