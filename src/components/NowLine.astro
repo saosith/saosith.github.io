@@ -52,7 +52,7 @@ const stamp = (() => {
 
     <p class="now-text">
       {status}
-      {href && <> <a href={href}>{hrefLabel}</a></>}
+      {href && <>{' '}<a href={href}>{hrefLabel}</a></>}
     </p>
 
     {stamp && <p class="now-meta">Updated {stamp}</p>}

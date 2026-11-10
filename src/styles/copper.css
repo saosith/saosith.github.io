@@ -217,3 +217,15 @@ model-viewer[data-loaded] .cu-3d-loading { display: none; }
 /* Header brand: the site icon + "Portfolio". */
 .brand { display: inline-flex; align-items: center; gap: 10px; }
 .brand-icon { width: 26px; height: 26px; border-radius: 6px; display: block; }
+
+/* Projects fit on one screen when you jump to them (heading, Now line and the cards). */
+#projects.section { padding-top: clamp(1.25rem, 2.5vw, 2rem); }
+#projects .section-head { margin-bottom: .9rem; }
+#projects .projects-now { margin: 0 0 1.1rem; max-width: none; }
+#projects .projects-now .now { display: flex; flex-wrap: wrap; align-items: baseline; gap: .2rem 1rem; padding: .35rem .9rem; border-left-color: var(--cu); }
+#projects .projects-now .now p { margin: 0; }
+#projects .pcards { margin-top: 0; gap: 20px; }
+.pcard-media { aspect-ratio: auto; height: clamp(140px, 24vh, 220px); }
+.pcard-text { gap: 4px; padding: 14px 18px 18px; }
+.pcard-title { font-size: 1.15rem; line-height: 1.25; }
+.pcard-sub { display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden; }
