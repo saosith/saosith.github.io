@@ -197,3 +197,13 @@ model-viewer[data-loaded] .cu-3d-loading { display: none; }
 
 /* Experience images: show the whole picture, never cropped. */
 .tl-media img, video.tl-media { object-fit: contain !important; background: var(--panel-sunk); }
+
+/* ---------- skills: one card per group, chips for items ---------- */
+.skills { gap: 20px !important; align-items: stretch !important; grid-template-columns: repeat(auto-fill, minmax(min(100%, 340px), 1fr)) !important; }
+.skill-group { background: var(--panel); border: 1px solid var(--rule); border-radius: 16px; padding: 20px 22px 22px; }
+.skill-group h3 { display: flex; align-items: center; gap: 10px; font-size: 1.15rem !important; font-weight: 700; color: var(--ink);
+  box-shadow: none !important; padding-bottom: 0; margin: 0 0 14px !important; }
+.skill-group h3::before { content: ''; width: 10px; height: 10px; border-radius: 50%; border: 3px solid var(--cu); flex: none; }
+.skill-group ul { display: flex !important; flex-wrap: wrap; gap: 8px !important; }
+.skill-group li { font-size: 15px !important; padding: 6px 12px !important; text-indent: 0 !important; border-radius: 999px;
+  background: var(--paper); border: 1px solid var(--rule); color: var(--ink-2); line-height: 1.3; }

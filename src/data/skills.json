@@ -1,24 +1,52 @@
 {
   "skills": [
     {
-      "group": "Hardware design",
-      "skill": "KiCad (schematic capture)"
-    },
-    {
-      "group": "Hardware design",
+      "group": "PCB & hardware design",
       "skill": "Altium Designer (4-layer PCB)"
     },
     {
-      "group": "Hardware design",
+      "group": "PCB & hardware design",
+      "skill": "KiCad"
+    },
+    {
+      "group": "PCB & hardware design",
       "skill": "Onshape (wiring layout)"
     },
     {
-      "group": "Hardware design",
-      "skill": "USB-C, UART, CAN, I²C"
+      "group": "PCB & hardware design",
+      "skill": "Power distribution"
     },
     {
-      "group": "Hardware design",
+      "group": "PCB & hardware design",
+      "skill": "Power regulation (LDO, buck converter)"
+    },
+    {
+      "group": "PCB & hardware design",
       "skill": "Power protection (TVS, reverse polarity)"
+    },
+    {
+      "group": "PCB & hardware design",
+      "skill": "USB-C, UART, CAN, I²C, SWD"
+    },
+    {
+      "group": "Circuit design & simulation",
+      "skill": "SPICE (ngspice, LTspice, Multisim)"
+    },
+    {
+      "group": "Circuit design & simulation",
+      "skill": "Xschem"
+    },
+    {
+      "group": "Circuit design & simulation",
+      "skill": "SkyWater sky130 PDK"
+    },
+    {
+      "group": "Circuit design & simulation",
+      "skill": "DC, AC and transient analysis"
+    },
+    {
+      "group": "Circuit design & simulation",
+      "skill": "Op-amp and filter circuits"
     },
     {
       "group": "Fabrication & lab",
@@ -38,19 +66,71 @@
     },
     {
       "group": "Fabrication & lab",
+      "skill": "High-aspect-ratio structures"
+    },
+    {
+      "group": "Fabrication & lab",
       "skill": "Cleanroom processing"
     },
     {
-      "group": "Programming & data",
-      "skill": "Python (NumPy, Pandas, Matplotlib)"
+      "group": "Bench instruments",
+      "skill": "Oscilloscope"
     },
     {
-      "group": "Programming & data",
-      "skill": "C/C++"
+      "group": "Bench instruments",
+      "skill": "Digital multimeter"
     },
     {
-      "group": "Programming & data",
+      "group": "Bench instruments",
+      "skill": "Function generator"
+    },
+    {
+      "group": "Bench instruments",
+      "skill": "Bench power supply"
+    },
+    {
+      "group": "Bench instruments",
+      "skill": "Prototyping and circuit debug"
+    },
+    {
+      "group": "Programming & tools",
+      "skill": "C"
+    },
+    {
+      "group": "Programming & tools",
+      "skill": "C++"
+    },
+    {
+      "group": "Programming & tools",
+      "skill": "Python"
+    },
+    {
+      "group": "Programming & tools",
+      "skill": "Java"
+    },
+    {
+      "group": "Programming & tools",
       "skill": "MATLAB"
+    },
+    {
+      "group": "Programming & tools",
+      "skill": "LabVIEW"
+    },
+    {
+      "group": "Programming & tools",
+      "skill": "Linux"
+    },
+    {
+      "group": "Programming & tools",
+      "skill": "Git"
+    },
+    {
+      "group": "Analysis",
+      "skill": "Statistical analysis"
+    },
+    {
+      "group": "Analysis",
+      "skill": "Numerical methods"
     }
   ]
 }
