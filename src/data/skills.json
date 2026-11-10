@@ -123,14 +123,6 @@
     {
       "group": "Programming & tools",
       "skill": "Git"
-    },
-    {
-      "group": "Analysis",
-      "skill": "Statistical analysis"
-    },
-    {
-      "group": "Analysis",
-      "skill": "Numerical methods"
     }
   ]
 }
