@@ -32,6 +32,8 @@ const projects = defineCollection({
     /** Short silent loop shown on the project card instead of the cover image. */
     coverVideo: z.string().optional(),
     coverAlt: z.string().optional(),
+    /** A .glb 3D model shown on the project card instead of the cover image (drag to rotate). */
+    model3d: z.string().optional(),
 
     tags: z.array(z.string()).default([]),
     tools: z.array(z.string()).default([]),

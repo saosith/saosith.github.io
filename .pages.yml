@@ -201,6 +201,10 @@ content:
         label: Card video (optional)
         type: file
         description: A short silent loop (a few seconds, under 1 MB, MP4) shown on the project card instead of the thumbnail. Put a matching .jpg with the same name next to it as the still frame.
+      - name: model3d
+        label: Card 3D model (optional)
+        type: file
+        description: A .glb 3D model (export from Blender with Draco compression, ideally under 5 MB). Shown on the home page card instead of the thumbnail, and visitors can drag to rotate it and scroll to zoom. The thumbnail is still used as the still image while it loads.
       - name: coverAlt
         label: Thumbnail description
         type: string

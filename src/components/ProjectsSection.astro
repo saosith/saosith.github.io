@@ -41,6 +41,30 @@ const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month:
         data-text={`${p.data.title} ${p.data.summary} ${p.data.tags.join(' ')} ${p.data.tools.join(' ')}`.toLowerCase()}
       >
         <div class="wrap band-inner">
+          {p.data.model3d ? (
+          <div class="band-media band-media-3d">
+            <model-viewer
+              src={p.data.model3d}
+              poster={p.data.cover}
+              alt={`Interactive 3D model of ${p.data.title}`}
+              camera-controls
+              auto-rotate
+              auto-rotate-delay="1500"
+              rotation-per-second="12deg"
+              camera-orbit="20deg 55deg 70%"
+              min-camera-orbit="auto 15deg auto"
+              max-camera-orbit="auto 80deg auto"
+              shadow-intensity="0.6"
+              interaction-prompt="none"
+              loading="eager"
+              touch-action="pan-y"
+              style="display:block;width:100%;height:100%;background:#fff;--poster-color:#fff"
+            >
+              <div slot="progress-bar" class="band-3d-loading">Loading 3D model…</div>
+            </model-viewer>
+            <span class="band-3d-hint" aria-hidden="true">Drag to rotate · scroll to zoom</span>
+          </div>
+          ) : (
           <a class="band-media" href={`/projects/${p.id}/`} tabindex="-1" aria-hidden="true">
             {p.data.coverVideo
               ? <video src={p.data.coverVideo} poster={p.data.cover} autoplay muted loop playsinline preload="metadata"></video>
@@ -48,6 +72,7 @@ const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month:
                 ? <img src={p.data.cover} alt="" loading="lazy" decoding="async" />
                 : <span class="band-media-empty">{p.data.title}</span>}
           </a>
+          )}
           <div class="band-text">
             <p class="band-kicker">
               {p.data.tools[0] ?? p.data.tags[0]}<span aria-hidden="true"> · </span>{fmt(p.data.date)}
@@ -135,3 +160,19 @@ const fmt = (d: Date) => d.toLocaleDateString('en-US', { year: 'numeric', month:
     if (url.get('q') || url.get('tag')) apply();
   }
 </script>
+
+{projects.some((p) => p.data.model3d) && (
+  <>
+    <script is:inline>
+      document.querySelectorAll('.band-media-3d model-viewer').forEach((mv) => {
+        const label = mv.querySelector('.band-3d-loading');
+        mv.addEventListener('progress', (e) => {
+          const p = Math.round(e.detail.totalProgress * 100);
+          if (label) { label.textContent = `Loading 3D model… ${p}%`; label.hidden = p >= 100; }
+        });
+        mv.addEventListener('load', () => { if (label) label.hidden = true; });
+      });
+    </script>
+    <script is:inline type="module" src="https://cdn.jsdelivr.net/npm/@google/model-viewer@3.5.0/dist/model-viewer.min.js"></script>
+  </>
+)}
