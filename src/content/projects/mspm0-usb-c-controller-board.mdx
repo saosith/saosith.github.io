@@ -44,6 +44,13 @@ import StatusTable from '../../components/StatusTable.astro';
 One microcontroller board I can reuse across projects, powered and debugged from my
 laptop.
 
+## Requirements
+
+- USB-C power from a laptop
+- Serial link to a PC, no adapter
+- Programming with no header
+- Clean ADC reference
+
 ## Architecture and components
 
 - **MSPM0G3507:** Arm Cortex-M0+ microcontroller
@@ -54,17 +61,6 @@ laptop.
 - **8 MHz crystal:** accurate UART timing
 - **RC filter:** clean ADC reference
 - **TC2030 Tag-Connect:** SWD programming with no header
-
-## Requirements
-
-- USB-C power from a laptop
-- Serial link to a PC, no adapter
-- Programming with no header
-- Clean ADC reference
-
-## Status
-
-<StatusTable rows={frontmatter.stages} />
 
 ## Schematic
 
@@ -77,3 +73,7 @@ laptop.
   figNo="Fig. 1"
   caption="Schematic: power (left), USB-to-UART (middle), microcontroller (right)"
 />
+
+## Status
+
+<StatusTable rows={frontmatter.stages} />

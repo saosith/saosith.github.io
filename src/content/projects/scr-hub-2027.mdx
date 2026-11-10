@@ -73,17 +73,6 @@ current and voltage.
   caption="3D model"
 />
 
-## Architecture and components
-
-- **XT60, 10 A fuse, SMBJ15A TVS:** battery input and surge protection
-- **DMP4015SK3Q-13 P-MOSFET:** reverse-polarity protection
-- **AP63301 buck converter:** 12 V to 3.3 V for the chips on the board
-- **INA220 + 20 mΩ shunt (x7):** current and voltage on each port, over I²C
-- **STM32C092 + MAX3051:** microcontroller and CAN transceiver, 8 MHz crystal
-- **SN74AHC244:** copies the E-Stop line to every port, no firmware in the path
-- **CH340C + USB-C:** USB-to-UART debugging
-- **6-pin Molex (x7):** board ports, each with its own fuse and status LED
-
 ## Requirements
 
 - Power, CAN and E-Stop to every board through 6-pin Molex connectors
@@ -94,9 +83,16 @@ current and voltage.
 - 4 layers, 100 x 100 mm max
 - Hand-solderable SMD parts from DigiKey or LCSC
 
-## Status
+## Architecture and components
 
-<StatusTable rows={frontmatter.stages} />
+- **XT60, 10 A fuse, SMBJ15A TVS:** battery input and surge protection
+- **DMP4015SK3Q-13 P-MOSFET:** reverse-polarity protection
+- **AP63301 buck converter:** 12 V to 3.3 V for the chips on the board
+- **INA220 + 20 mΩ shunt (x7):** current and voltage on each port, over I²C
+- **STM32C092 + MAX3051:** microcontroller and CAN transceiver, 8 MHz crystal
+- **SN74AHC244:** copies the E-Stop line to every port, no firmware in the path
+- **CH340C + USB-C:** USB-to-UART debugging
+- **6-pin Molex (x7):** board ports, each with its own fuse and status LED
 
 ## Board and schematics
 
@@ -181,3 +177,7 @@ current and voltage.
   figNo="Fig. 8"
   caption="Top sheet"
 />
+
+## Status
+
+<StatusTable rows={frontmatter.stages} />
