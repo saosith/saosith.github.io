@@ -87,7 +87,7 @@ h1, h2, h3, h4 { font-family: var(--display); }
 a.hero-cu-hint:hover { background: var(--cu); color: #fff; }
 
 /* ---------- project cards ---------- */
-#projects { position: relative; padding-bottom: clamp(3.5rem, 7vw, 5.5rem); }
+#projects { position: relative; padding-bottom: clamp(1.5rem, 3vw, 2rem); }
 .pcards { list-style: none; padding: 0; margin: 1.5rem 0 0; display: grid; gap: 24px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); }
 .pcard-link { display: flex; flex-direction: column; height: 100%; background: var(--panel); border: 1px solid var(--rule); border-radius: 18px;
   overflow: hidden; text-decoration: none; color: inherit; box-shadow: 0 10px 30px rgba(60,35,10,.08); transition: transform .2s, box-shadow .2s; }
@@ -278,3 +278,11 @@ model-viewer[data-loaded] .cu-3d-loading { display: none; }
 .site-footer-links li { margin: 0 !important; }
 .site-footer-links a { color: #e8dccd; font-size: 14px; text-decoration: none; }
 .site-footer-links a:hover { color: #f0a14a; }
+
+/* Each section a menu link jumps to fills the screen below the sticky menu, so the jump
+   shows only that section (no edge of the next one). Content stays at the top. */
+:root { --header-h: 72px; }
+#projects, #about, #skills, #education, #contact { min-height: calc(100svh - var(--header-h)); box-sizing: border-box; }
+#about { display: grid; align-content: center; }
+#contact { display: grid; align-content: center; }
+main section[id] { scroll-margin-top: var(--header-h); }
