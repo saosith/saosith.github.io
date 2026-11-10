@@ -1,5 +1,24 @@
 # Design guide: how the site looks
 
+> **Current design (2026-11-10): copper redesign.** The red-and-white design described
+> further down is superseded; it is kept for history and can be restored from the git tag
+> `backup-red-white-2026-11-10`. Reference mockups: `reviews/mockups/site-redesign/B6*.html`.
+>
+> - **Palette:** paper `#f6f3ee`, ink `#1d1a16`, copper `#c46a22` (accent, vias, buttons on dark),
+>   text copper `#a2561a`, trace `#d9a877`; dark band/footer `#1d1a16` / `#141210`. Tokens live in
+>   `src/styles/copper.css` (loaded last), with a dark-mode set.
+> - **Type:** Inter everywhere (headings 800, body 400/500). No Manrope/Poppins/Arial on the web.
+> - **Motifs:** copper PCB traces pinned to section corners (`Traces.astro`), drawn at natural size,
+>   45-degree bends, ending in vias, never crossing (a crossing reads as a short), never behind text.
+>   Every section headline starts with a copper via circle.
+> - **3D:** the Hub board is an interactive `model-viewer` (hero, Hub card, project header). No still
+>   poster image; a "Loading 3D model" label shows until it loads.
+> - **Images:** never cropped (`object-fit: contain`), except the About photo (cropped around Sao).
+> - **Fit rule:** every section a menu link jumps to fills exactly one laptop screen
+>   (min-height `100svh - 72px`) and shows no edge of its neighbours; check with
+>   getBoundingClientRect after every change. Experience (4 roles) may span ~2 screens.
+> - **Icon:** `public/favicon.svg`, a light pulse drawn as sampled bars on copper.
+
 Read this before changing anything visual. Set 2026-10-13 with Sao after the redesign
 (reference: ramitkrishnan.com for structure, TI datasheets for tone). The goal is a
 site that looks designed by a person, not generated: big type, real images, few words,
