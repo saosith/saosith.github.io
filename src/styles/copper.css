@@ -87,7 +87,7 @@ h1, h2, h3, h4 { font-family: var(--display); }
 a.hero-cu-hint:hover { background: var(--cu); color: #fff; }
 
 /* ---------- project cards ---------- */
-#projects { position: relative; }
+#projects { position: relative; padding-bottom: clamp(3.5rem, 7vw, 5.5rem); }
 .pcards { list-style: none; padding: 0; margin: 1.5rem 0 0; display: grid; gap: 24px; grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 1fr)); }
 .pcard-link { display: flex; flex-direction: column; height: 100%; background: var(--panel); border: 1px solid var(--rule); border-radius: 18px;
   overflow: hidden; text-decoration: none; color: inherit; box-shadow: 0 10px 30px rgba(60,35,10,.08); transition: transform .2s, box-shadow .2s; }
