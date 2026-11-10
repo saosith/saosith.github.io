@@ -35,7 +35,7 @@
       "bullets": [
         "Designed a 4-layer power, CAN and E-Stop distribution PCB in Altium, routing 12 V at up to 10 A to 7 ports with INA220 current sensing.",
         "Replaced the team-standard Schottky with P-MOSFET reverse-polarity protection, cutting calculated loss at 8 A from 3.6 W to 0.7 W.",
-        "Selected the 3.3 V buck converter and an STM32C092 with CAN to reuse last year's firmware."
+        "Selected the 3.3 V buck converter and an STM32C092 microcontroller with built-in CAN."
       ],
       "evidenceLabel": "Read the board write-up",
       "evidenceHref": "/projects/scr-hub-2027/",

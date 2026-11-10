@@ -54,42 +54,6 @@ headline:
 links:
   - { label: 'Schematics and PCB print (Altium PDF)', href: '/uploads/scr-hub-schematic.pdf' }
 
-decisions:
-  - topic: Reverse protection
-    options: Series Schottky (team guide default), or a P-MOSFET
-    choice: P-MOSFET DMP4015SK3Q-13
-    reason: At 8 A a Schottky drops about 0.45 V and dissipates about 3.6 W. The MOSFET dissipates about 0.7 W. I chose it for efficiency and less heat.
-  - topic: 3.3 V supply
-    options: Last year's LDO, or a buck converter
-    choice: AP63301 buck
-    reason: An LDO's efficiency is at most V_out / V_in = 3.3 / 12 ≈ 28% here. At the Hub's estimated 50–100 mA load, the AP63301 datasheet curve for 12 V to 3.3 V shows about 55–70%, and it accepts up to 32 V.
-  - topic: Microcontroller and CAN
-    options: Pico + MCP2515 (team standard), or STM32C092 + MAX3051
-    choice: STM32C092 + MAX3051
-    reason: One chip handles CAN, it matches the 2026 Hub and Safety Lights, and their firmware can be reused.
-    status: open
-  - topic: MCU clock
-    options: Internal HSI48 oscillator, or an 8 MHz crystal
-    choice: 8 MHz crystal, Abracon ABLS (16 pF load caps)
-    reason: HSI48 can drift ±1% over temperature, and two nodes drifting apart can break CAN timing. The ABLS is ±30 ppm and has a footprint in the library.
-  - topic: I²C buses
-    options: One shared bus, or two buses for fault isolation
-    choice: One bus
-    reason: Standard for about 8 devices; firmware timeouts and bus recovery handle a stuck device.
-    status: open
-  - topic: Debug access
-    options: None, test points only, UART header, or on-board USB-C
-    choice: USB-C (CH340C) + UART header + test points
-    reason: One cable for debugging, with the header as a backup and for probing.
-  - topic: Layer count
-    options: 2-layer, or 4-layer
-    choice: 4-layer
-    reason: A solid ground plane makes the buck, USB and CAN layout forgiving for a first board and frees routing space.
-  - topic: Main fuse rating
-    options: 10 A, or 15 A
-    choice: 10 A for now
-    reason: Depends on whether the NUC computer is powered through the Hub (about 2 A more).
-    status: open
 ---
 
 import ImageFigure from '../../components/ImageFigure.astro';
@@ -99,9 +63,9 @@ import StatusTable from '../../components/StatusTable.astro';
 ## Introduction
 
 Every board on our robot plugs into the Hub for 12 V power, the CAN bus and the E-Stop
-line. For 2027 the team also wanted to see how much current each board draws, so I
-redesigned last year's Hub with sensing on every port, a new power input and 3.3 V
-supply, and USB debugging. I did the schematic, part selection and layout.
+line. For 2027 the team also wanted to see how much current each board draws, so the
+Hub measures current and voltage on every port. I did the schematic, part selection and
+layout.
 
 <Model3D
   src="/uploads/scr-hub-3d.glb"
