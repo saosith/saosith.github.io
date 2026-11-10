@@ -11,6 +11,7 @@ import Traces from './Traces.astro';
  */
 const photo = ABOUT_PHOTO.src;
 const alt = ABOUT_PHOTO.alt || `${SITE.name}, ${SITE.role}`;
+const signoff = ((aboutData as { signoff?: string }).signoff ?? '').trim();
 const facts = ((aboutData as { facts?: { icon?: string; value: string; label: string }[] }).facts ?? []).filter((f) => f.value);
 // Line icons, drawn in copper (24 px grid, 1.8 px stroke).
 const ICONS: Record<string, string> = {
@@ -36,6 +37,7 @@ const ICONS: Record<string, string> = {
       <div class="about-cu-text">
         {ABOUT.map((p) => <p>{p}</p>)}
       </div>
+      {signoff && <p class="about-cu-sign"><span aria-hidden="true"></span>{signoff}</p>}
       {facts.length > 0 && (
         <dl class="cu-facts">
           {facts.map((f) => (

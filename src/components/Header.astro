@@ -15,13 +15,9 @@ const links = [
 
 <header class="site-header no-print">
   <div class="wrap site-header-inner">
-    <a class="brand" href="/">
-      <!-- A differential pair, drawn as the mark. -->
-      <svg class="brand-mark" viewBox="0 0 24 24" fill="none" aria-hidden="true">
-        <path d="M4 20V10M20 20V10M4 15h16M12 15V4M2 20h6M16 20h6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/>
-        <circle cx="12" cy="4" r="1.8" fill="currentColor"/>
-      </svg>
-      {SITE.name}
+    <a class="brand" href="/" aria-label={`${SITE.name}: portfolio home`}>
+      <img class="brand-icon" src="/favicon.svg" alt="" width="26" height="26" />
+      Portfolio
     </a>
 
     <nav class="site-nav" aria-label="Primary">

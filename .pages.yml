@@ -77,6 +77,10 @@ content:
         label: Photo description
         type: string
         description: For screen readers and for when the image fails to load. Leave blank to use your name and role.
+      - name: signoff
+        label: Sign-off
+        type: string
+        description: 'Your name under the About text, like signing a letter, e.g. "Sao Aphisith Sithisack (Sao)". Leave empty to hide it.'
       - name: facts
         label: Fact tiles
         type: object
