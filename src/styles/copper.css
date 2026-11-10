@@ -310,3 +310,16 @@ main section[id] { scroll-margin-top: var(--header-h); }
 #education .course-list { gap: 6px; }
 #education .course-item { padding: 5px 11px !important; }
 #education .course-item { flex: 0 0 auto; width: auto !important; min-width: 0 !important; display: block; }
+
+/* Section title with a copper via in front (About Me). */
+.cu-h2-via { display: flex; align-items: center; gap: 16px; }
+.cu-h2-via::before { content: ''; width: 18px; height: 18px; border-radius: 50%; border: 4px solid var(--cu); flex: none; }
+
+/* Every section headline starts with a copper via (same as About Me). */
+.section-head h2, .cta-title { display: flex; align-items: center; gap: 16px; }
+.section-head h2::before, .cta-title::before { content: ''; width: 18px; height: 18px; border-radius: 50%; border: 4px solid var(--cu); flex: none; }
+.section-head h2:has(.section-toggle)::before { content: none; }
+.section-head .section-toggle { display: inline-flex; align-items: center; gap: 16px; }
+.section-head .section-toggle::before { content: ''; width: 18px; height: 18px; border-radius: 50%; border: 4px solid var(--cu); flex: none; }
+.cta-title::before { border-color: #f0a14a; align-self: center; }
+.section-head h2, .section-head .section-toggle, .cta-title { font-weight: 800 !important; letter-spacing: -.03em; }
